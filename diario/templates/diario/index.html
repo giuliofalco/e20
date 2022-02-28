@@ -1,0 +1,28 @@
+<html>
+    <head>
+         {% load static %}
+         <style>
+             body {background-image: url({% static 'diario/modella.jpg' %});
+                   background-repeat: no-repeat;}
+             h1 {color: blue;}
+             dt {font-weight: bold; margin: 10px;}
+         </style>
+    </head>
+    
+    <body>
+             <h1> Diario settimanale pasti </h1>
+             <a href=/django/admin>admin</a>
+             <dl>
+             {% for elemento in lista_settimanale %}
+                  <dt>settimana: <a href="{% url 'diario:settimana' elemento.0 %}">{{elemento.0}} </a>
+                  </dt>
+                  {% for giorno in elemento.1 %}
+                       <dd><i>{{giorno.week_day}} </i>{{giorno.note}}</dd>
+                  {% endfor %}
+             {% endfor %}
+             
+             </dl>
+            
+    </body>
+
+</html>
