@@ -7,22 +7,25 @@
     
     </body>
             <h2> Cosa hai mangiato oggi a <span id=pasto>{{strpasto}}</span></h2>
-         
-             {% for al in alimlist %}
-                {{al}} <br>
-             {% endfor %}
-             <hr>
-             <p>
-             Sono sicuro che hai dimenticato qualcosa, aggiungi:
+             {%if not nuovo %}
+                {% for al in alimlist %}
+                   {{al}} <br>
+                {% endfor %}
+                <hr>
+                <p>
+                Sono sicuro che hai dimenticato qualcosa, aggiungi:
              
-             <select>
+                <select>
              
-                 {% for ele in alimenti %}
+                  {% for ele in alimenti %}
                      <option value={{ele.id}}> {{ele}}
-                 {% endfor %}
+                  {% endfor %}
              
-             </select>
-             <input type=button value=dai>
+               </select>
+               <input type=button value=dai>
+            {% else %}
+                Nessun oggetto Diario da visualizzare: da implementare la creazione
+            {% endif %}
     
     </body>
 

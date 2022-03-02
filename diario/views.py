@@ -73,16 +73,21 @@ def settimana(request,w):
       
 def modifica(request,id,pasto):  
      PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,'cena':5,'dopo_cena':6} 
-      
-     diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id del parametro
-     liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
-     plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al tipo_pasto
-     alimlist = plist[0].alimento.all()              # lista degli alimenti
      
-     alimenti = Alimento.objects.all()               # tutti gli alimenti
+     if id != 0: 
+        nuovo = False                                   # l'oggetto diario è esistente
+        diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id del parametro
+        liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
+        plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al tipo_pasto
+        alimlist = plist[0].alimento.all()              # lista degli alimenti
+     else:
+        nuovo = True 
+        alimlist = ""                                   # si richiede di creare un nuovo oggetto Diario
+     
+     alimenti = Alimento.objects.all()                  # tutti gli alimenti
      
      context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
-                'alimenti' : alimenti}
+                'alimenti' : alimenti, 'nuovo':nuovo}
      
      return render(request,'diario/modifica.html',context)
   

@@ -14,7 +14,6 @@ class DiarioAdmin(admin.ModelAdmin):
     list_display = ['data_registrazione','note']
     inlines =[ConsumazioneInline]
     
-    @admin.display(ordering='data')
     def data_registrazione(self,obj):
         return WEEKDAYS[obj.data.isocalendar()[2]-1] + " " + obj.data.strftime("%d/%m/%Y")
              
