@@ -11,7 +11,8 @@
     
     <body>
              <h1> Diario settimanale pasti </h1>
-             <a href=/django/admin>admin</a>
+             <a href= {% url 'admin:index' %} >admin</a>
+            
              <dl>
              {% for elemento in lista_settimanale %}
                   <dt>settimana: <a href="{% url 'diario:settimana' elemento.0 %}">{{elemento.0}} </a>

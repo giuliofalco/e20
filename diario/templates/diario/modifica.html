@@ -1,0 +1,29 @@
+<html>
+    <head>
+       <style>
+           #pasto {color: red;}
+       </style>
+    </head>
+    
+    </body>
+            <h2> Cosa hai mangiato oggi a <span id=pasto>{{strpasto}}</span></h2>
+         
+             {% for al in alimlist %}
+                {{al}} <br>
+             {% endfor %}
+             <hr>
+             <p>
+             Sono sicuro che hai dimenticato qualcosa, aggiungi:
+             
+             <select>
+             
+                 {% for ele in alimenti %}
+                     <option value={{ele.id}}> {{ele}}
+                 {% endfor %}
+             
+             </select>
+             <input type=button value=dai>
+    
+    </body>
+
+</html>

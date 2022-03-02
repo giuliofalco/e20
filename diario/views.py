@@ -47,7 +47,7 @@ def settimana(request,w):
       # inizializzo la struttura: lista con tante righe quanti sono i tipi di pasto
       # ogni righe è una lista, il primo elemento il nome del pasto, il secondo una lista di 7
       # elementi, ciascuno dei quali conterrà gli alimenti consumati in quel giorno e il quel pasto
-      struttura = [[PASTI[j], ["" for i in range(7)]] for j in range(len(PASTI))]
+      struttura = [[PASTI[j], [["",0] for i in range(7)]] for j in range(len(PASTI))]
       
       # riempio la struttura
       for obj in weekly:
@@ -55,8 +55,9 @@ def settimana(request,w):
           for cons in obj.consumazione_set.all():  # esplodo l'oggetto diario nelle sue consumazioni
               riga = cons.tipo_pasto               # il numero di riga corrisponde al tipo di pasto
               cont = cons.alimento.all()           # esplodo negli alimenti associati a quella consum.
-              struttura[riga][1][col] = cont       # colloco gli alimenti nella corretta posizione
-      
+              struttura[riga][1][col][0] = cont    # colloco gli alimenti nella corretta posizione
+              struttura[riga][1][col][1] = obj.id  # ossia nel posto 0 nella lista piu interna
+                                                   # e l'id nella posizione 1 della lista più interna
       # mi serve per intestare le colonne della tabella
       GIORNI = ["lun","mar","mer","gio","ven","sab","dom"] 
      
@@ -70,6 +71,19 @@ def settimana(request,w):
                   
       return render(request,'diario/settimana.html',context)
       
+def modifica(request,id,pasto):  
+     PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,'cena':5,'dopo_cena':6} 
       
+     diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id del parametro
+     liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
+     plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al tipo_pasto
+     alimlist = plist[0].alimento.all()              # lista degli alimenti
+     
+     alimenti = Alimento.objects.all()               # tutti gli alimenti
+     
+     context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
+                'alimenti' : alimenti}
+     
+     return render(request,'diario/modifica.html',context)
   
 

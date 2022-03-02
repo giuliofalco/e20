@@ -5,7 +5,7 @@
                 table {width: 700px; margin-bottom : 30px; border: 1px solid black;
                        border-collapse: collapse}
                 td  {width: 30px; padding: 0px 10px 2px 10px; border: 1px solid black;
-                     padding: 5px;}
+                     padding: 5px; cursor: pointer;}
                 th  {margin-bottom: 20px; padding: 10px; background: gold;
                      border: 1px solid black}
                 .pasto {background: #e9f2c6;}
@@ -16,13 +16,21 @@
                     return(eval(s));
                  }
                  frutta = parse('{{altro}}');
+                 
+                 function update(url) {
+                    //alert(url);
+                    document.location=url;
+                 }
          </script>
     </head>
     
     <body>
-             
+           
              <h2> Settimana Num. {{settimana}} {{periodo}} </h2>
+             <script>
+                 document.write(frutta[0]);
              
+             </script>
              <table>
              <th>giorni</th>
              {%for g in giorni %}
@@ -31,21 +39,25 @@
              
              {% for riga in struttura %}  
                <tr>
-                   <td class=pasto> {{riga.0}} </td> 
+                      <td class=pasto> {{riga.0}} </td> 
               
                       {% for elem in riga.1 %}
-                         <td> 
-                         {% for al in elem %}
-                            {{al}}, 
+           <td onclick='update("{% url 'diario:modifica' elem.1 riga.0 %}")'> 
+                        
+                         {% for alim in elem.0 %}
+                            {{alim}},
                          {% endfor %}
-                          </td>
+                         
+                         
+                         
+                         </td>
                       {% endfor %}
                       
                </tr>            
              {% endfor %}
              
              </table>
-             <a href="/django/diario"> Torna alla pagina principale </a>
+             <a href="{%url 'diario:index' %}"> Torna alla pagina principale </a>
     </body>
 
 </html>
