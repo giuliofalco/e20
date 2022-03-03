@@ -11,8 +11,8 @@ class MyDate():
         else:
            self.anno = anno
         self.g_mesi = [31,28,31,30,31,30,31,31,30,31,30,31] # giorni dei mesi di un anno non bisestile
-        if self.anno_bisestile(anno):
-           self.g_mesi[1] = 29  # se anno bisestile allora febbraio ha 29 giorni
+      #  if self.anno_bisestile(anno):
+      #     self.g_mesi[1] = 29  # se anno bisestile allora febbraio ha 29 giorni
         self.G_mesi()           # G_mesi, somma cumulativa dei giorni dei mesi 
         self.iso()              # inzio della settimana ISO dell'anno corrente (giorno in cui è lunedì)  
        

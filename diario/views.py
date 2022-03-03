@@ -85,9 +85,9 @@ def modifica(request,id,week,pasto,day):
         nuovo = True 
         alimlist = ""                                   # si richiede di creare un nuovo oggetto Diario
         d = myDate.MyDate()
-        data = d.data_wday(week,day)                    # calcolo la data con lamia funzione
+        data = d.data_wday(week,day-1)                  # calcolo la data con lamia funzione
         data  = date(2022,data[1]+1,data[0])            # la converto in una data Python
-        
+         
      alimenti = Alimento.objects.all()                  # tutti gli alimenti
      
      context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
