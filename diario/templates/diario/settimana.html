@@ -42,7 +42,7 @@
                       <td class=pasto> {{riga.0}} </td> 
               
                       {% for elem in riga.1 %}
-           <td onclick='update("{% url 'diario:modifica' elem.1 riga.0 %}")'> 
+           <td onclick='update("{% url 'diario:modifica' elem.1 settimana riga.0 forloop.counter %}")'> 
                         
                          {% for alim in elem.0 %}
                             {{alim}},

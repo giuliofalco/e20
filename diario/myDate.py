@@ -78,12 +78,16 @@ class MyDate():
           return (g - self.G_mesi[p-1], p-1)
 
     def delta_settimana(self,week):
-       # restituisce la data di inizio e fine  della settimana week ((giorno,mese).(gorno,mese))
-       return (self.data_delta((week-1)*7+self.iso), self.data_delta((week-1)*7 + self.iso + 7))
+       # restituisce la data di inizio e fine  della settimana week ((giorno,mese),(giorno,mese))
+       inizio = self.data_delta((week-1)*7+self.iso)
+       fine   = self.data_delta((week-1)*7+self.iso + 8)
+       return (inizio, fine)
           
 
     def str_week(self,week):
          # ritorna giorno e mese di inzio e fine come stringa
          t = self.delta_settimana(week)
          return "da " + str(t[0][0]) + " " + self.mesi[t[0][1]] + " al " + str(t[1][0]-1) + " " + self.mesi[t[1][1]]
-         
+    
+    def data_wday(self,week,day):
+        return self.data_delta((week-1)*7+self.iso+day)  

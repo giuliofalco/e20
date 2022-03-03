@@ -4,6 +4,7 @@ from diario.models import Diario, Consumazione, Alimento
 from django.template import loader
 from django.urls import reverse
 from . import myDate 
+from datetime import date
 
 def index(request):
    lista = Diario.objects.all()
@@ -71,9 +72,9 @@ def settimana(request,w):
                   
       return render(request,'diario/settimana.html',context)
       
-def modifica(request,id,pasto):  
+def modifica(request,id,week,pasto,day):  
      PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,'cena':5,'dopo_cena':6} 
-     
+     data = ()
      if id != 0: 
         nuovo = False                                   # l'oggetto diario è esistente
         diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id del parametro
@@ -83,11 +84,14 @@ def modifica(request,id,pasto):
      else:
         nuovo = True 
         alimlist = ""                                   # si richiede di creare un nuovo oggetto Diario
-     
+        d = myDate.MyDate()
+        data = d.data_wday(week,day)                    # calcolo la data con lamia funzione
+        data  = date(2022,data[1]+1,data[0])            # la converto in una data Python
+        
      alimenti = Alimento.objects.all()                  # tutti gli alimenti
      
      context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
-                'alimenti' : alimenti, 'nuovo':nuovo}
+                'alimenti' : alimenti, 'nuovo':nuovo, 'data': data}
      
      return render(request,'diario/modifica.html',context)
   
