@@ -74,7 +74,7 @@ def settimana(request,w):
       
 def modifica(request,id,week,pasto,day):  
      PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,'cena':5,'dopo_cena':6} 
-     data = ()
+     data = ""
      if id != 0: 
         nuovo = False                                   # l'oggetto diario è esistente
         diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id del parametro

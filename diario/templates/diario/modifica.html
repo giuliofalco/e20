@@ -2,19 +2,29 @@
     <head>
        <style>
            #pasto {color: red;}
+                table { width: 300px; margin-bottom : 30px; border: 1px solid black;
+                       border-collapse: collapse}
+                td  {width: 20px; height: 60px; padding: 0px 10px 2px 10px; border: 1px solid black;
+                     padding: 5px; cursor: pointer;}
+                th  {margin-bottom: 20px; padding: 10px; background: gold;
+                     border: 1px solid black}margin-bottom : 30px; border: 1px solid black;
+                       border-collapse: collapse}
+                td  {width: 30px; height: 60px; padding: 0px 10px 2px 10px; border: 1px solid black;
+                     padding: 5px; cursor: pointer;}
+                th  {margin-bottom: 20px; padding: 10px; background: gold;
+                     border: 1px solid black}
        </style>
     </head>
     
     </body>
             <h2> Cosa hai mangiato oggi a <span id=pasto>{{strpasto}}</span></h2>
-             {%if not nuovo %}
+                <table>
+                <th>Alimenti</th>
                 {% for al in alimlist %}
-                   {{al}} <br>
+                  <tr> <td> {{al}} </td> </tr>
                 {% endfor %}
-                <hr>
-                <p>
-                Sono sicuro che hai dimenticato qualcosa, aggiungi:
-             
+                <tr>
+                <td>
                 <select>
              
                   {% for ele in alimenti %}
@@ -22,11 +32,16 @@
                   {% endfor %}
              
                </select>
-               <input type=button value=dai>
-            {% else %}
-                Nessun oggetto Diario da visualizzare: da implementare la creazione <br>
-                Devo creare l'oggetto Diario con data: {{data}}
-            {% endif %}
+               <input type=button value=Aggiungi>
+                
+                
+               </table> 
+                <hr>
+                <p>
+              
+                <p>
+               ( Se devo creare l'oggetto Diario uso la data: {{data}} come campo hidden )
+           
     
     </body>
 
