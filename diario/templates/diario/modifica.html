@@ -17,7 +17,10 @@
     </head>
     
     </body>
-            <h2> Cosa hai mangiato oggi a <span id=pasto>{{strpasto}}</span></h2>
+           <h2> Cosa hai mangiato oggi a <span id=pasto>{{strpasto}}</span></h2>
+           <form  action= "{% url 'diario:registra' %}" method="post"> 
+               {% csrf_token %}
+              
                 <table>
                 <th>Alimenti</th>
                 {% for al in alimlist %}
@@ -25,23 +28,22 @@
                 {% endfor %}
                 <tr>
                 <td>
-                <select>
+                 
+                <select name=alimento>
              
                   {% for ele in alimenti %}
                      <option value={{ele.id}}> {{ele}}
                   {% endfor %}
              
-               </select>
-               <input type=button value=Aggiungi>
-                
-                
-               </table> 
-                <hr>
-                <p>
-              
-                <p>
-               ( Se devo creare l'oggetto Diario uso la data: {{data}} come campo hidden )
-           
+                </select>
+                <input type=submit value=Aggiungi>
+                             
+                </table> 
+                <input type=hidden name=objid value={{id}}><br>
+                <input type=hidden name=pasto value={{pasto}}><br>
+                <input type=hidden name=giorno value={{giorno}}><br>
+                <input type=hidden name=data value="{{data}}"><br>
+          </form> 
     
     </body>
 
