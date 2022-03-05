@@ -117,22 +117,29 @@ def modifica(request,id,week,pasto,day):
   
 def registra(request):
 # registra la modifica effettuata aggiungendo un alimento al pasto della settimana 
-    objid  = request.POST['objid']
+
+    objid  = request.POST['objid']                          # lettura parametri
     giorno = request.POST['giorno']
     miadata = request.POST['data']
     pasto = request.POST['pasto']
     alimento = request.POST['alimento']
     
-    if objid != '0':
-       diario = get_object_or_404(Diario, pk=objid)
-       consumazione = diario.consumazione_set.filter(tipo_pasto=pasto)[0]
-       mio_alimento = get_object_or_404(Alimento,pk=alimento)
-       consumazione.alimento.add(mio_alimento)
-       consumazione.save() 
-       settimana = diario.week()   
+    if objid == '0':                                        # non ho l'id, ma non so ancora se l'oggetto esiste
+       miodiario = Diario.objects.filter(data=miadata)      # lo cerco attraverso la data, se esiste mi restituisce un Query Set con un solo elemento
+       if miodiario:                                        # miodiario esiste
+          miodiario = miodiario[0]                          # mio diario deve essere un oggetto, non un Query Set. Prendo l'unico oggetto della lista        
+       else:                                                # non esiste, lo creo
+          miodiario = Diario.objects.create(data=miadata)  
+       consumazione = Consumazione.objects.create(diario=miodiario,tipo_pasto=pasto) # devo creare la consumazione comunque, non può esistere         
     else:
-       settimana = 9  # codice temporaneo
-    
+       miodiario = get_object_or_404(Diario,pk=objid)       # se ho fornito l'id, significa che l'oggetto esiste           
+       consumazione = miodiario.consumazione_set.filter(tipo_pasto=pasto)[0] # cerco le consumazioni associate, ce n'è sicuramente solo una  
+                                   
+    mio_alimento = get_object_or_404(Alimento,pk=alimento)                   # cerco l'alimento usando il suo indice che ho ricevuto come parametro
+    consumazione.alimento.add(mio_alimento)                                  # lo associo alla sua consumazione
+   
+    settimana = miodiario.week() 
+       
     return HttpResponseRedirect(reverse('diario:settimana',args=(settimana,)))
     
     
