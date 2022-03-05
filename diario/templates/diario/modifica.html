@@ -17,7 +17,7 @@
     </head>
     
     </body>
-           <h2> Cosa hai mangiato oggi a <span id=pasto>{{strpasto}}</span></h2>
+           <h2> Cosa hai mangiato oggi {{data}} a <span id=pasto>{{strpasto}}</span></h2>
            <form  action= "{% url 'diario:registra' %}" method="post"> 
                {% csrf_token %}
               
@@ -39,10 +39,19 @@
                 <input type=submit value=Aggiungi>
                              
                 </table> 
+                <hr>
+                {% if id != 0 %}
+                   Sono sicuro che hai dimenticato qualcosa. Aggiungilo !!
+                {% else %}
+                   Ti sei deciso finalmente a registrare il pasto, non dimenticare nulla !!
+                {% endif %}
+                <br>
                 <input type=hidden name=objid value={{id}}><br>
                 <input type=hidden name=pasto value={{pasto}}><br>
                 <input type=hidden name=giorno value={{giorno}}><br>
                 <input type=hidden name=data value="{{data}}"><br>
+                
+                
           </form> 
     
     </body>

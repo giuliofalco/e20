@@ -1,5 +1,6 @@
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from diario.models import Diario, Consumazione, Alimento
 from django.template import loader
 from django.urls import reverse
@@ -20,9 +21,10 @@ def index(request):
    # appartenenti a quella settimana. 
 
    dati = [[sett,[oggetto for oggetto in lista if oggetto.week() == sett]] for sett in weeks]
-   # genero una lista di liste. Ogni componente è una lista il cui primo elemento è il numero della
-   # settimana e il secondo è la lista che contiene le registrazioni di quella settimana 
-   # e. [[7,[ogg1, ogg2, ogg3]], [11, [ogg4,ogg5]] ogni ogg è un oggetto di Diario
+   # genero una lista di liste. Ogni componente è una lista il cui primo elemento è 
+   # il numero della settimana e il secondo è la lista che contiene le registrazioni 
+   # di quella settimana 
+   # es. [[7,[ogg1, ogg2, ogg3]], [11, [ogg4,ogg5]] ogni ogg è un oggetto di Diario
    
    context = {'lista_settimanale': dati}
  
@@ -34,9 +36,10 @@ def settimana(request,w):
       weekly = [obj for obj in lista if obj.week() == w]  # solo quelle della settimana w   
       cons = [[w.week_day,list(w.consumazione_set.all())] for w in weekly]
       # estraggo da weekly (lista degli oggetti Diario di quella particolare settimana)
-      # per ogni elemento di weekly le consumazioni ad esso associate. Trasformo il querySet in lista
-      # produco una lista il cui elemnti sono il giorno della settimana ('lun', 'mart', seguito 
-      # dalla data) e dalla lista delle consumazioni di quel giorno
+      # per ogni elemento di weekly le consumazioni ad esso associate. 
+      # Trasformo il querySet in lista
+      # produco una lista il cui elemnti sono il giorno della settimana 
+      # ('lun', 'mart', seguito dalla data) e dalla lista delle consumazioni di quel giorno
      
       # per ottenere un report tabellare in cui ogni riga sia una consumazione e le colonne i
       # giorni:
@@ -53,18 +56,22 @@ def settimana(request,w):
       # riempio la struttura
       for obj in weekly:
           col = obj.w_day() - 1                    # la colonna è data dal giorno della settimana
-          for cons in obj.consumazione_set.all():  # esplodo l'oggetto diario nelle sue consumazioni
+          for cons in obj.consumazione_set.all():  # esplodo l'oggetto diario nelle sue
+                                                   # consumazioni
               riga = cons.tipo_pasto               # il numero di riga corrisponde al tipo di pasto
-              cont = cons.alimento.all()           # esplodo negli alimenti associati a quella consum.
+              cont = cons.alimento.all()           # esplodo negli alimenti associati a 
+                                                   # quella consumazione
               struttura[riga][1][col][0] = cont    # colloco gli alimenti nella corretta posizione
               struttura[riga][1][col][1] = obj.id  # ossia nel posto 0 nella lista piu interna
-                                                   # e l'id nella posizione 1 della lista più interna
+                                                   # e l'id nella posizione 1 della lista 
+                                                   # più interna
       # mi serve per intestare le colonne della tabella
       GIORNI = ["lun","mar","mer","gio","ven","sab","dom"] 
      
       
       md = myDate.MyDate()                         
-      periodo = md.str_week(w)                     # calcolo data di inizio e fine della settimana w
+      periodo = md.str_week(w)                     # calcolo data di inizio e fine 
+                                                   # della settimana w
       
       FRUTTA =  ['pompelmi','fragole']
       context = {'settimana': w,'struttura': struttura, 'pasti':PASTI, 'periodo': periodo, 
@@ -73,26 +80,32 @@ def settimana(request,w):
       return render(request,'diario/settimana.html',context)
       
 def modifica(request,id,week,pasto,day):  
-     PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,'cena':5,'dopo_cena':6} 
+     PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
+              'cena':5,'dopo_cena':6} 
      data = ""
      if id != 0: 
         nuovo = False                                   # l'oggetto diario è esistente
-        diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id del parametro
+        diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id 
+                                                        # del parametro
         liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
-        plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al tipo_pasto
+        plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al
+                                                        # tipo_pasto
         alimlist = plist[0].alimento.all()              # lista degli alimenti
-        alimId = [al.id for al in alimlist]             # tutti gli id della lista di alimenti trovati
-        alims  = list(Alimento.objects.all())           # tutti gli alimenti, come lista di oggetti 
-                                                        # gli alimenti non ancora scelti
+        alimId = [al.id for al in alimlist]             # tutti gli id della lista di 
+                                                        # alimenti trovati
+        alims  = list(Alimento.objects.all())           # tutti gli alimenti, come lista
+                                                        # di oggetti 
+                                                        
         alimenti = [elem for elem in alims if elem.id not in alimId]
-        
+                                                        # gli alimenti non ancora scelti
       
      else:
         nuovo = True 
-        alimlist = ""                                   # si richiede di creare un nuovo oggetto Diario
+        alimlist = ""                                   # si richiede di creare un nuovo 
+                                                        # oggetto Diario
         d = myDate.MyDate()
-        data = d.data_wday(week,day-1)                  # calcolo la data con lamia funzione
-        data  = date(2022,data[1]+1,data[0])            # la converto in una data Python
+        data = d.data_wday(week,day-1)                  # calcolo la data con la mia funzione
+        data  = "2022-"+str(data[1]+1)+"-"+str(data[0]) # la converto in una data "YYYY-mm-dd"
          
         alimenti = Alimento.objects.all()               # tutti gli alimenti
      
@@ -106,9 +119,20 @@ def registra(request):
 # registra la modifica effettuata aggiungendo un alimento al pasto della settimana 
     objid  = request.POST['objid']
     giorno = request.POST['giorno']
-    data = request.POST['data']
+    miadata = request.POST['data']
     pasto = request.POST['pasto']
     alimento = request.POST['alimento']
     
-    context = {'objid': objid, 'giorno':giorno, 'data':data, 'pasto':pasto, 'alimento': alimento}
-    return render(request,'diario/registra.html',context)
+    if objid != '0':
+       diario = get_object_or_404(Diario, pk=objid)
+       consumazione = diario.consumazione_set.filter(tipo_pasto=pasto)[0]
+       mio_alimento = get_object_or_404(Alimento,pk=alimento)
+       consumazione.alimento.add(mio_alimento)
+       consumazione.save() 
+       settimana = diario.week()   
+    else:
+       settimana = 9  # codice temporaneo
+    
+    return HttpResponseRedirect(reverse('diario:settimana',args=(settimana,)))
+    
+    
