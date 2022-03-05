@@ -81,6 +81,12 @@ def modifica(request,id,week,pasto,day):
         liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
         plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al tipo_pasto
         alimlist = plist[0].alimento.all()              # lista degli alimenti
+        alimId = [al.id for al in alimlist]             # tutti gli id della lista di alimenti trovati
+        alims  = list(Alimento.objects.all())           # tutti gli alimenti, come lista di oggetti 
+                                                        # gli alimenti non ancora scelti
+        alimenti = [elem for elem in alims if elem.id not in alimId]
+        
+      
      else:
         nuovo = True 
         alimlist = ""                                   # si richiede di creare un nuovo oggetto Diario
@@ -88,11 +94,21 @@ def modifica(request,id,week,pasto,day):
         data = d.data_wday(week,day-1)                  # calcolo la data con lamia funzione
         data  = date(2022,data[1]+1,data[0])            # la converto in una data Python
          
-     alimenti = Alimento.objects.all()                  # tutti gli alimenti
+        alimenti = Alimento.objects.all()               # tutti gli alimenti
+     
      
      context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
-                'alimenti' : alimenti, 'nuovo':nuovo, 'data': data}
+                'alimenti' : alimenti, 'nuovo':nuovo, 'data': data, 'giorno':day, }
      
      return render(request,'diario/modifica.html',context)
   
-
+def registra(request):
+# registra la modifica effettuata aggiungendo un alimento al pasto della settimana 
+    objid  = request.POST['objid']
+    giorno = request.POST['giorno']
+    data = request.POST['data']
+    pasto = request.POST['pasto']
+    alimento = request.POST['alimento']
+    
+    context = {'objid': objid, 'giorno':giorno, 'data':data, 'pasto':pasto, 'alimento': alimento}
+    return render(request,'diario/registra.html',context)
