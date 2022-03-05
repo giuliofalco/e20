@@ -5,7 +5,8 @@ from diario.models import Diario, Consumazione, Alimento
 from django.template import loader
 from django.urls import reverse
 from . import myDate 
-from datetime import date
+#from datetime import date
+import datetime as dt
 
 def index(request):
    lista = Diario.objects.all()
@@ -84,7 +85,7 @@ def modifica(request,id,week,pasto,day):
               'cena':5,'dopo_cena':6} 
      data = ""
      if id != 0: 
-        nuovo = False                                   # l'oggetto diario è esistente
+ 
         diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id 
                                                         # del parametro
         liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
@@ -98,38 +99,41 @@ def modifica(request,id,week,pasto,day):
                                                         
         alimenti = [elem for elem in alims if elem.id not in alimId]
                                                         # gli alimenti non ancora scelti
+        strdata = diario.data.strftime("%d/%m/%Y")
       
      else:
-        nuovo = True 
+ 
         alimlist = ""                                   # si richiede di creare un nuovo 
                                                         # oggetto Diario
         d = myDate.MyDate()
-        data = d.data_wday(week,day-1)                  # calcolo la data con la mia funzione
-        data  = "2022-"+str(data[1]+1)+"-"+str(data[0]) # la converto in una data "YYYY-mm-dd"
-         
+        miadata = d.data_wday(week,day-1)               # calcolo la data con la mia funzione
+        data  = "{}-{}-{}".format(2022,miadata[1]+1,miadata[0])     # formato data come tupla anno,mese,giorno
+        strdata = "{}/{}/{}".format(2022,miadata[1]+1,miadata[0])   # formato data come stringa europea
         alimenti = Alimento.objects.all()               # tutti gli alimenti
      
      
      context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
-                'alimenti' : alimenti, 'nuovo':nuovo, 'data': data, 'giorno':day, }
+                'alimenti' : alimenti,'data': data, 'giorno':day, 'strdata': strdata}
      
      return render(request,'diario/modifica.html',context)
   
 def registra(request):
 # registra la modifica effettuata aggiungendo un alimento al pasto della settimana 
 
-    objid  = request.POST['objid']                          # lettura parametri
-    giorno = request.POST['giorno']
-    miadata = request.POST['data']
-    pasto = request.POST['pasto']
+    objid    = request.POST['objid']                          # lettura parametri
+    giorno   = request.POST['giorno']
+    miadata  = request.POST['data']
+    pasto    = request.POST['pasto']
     alimento = request.POST['alimento']
     
     if objid == '0':                                        # non ho l'id, ma non so ancora se l'oggetto esiste
-       miodiario = Diario.objects.filter(data=miadata)      # lo cerco attraverso la data, se esiste mi restituisce un Query Set con un solo elemento
+       miodiario = Diario.objects.filter(data=miadata) # lo cerco attraverso la data, se esiste mi restituisce un Query Set con un solo elemento
        if miodiario:                                        # miodiario esiste
           miodiario = miodiario[0]                          # mio diario deve essere un oggetto, non un Query Set. Prendo l'unico oggetto della lista        
        else:                                                # non esiste, lo creo
-          miodiario = Diario.objects.create(data=miadata)  
+          d = dt.datetime.strptime(miadata, "%Y-%m-%d")
+          d = d.date()
+          miodiario = Diario.objects.create(data=d)  
        consumazione = Consumazione.objects.create(diario=miodiario,tipo_pasto=pasto) # devo creare la consumazione comunque, non può esistere         
     else:
        miodiario = get_object_or_404(Diario,pk=objid)       # se ho fornito l'id, significa che l'oggetto esiste           

@@ -17,7 +17,7 @@
     </head>
     
     </body>
-           <h2> Cosa hai mangiato oggi {{data}} a <span id=pasto>{{strpasto}}</span></h2>
+           <h2> Cosa hai mangiato oggi {{strdata}} a <span id=pasto>{{strpasto}}</span></h2>
            <form  action= "{% url 'diario:registra' %}" method="post"> 
                {% csrf_token %}
               
