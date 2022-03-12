@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = "/home/giulio/django/mysite"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -80,10 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mysite',
-        'USER': 'giulio',
-        'PASSWORD': 'benoni58',
-      #  'HOST': 'diariog.herokuapp.com',
-        'PORT': '5432',
+       # 'USER': 'giulio',
+       # 'PASSWORD': 'benoni58',
+       # 'PORT': '5432',
     }
 }
 
@@ -123,8 +125,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),) # new
-STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles')) # new
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' # new
 
 
