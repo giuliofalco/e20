@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'mysite',
         'USER': 'giulio',
         'PASSWORD': 'benoni58',
-        'HOST': '127.0.0.1',
+      #  'HOST': 'diariog.herokuapp.com',
         'PORT': '5432',
     }
 }
