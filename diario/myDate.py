@@ -80,7 +80,7 @@ class MyDate():
     def delta_settimana(self,week):
        # restituisce la data di inizio e fine  della settimana week ((giorno,mese),(giorno,mese))
        inizio = self.data_delta((week-1)*7+self.iso)
-       fine   = self.data_delta((week-1)*7+self.iso + 8)
+       fine   = self.data_delta((week-1)*7+self.iso + 7)
        return (inizio, fine)
           
 
