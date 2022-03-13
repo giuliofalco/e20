@@ -6,12 +6,34 @@
                    background-repeat: no-repeat;}
              h1 {color: blue;}
              dt {font-weight: bold; margin: 10px;}
+             #scheda {display: none; margin-top: 15px;}
+             td {padding: 10px;}
          </style>
+         <script>
+                  function apri() {
+                      document.getElementById('scheda').style.display = 'block';
+                  }
+                  function chiudi() {
+                      document.getElementById('scheda').style.display = 'none';
+                  }
+         </script>
     </head>
     
     <body>
              <h1> Diario settimanale pasti </h1>
-             <a href= {% url 'admin:index' %} >admin</a>
+             <a href= {% url 'admin:index' %} >admin</a> - 
+             <a href="javascript:apri()">Registra</a>
+            
+             <div id=scheda>
+                   <table>
+                      <tr>
+                      <td>Data:<br><input type=date> 
+                      <td>Note:<br> <input type=text>
+                      <tr>
+                      <td><input type=button value="Invia"> <td> 
+                          <input type=button value="Annulla" onClick=chiudi()>
+                   </table>
+             </div>
             
              <dl>
              {% for elemento in lista_settimanale %}
