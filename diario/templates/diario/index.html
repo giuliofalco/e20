@@ -25,14 +25,17 @@
              <a href="javascript:apri()">Registra</a>
             
              <div id=scheda>
+               <form method=post action = {% url 'diario:inserisci' %}>
+                   {% csrf_token %}
                    <table>
                       <tr>
-                      <td>Data:<br><input type=date> 
-                      <td>Note:<br> <input type=text>
+                      <td>Data:<br><input name=data type=date> 
+                      <td>Note:<br> <input name=note type=text>
                       <tr>
-                      <td><input type=button value="Invia"> <td> 
+                      <td><input type=submit value="Invia"> <td> 
                           <input type=button value="Annulla" onClick=chiudi()>
                    </table>
+               </form>
              </div>
             
              <dl>

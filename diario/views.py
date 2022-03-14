@@ -146,4 +146,17 @@ def registra(request):
        
     return HttpResponseRedirect(reverse('diario:settimana',args=(settimana,)))
     
+def inserisci(request):
+# inserisce un nuovo oggetto diario nel sistema
+
+    data = request.POST['data']
+    note = request.POST['note']
     
+    diario = Diario()
+    diario.data = data
+    diario.note = note
+    diario.save()
+    
+    return HttpResponseRedirect(reverse('diario:index'))
+    
+       
