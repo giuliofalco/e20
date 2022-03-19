@@ -1,15 +1,31 @@
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from datetime import datetime
 from datetime import date
 from django.utils import timezone
 from django.contrib import admin
 
+
+
 def strdata(data):
     return str(data.day)+"/"+str(data.month)+"/"+str(data.year)
 
+class Dieta(models.Model):
+# il posto dove conservare la dieta, ogni oggetto è un giorno della settimana
+    WEEKDAYS = ('lunedi','martedi','mercoledi','giovedi','venerdi','sabato','domenica')
+    
+    giorno = models.IntegerField(unique=True) # giorno della settimana 1 lun, 2 mar. ...
+    note = models.CharField(max_length=200,blank=True)
+
+    def __str__(self):
+        return self.giorno
+
+    def wday(self):
+        return WEEKDAYS[self.giorno]
+
 class Diario(models.Model):
     WEEKDAYS = ('lunedi','martedi','mercoledi','giovedi','venerdi','sabato','domenica')
-
+    
     data = models.DateField(default=date.today(),unique=True)
     note = models.CharField(max_length=200,blank=True, default="")
       
