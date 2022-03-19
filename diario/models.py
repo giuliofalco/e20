@@ -2,6 +2,7 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 from datetime import datetime
 from datetime import date
+from . import categorie
 from django.utils import timezone
 from django.contrib import admin
 
@@ -54,12 +55,10 @@ class Diario(models.Model):
 
 class Alimento(models.Model):
 
-    CATEGORIE = [(0,'Altro'),(1,'Latticini'),(2,'Cereali'),(3,'Pane'),(4,'Pasta'),(5,'Carni'),
-                 (6,'Legumi'),(7,'Dolci'),(8,'Patate'),(9,'Bevande'),(10,'Pesce')]
-
+    
     nome = models.CharField(max_length=50, unique=True)
     calorie = models.IntegerField(default=100)
-    categoria = models.IntegerField(choices=CATEGORIE,default=0)
+    categoria = models.IntegerField(choices=categorie.CATEGORIE,default=0)
     
     def __str__(self):
        return self.nome
