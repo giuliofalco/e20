@@ -55,6 +55,7 @@ class Alimento(models.Model):
     from . import categorie
     # CATEGORIE = [(0,'Altro'),(1,'Latticini'),(2,'Cereali'),(3,'Pane'),(4,'Pasta'),(5,'Carni'),
     #              (6,'Legumi'),(7,'Dolci'),(8,'Patate'),(9,'Bevande'),(10,'Pesce')]
+    categorie.CATEGORIE.sort(key=lambda x: x[1])
 
     nome = models.CharField(max_length=50, unique=True)
     calorie = models.IntegerField(default=100)
