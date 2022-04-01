@@ -1,0 +1,26 @@
+body          {background: cornsilk; }
+h1            {text-align: center; color: blue;}
+h2            {text-align: center; }
+#corpo        {width: 700px; margin: auto;                
+                border-left:  2px solid #b1ae99;
+                border-right: 2px solid #b1ae99;
+                padding: 10px 50px 10px 50px;
+                background: white;
+                text-align: justify;  
+                min-height: 800px;           
+               }
+
+table, td, th {border: 1px solid black; border-collapse: collapse; padding: 5px;
+               margin-bottom: 10px;}
+th            {background: gold; text-align: center;}
+td            {background: white;}
+.codice       {background: gold; padding:10px 2px 15px 10px; 
+               margin: 25px 0px 25px 60px;  width: 400px;
+               border: 1px solid black;}
+
+.evidenziato  {background: yellow;}
+
+dt  {font-weight: bold; margin-top: 10px;}
+dd  {}
+
+li a {color: green;}

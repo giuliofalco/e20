@@ -5,8 +5,6 @@ from datetime import date
 from django.utils import timezone
 from django.contrib import admin
 
-
-
 def strdata(data):
     return str(data.day)+"/"+str(data.month)+"/"+str(data.year)
 
@@ -54,12 +52,13 @@ class Diario(models.Model):
 
 class Alimento(models.Model):
 
-    CATEGORIE = [(0,'Altro'),(1,'Latticini'),(2,'Cereali'),(3,'Pane'),(4,'Pasta'),(5,'Carni'),
-                 (6,'Legumi'),(7,'Dolci'),(8,'Patate'),(9,'Bevande'),(10,'Pesce')]
+    from . import categorie
+    # CATEGORIE = [(0,'Altro'),(1,'Latticini'),(2,'Cereali'),(3,'Pane'),(4,'Pasta'),(5,'Carni'),
+    #              (6,'Legumi'),(7,'Dolci'),(8,'Patate'),(9,'Bevande'),(10,'Pesce')]
 
     nome = models.CharField(max_length=50, unique=True)
     calorie = models.IntegerField(default=100)
-    categoria = models.IntegerField(choices=CATEGORIE,default=0)
+    categoria = models.IntegerField(choices=categorie.CATEGORIE,default=0)
     
     def __str__(self):
        return self.nome
