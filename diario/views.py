@@ -109,9 +109,9 @@ def modifica(request,id,week,pasto,day):
         miadata = d.data_wday(week,day-1)               # calcolo la data con la mia funzione
         data  = "{}-{}-{}".format(2022,miadata[1]+1,miadata[0])     # formato data come tupla anno,mese,giorno
         strdata = "{}/{}/{}".format(2022,miadata[1]+1,miadata[0])   # formato data come stringa europea
-        alimenti = Alimento.objects.all()               # tutti gli alimenti
+        alimenti = list(Alimento.objects.all())                     # tutti gli alimenti
      
-     
+     alimenti.sort(key=lambda x: x.nome.lower())
      context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
                 'alimenti' : alimenti,'data': data, 'giorno':day, 'strdata': strdata}
      
@@ -158,5 +158,16 @@ def inserisci(request):
     diario.save()
     
     return HttpResponseRedirect(reverse('diario:index'))
+
+def cancella(request,idGiorno,pasto,al):
+   # riceve i'id della registrazione giornaliera, il numero della consumazione 
+   # e il nome alimento. Lo cancella dalla lista della consumazione
+    reg   = Diario.objects.get(id=idGiorno)      # identifico la registrazione giornaliera
+    pasto = reg.consumazione_set.all()[0]        # identifico la consumazione
+    oggetto = Alimento.objects.filter(nome=al)   # cerco l'oggetto da cancellare
+    pasto.alimento.remove(oggetto)               # lo elimino dalla lista
+    HttpResponseRedirect(reverse('index'))       # reindirizzo a index
+
+
     
        

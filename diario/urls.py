@@ -9,4 +9,5 @@ urlpatterns = [
       path('modifica/<int:id>/<int:week>/<str:pasto>/<int:day>',views.modifica,name="modifica"),
       path('registra',views.registra,name="registra"),
       path('inserisci',views.inserisci,name="inserisci"),
+      path('cancella/<int:idGiorno>/<int:pasto>/<int:al>',views.cancella,name="cancella"),
 ]
