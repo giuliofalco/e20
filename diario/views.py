@@ -113,7 +113,8 @@ def modifica(request,id,week,pasto,day):
      
      alimenti.sort(key=lambda x: x.nome.lower())
      context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
-                'alimenti' : alimenti,'data': data, 'giorno':day, 'strdata': strdata}
+                'alimenti' : alimenti,'data': data, 'giorno':day, 'strdata': strdata,
+               }
      
      return render(request,'diario/modifica.html',context)
   
@@ -162,11 +163,11 @@ def inserisci(request):
 def cancella(request,idGiorno,pasto,al):
    # riceve i'id della registrazione giornaliera, il numero della consumazione 
    # e il nome alimento. Lo cancella dalla lista della consumazione
-    reg   = Diario.objects.get(id=idGiorno)      # identifico la registrazione giornaliera
-    pasto = reg.consumazione_set.all()[0]        # identifico la consumazione
-    oggetto = Alimento.objects.filter(nome=al)   # cerco l'oggetto da cancellare
-    pasto.alimento.remove(oggetto)               # lo elimino dalla lista
-    HttpResponseRedirect(reverse('index'))       # reindirizzo a index
+    reg   = Diario.objects.get(id=idGiorno)       # identifico la registrazione giornaliera
+    liscons = reg.consumazione_set.all()          # identifico la consumazione
+    plist = liscons.filter(tipo_pasto=pasto)[0]   # filtro rispetto al pasto
+    plist.alimento.remove(al)                     # lo elimino dalla lista
+    return HttpResponseRedirect(reverse('diario:index')) # reindirizzo a index
 
 
     

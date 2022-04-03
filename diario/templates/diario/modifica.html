@@ -26,7 +26,9 @@
                   <tr>
                      <td> {{al}} </td> 
                      <td class=center> 
-                        <img src="{% static 'diario/cestino.png' %}"> 
+                        <a href="{% url 'diario:cancella' id pasto al.id %}">
+                            <img src="{% static 'diario/cestino.png' %}">
+                        </a> 
                      </td> 
                   </tr>
                 {% endfor %}
