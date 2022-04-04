@@ -21,7 +21,7 @@
                {% csrf_token %}
               
                 <table>
-                <th style="width: 80%">Alimenti</th><th>canc</th>
+                <th style="width: 80%"><a href={% url 'admin:index' %}diario/alimento>Alimenti</a></th><th>canc</th>
                 {% for al in alimlist %}
                   <tr>
                      <td> {{al}} </td> 

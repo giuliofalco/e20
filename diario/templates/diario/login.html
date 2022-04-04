@@ -5,22 +5,29 @@
             h2 {color : blue; text-align: center;}
             h3 {color: #c00;}
             #invio {text-align: center;}
+            #msg  {color:#c00; text-align: center; margin-top: 10px;}
       </style>
    </head>
     
    <body>
+       
       <div id=box>
-         <h2>Diario Alimentare</h2>
-         <form>
+         <h2>Diario Alimentare - Login</h2>
+         <form method="post" action="{% url 'diario:autentica' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value={{next}}>
             <table>
                <tr>
-                  <td>Utente: <td><input type=text name=user>
+                  <td>Utente: <td><input type=text name="utonto">
                <tr>
-                  <td>Password: <td> <input type=password name=password> 
+                  <td>Password: <td> <input type=password name="password"> 
                <tr>
                   <td id=invio colspan=2><input type=submit value="Invia"> 
                                          <input type=reset value="Reset">
+                                        
             </table>
+            <div id=msg> {{msg}} </div>
+            <a href={% url 'diario:index' %}>Diario</a>
          </form>
       </box>
     </body>

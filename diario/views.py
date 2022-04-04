@@ -1,3 +1,4 @@
+from typing_extensions import Required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -79,7 +80,10 @@ def settimana(request,w):
                  'altro': FRUTTA, 'giorni': GIORNI}
                   
       return render(request,'diario/settimana.html',context)
-      
+
+from django.contrib.auth.decorators import login_required
+
+@login_required (login_url='/django/diario/mioLogin')  
 def modifica(request,id,week,pasto,day): 
      # apre il template omonimo che permette di inserire o cancellare alimenti di un 
      # particolare giorno della settimana. Attivata al click su una casella di settimana 
@@ -89,20 +93,20 @@ def modifica(request,id,week,pasto,day):
      data = ""
      if id != 0: 
  
-        diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id 
+         diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id 
                                                         # del parametro
-        liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
-        plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al
+         liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
+         plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al
                                                         # tipo_pasto
-        alimlist = plist[0].alimento.all()              # lista degli alimenti
-        alimId = [al.id for al in alimlist]             # tutti gli id della lista di 
+         alimlist = plist[0].alimento.all()              # lista degli alimenti
+         alimId = [al.id for al in alimlist]             # tutti gli id della lista di 
                                                         # alimenti trovati
-        alims  = list(Alimento.objects.all())           # tutti gli alimenti, come lista
+         alims  = list(Alimento.objects.all())           # tutti gli alimenti, come lista
                                                         # di oggetti 
                                                         
-        alimenti = [elem for elem in alims if elem.id not in alimId]
+         alimenti = [elem for elem in alims if elem.id not in alimId]
                                                         # gli alimenti non ancora scelti
-        strdata = diario.data.strftime("%d/%m/%Y")
+         strdata = diario.data.strftime("%d/%m/%Y")
       
      else:
  
@@ -177,7 +181,26 @@ def cancella(request,idGiorno,pasto,al,week,day):
     return HttpResponseRedirect(reverse('diario:modifica',args = (idGiorno,week,PASTI[pasto],day))) # reindirizzo a index
 
 
-def sign_in(request):
-   # manda alla finestra di login
-    pass   
-       
+def mioLogin(request):
+   # manda alla finestra di autenticazione, per chiedere username e password
+   next = request.GET['next']
+   context = {'next':next,}
+   return render(request,'diario/login.html',context)
+
+from django.contrib.auth import authenticate, login
+
+def autentica(request):
+   # riceve dalla finestra di autenticazione e controlla per effettuare il login
+   utente  = request.POST.get('utonto') 
+   password = request.POST.get('password')
+   next = request.POST.get('next')
+   user = authenticate(request, username=utente, password=password)
+ 
+   if user is not None:
+      login(request, user)
+      return HttpResponseRedirect(next)
+   else:
+      return render(request,'diario/login.html',{'msg':'Autenticazione Fallita', 'next':next} )
+
+
+
