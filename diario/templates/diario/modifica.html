@@ -26,7 +26,7 @@
                   <tr>
                      <td> {{al}} </td> 
                      <td class=center> 
-                        <a href="{% url 'diario:cancella' id pasto al.id week%}">
+                        <a href="{% url 'diario:cancella' id pasto al.id week giorno%}">
                             <img src="{% static 'diario/cestino.png' %}">
                         </a> 
                      </td> 
@@ -43,8 +43,12 @@
              
                 </select>
                 <input type=submit value=Aggiungi>
-                             
+                <td class="center">
+                  <a href="{%url 'diario:settimana' week %}">
+                     <img src="{% static 'diario/arrow.png' %}">   
+                  </a>     
                 </table> 
+                
                 <hr>
                 {% if id != 0 %}
                    Sono sicuro che hai dimenticato qualcosa. Aggiungilo !!

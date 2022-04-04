@@ -80,7 +80,9 @@ def settimana(request,w):
                   
       return render(request,'diario/settimana.html',context)
       
-def modifica(request,id,week,pasto,day):  
+def modifica(request,id,week,pasto,day): 
+     # apre il template omonimo che permette di inserire o cancellare alimenti di un 
+     # particolare giorno della settimana. Attivata al click su una casella di settimana 
      PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
               'cena':5,'dopo_cena':6} 
      data = ""
@@ -161,15 +163,19 @@ def inserisci(request):
     
     return HttpResponseRedirect(reverse('diario:index'))
 
-def cancella(request,idGiorno,pasto,al,week):
+def cancella(request,idGiorno,pasto,al,week,day):
    # riceve i'id della registrazione giornaliera, il numero della consumazione 
    # e il nome alimento. Lo cancella dalla lista della consumazione
+    PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom',
+            'cena','dopo_cena']
     reg   = Diario.objects.get(id=idGiorno)       # identifico la registrazione giornaliera
     liscons = reg.consumazione_set.all()          # identifico la consumazione
     plist = liscons.filter(tipo_pasto=pasto)[0]   # filtro rispetto al pasto
     plist.alimento.remove(al)                     # lo elimino dalla lista
-    return HttpResponseRedirect(reverse('diario:settimana',args = (week,))) # reindirizzo a index
+    return HttpResponseRedirect(reverse('diario:modifica',args = (idGiorno,week,PASTI[pasto],day))) # reindirizzo a index
 
 
-    
+def sign_in(request):
+   # manda alla finestra di login
+    pass   
        

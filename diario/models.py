@@ -61,6 +61,9 @@ class Alimento(models.Model):
     calorie = models.IntegerField(default=100)
     categoria = models.IntegerField(choices=categorie.CATEGORIE,default=0)
     
+    class meta:
+       ordering=['nome']
+
     def __str__(self):
        return self.nome
         
