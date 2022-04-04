@@ -83,6 +83,7 @@ def settimana(request,w):
 def modifica(request,id,week,pasto,day): 
      # apre il template omonimo che permette di inserire o cancellare alimenti di un 
      # particolare giorno della settimana. Attivata al click su una casella di settimana 
+     # il parametro pasto è la sua versione stringa
      PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
               'cena':5,'dopo_cena':6} 
      data = ""
@@ -129,6 +130,7 @@ def registra(request):
     miadata  = request.POST['data']
     pasto    = request.POST['pasto']
     alimento = request.POST['alimento']
+    strpasto = request.POST['strpasto']
     
     if objid == '0':                                        # non ho l'id, ma non so ancora se l'oggetto esiste
        miodiario = Diario.objects.filter(data=miadata) # lo cerco attraverso la data, se esiste mi restituisce un Query Set con un solo elemento
@@ -137,7 +139,8 @@ def registra(request):
        else:                                                # non esiste, lo creo
           d = dt.datetime.strptime(miadata, "%Y-%m-%d")
           d = d.date()
-          miodiario = Diario.objects.create(data=d)  
+          miodiario = Diario.objects.create(data=d) 
+          objid = miodiario.id 
        consumazione = Consumazione.objects.create(diario=miodiario,tipo_pasto=pasto) # devo creare la consumazione comunque, non può esistere         
     else:
        miodiario = get_object_or_404(Diario,pk=objid)       # se ho fornito l'id, significa che l'oggetto esiste           
@@ -148,7 +151,7 @@ def registra(request):
    
     settimana = miodiario.week() 
        
-    return HttpResponseRedirect(reverse('diario:settimana',args=(settimana,)))
+    return HttpResponseRedirect(reverse('diario:modifica',args=(objid,settimana,strpasto,giorno,)))
     
 def inserisci(request):
 # inserisce un nuovo oggetto evento del giorno nel diario nel sistema
