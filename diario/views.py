@@ -140,7 +140,6 @@ def registra(request):
           d = dt.datetime.strptime(miadata, "%Y-%m-%d")
           d = d.date()
           miodiario = Diario.objects.create(data=d) 
-          objid = miodiario.id 
        consumazione = Consumazione.objects.create(diario=miodiario,tipo_pasto=pasto) # devo creare la consumazione comunque, non può esistere         
     else:
        miodiario = get_object_or_404(Diario,pk=objid)       # se ho fornito l'id, significa che l'oggetto esiste           
@@ -151,7 +150,7 @@ def registra(request):
    
     settimana = miodiario.week() 
        
-    return HttpResponseRedirect(reverse('diario:modifica',args=(objid,settimana,strpasto,giorno,)))
+    return HttpResponseRedirect(reverse('diario:modifica',args=(miodiario.id,settimana,strpasto,giorno,)))
     
 def inserisci(request):
 # inserisce un nuovo oggetto evento del giorno nel diario nel sistema
