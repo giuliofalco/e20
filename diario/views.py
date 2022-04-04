@@ -1,4 +1,4 @@
-from typing_extensions import Required
+#from typing_extensions import Required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
