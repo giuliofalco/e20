@@ -155,12 +155,13 @@ def registra(request):
     settimana = miodiario.week() 
        
     return HttpResponseRedirect(reverse('diario:modifica',args=(miodiario.id,settimana,strpasto,giorno,)))
-    
+
+@login_required   #per mettere autenticazione inserisco solo il decoratore qui  
 def inserisci(request):
 # inserisce un nuovo oggetto evento del giorno nel diario nel sistema
 
-    data = request.POST['data']
-    note = request.POST['note']
+    data = request.POST.get('data')
+    note = request.POST.get('note')
     
     diario = Diario()
     diario.data = data
