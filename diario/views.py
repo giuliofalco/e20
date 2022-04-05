@@ -33,7 +33,8 @@ def index(request):
    return render(request, 'diario/index.html', context)
 
 def settimana(request,w):
-      PASTI = ['fuori_pasto','colazione',2,'merenda_mat','pranzo','merenda_pom','cena','dopo_cena']
+      from . import config
+      
       lista = Diario.objects.all()                        # tutte le registrazioni
       weekly = [obj for obj in lista if obj.week() == w]  # solo quelle della settimana w   
       cons = [[w.week_day,list(w.consumazione_set.all())] for w in weekly]
@@ -49,11 +50,11 @@ def settimana(request,w):
       # e il valore una lista di elementi il cui primo elemento è il weekday, e il secondo
       # la lista degli alimenti della consumazione in quel giorno
       
-      PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom','cena','dopo_cena']
+      #PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom','cena','dopo_cena']
       # inizializzo la struttura: lista con tante righe quanti sono i tipi di pasto
       # ogni righe è una lista, il primo elemento il nome del pasto, il secondo una lista di 7
       # elementi, ciascuno dei quali conterrà gli alimenti consumati in quel giorno e il quel pasto
-      struttura = [[PASTI[j], [["",0] for i in range(7)]] for j in range(len(PASTI))]
+      struttura = [[config.PASTIL[j], [["",0] for i in range(7)]] for j in range(len(config.PASTIL))]
       
       # riempio la struttura
       for obj in weekly:
@@ -76,7 +77,7 @@ def settimana(request,w):
                                                    # della settimana w
       
       FRUTTA =  ['pompelmi','fragole']
-      context = {'settimana': w,'struttura': struttura, 'pasti':PASTI, 'periodo': periodo, 
+      context = {'settimana': w,'struttura': struttura, 'pasti':config.PASTIL, 'periodo': periodo, 
                  'altro': FRUTTA, 'giorni': GIORNI}
                   
       return render(request,'diario/settimana.html',context)
@@ -85,18 +86,19 @@ from django.contrib.auth.decorators import login_required
 
 @login_required 
 def modifica(request,id,week,pasto,day): 
+     from . import config 
      # apre il template omonimo che permette di inserire o cancellare alimenti di un 
      # particolare giorno della settimana. Attivata al click su una casella di settimana 
      # il parametro pasto è la sua versione stringa
-     PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
-              'cena':5,'dopo_cena':6} 
+     #PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
+     #         'cena':5,'dopo_cena':6} 
      data = ""
      if id != 0: 
  
          diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id 
                                                         # del parametro
          liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
-         plist = liscons.filter(tipo_pasto = PASTI[pasto])  # lista con la cons corrisp al
+         plist = liscons.filter(tipo_pasto = config.PASTIC[pasto])  # lista con la cons corrisp al
                                                         # tipo_pasto
          alimlist = plist[0].alimento.all()              # lista degli alimenti
          alimId = [al.id for al in alimlist]             # tutti gli id della lista di 
@@ -119,7 +121,7 @@ def modifica(request,id,week,pasto,day):
         alimenti = list(Alimento.objects.all())                     # tutti gli alimenti
      
      alimenti.sort(key=lambda x: x.nome.lower())
-     context = {'alimlist': alimlist, 'id': id, 'pasto': PASTI[pasto], 'strpasto': pasto,
+     context = {'alimlist': alimlist, 'id': id, 'pasto': config.PASTIC[pasto], 'strpasto': pasto,
                 'alimenti' : alimenti,'data': data, 'giorno':day, 'strdata': strdata,
                 'week':week,
                }
@@ -173,13 +175,14 @@ def inserisci(request):
 def cancella(request,idGiorno,pasto,al,week,day):
    # riceve i'id della registrazione giornaliera, il numero della consumazione 
    # e il nome alimento. Lo cancella dalla lista della consumazione
-    PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom',
-            'cena','dopo_cena']
+    from . import config
+    #PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom',
+    #        'cena','dopo_cena']
     reg   = Diario.objects.get(id=idGiorno)       # identifico la registrazione giornaliera
     liscons = reg.consumazione_set.all()          # identifico la consumazione
     plist = liscons.filter(tipo_pasto=pasto)[0]   # filtro rispetto al pasto
     plist.alimento.remove(al)                     # lo elimino dalla lista
-    return HttpResponseRedirect(reverse('diario:modifica',args = (idGiorno,week,PASTI[pasto],day))) # reindirizzo a index
+    return HttpResponseRedirect(reverse('diario:modifica',args = (idGiorno,week,config.PASTIL[pasto],day))) # reindirizzo a index
 
 
 def mioLogin(request):

@@ -52,14 +52,14 @@ class Diario(models.Model):
 
 class Alimento(models.Model):
 
-    from . import categorie
+    from . import config
     # CATEGORIE = [(0,'Altro'),(1,'Latticini'),(2,'Cereali'),(3,'Pane'),(4,'Pasta'),(5,'Carni'),
     #              (6,'Legumi'),(7,'Dolci'),(8,'Patate'),(9,'Bevande'),(10,'Pesce')]
-    categorie.CATEGORIE.sort(key=lambda x: x[1])
+    config.CATEGORIE.sort(key=lambda x: x[1])
 
     nome = models.CharField(max_length=50, unique=True)
     calorie = models.IntegerField(default=100)
-    categoria = models.IntegerField(choices=categorie.CATEGORIE,default=0)
+    categoria = models.IntegerField(choices=config.CATEGORIE,default=0)
     
     class meta:
        ordering=['nome']
@@ -68,11 +68,12 @@ class Alimento(models.Model):
        return self.nome
         
 class Consumazione(models.Model):
-    PASTI = [(0,'fuori_pasto'),(1,'colazione'),(2,'merenda_mat'),
-             (3,'pranzo'),(4,'merenda_pom'),(5,'cena'),(6,'dopo_cena')]
+    from . import config
+    #PASTI = [(0,'fuori_pasto'),(1,'colazione'),(2,'merenda_mat'),
+    #         (3,'pranzo'),(4,'merenda_pom'),(5,'cena'),(6,'dopo_cena')]
 
     diario = models.ForeignKey(Diario,on_delete=models.CASCADE)
-    tipo_pasto = models.IntegerField(choices=PASTI,default=0) 
+    tipo_pasto = models.IntegerField(choices=config.PASTI,default=0) 
     alimento = models.ManyToManyField(Alimento)
     acque = models.IntegerField(default=1)           # numero di bottigliette d'acqua consumate
     quantita_extra = models.BooleanField(default=False)
