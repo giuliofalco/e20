@@ -32,6 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*',]
 
+LOGIN_URL = 'diario:mioLogin'
 
 # Application definition
 

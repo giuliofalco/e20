@@ -83,7 +83,7 @@ def settimana(request,w):
 
 from django.contrib.auth.decorators import login_required
 
-@login_required (login_url='/django/diario/mioLogin')  
+@login_required 
 def modifica(request,id,week,pasto,day): 
      # apre il template omonimo che permette di inserire o cancellare alimenti di un 
      # particolare giorno della settimana. Attivata al click su una casella di settimana 
