@@ -37,7 +37,7 @@ LOGIN_URL = 'diario:mioLogin'
 # Application definition
 
 INSTALLED_APPS = [
-    'OffPcto.apps.OffPctoConfig',
+    'OffPcto.apps.OffpctoConfig',
     'diario.apps.DiarioConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
