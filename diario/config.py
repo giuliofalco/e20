@@ -4,4 +4,4 @@ PASTI = [(0,'fuori_pasto'),(1,'colazione'),(2,'merenda_mat'),
          (3,'pranzo'),(4,'merenda_pom'),(5,'cena'),(6,'dopo_cena'),(7,'Movimento')]
 PASTIL = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom','cena','dopo_cena','Movimento']
 PASTIC = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
-              'cena':5,'dopo_cena':6} 
+              'cena':5,'dopo_cena':6,'Movimento':7} 
