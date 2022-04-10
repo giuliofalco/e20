@@ -22,4 +22,5 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('diario/',include('diario.urls')),
     path('', RedirectView.as_view(url='diario/', permanent=True)),
+    path('offpcto/',include('OffPcto.urls')),
 ]
