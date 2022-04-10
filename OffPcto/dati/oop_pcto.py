@@ -3,11 +3,19 @@ import sqlite3
 
 class Importa:
    # per caricare i dati da un file csv
-   
+            
    def __init__(self,nome_file):
        self.nome_file = nome_file     # il nome del file da importare
        self.csep = ','                # il carattere separatore
-       self.dati = self.carica_dati() # e inizializza  self.campi con l'intestazione del file dati
+       self.campi = ""                # i nomi dei campi
+       self.dati = self.carica_dati() # i dati come lista e l'intestazione con in nomi dei campi
+       self.lower_nomi()              # capitalizza i nomi
+   
+   def lower_nomi(self):
+       # sistema i cognomi e i nomi con la prima lettera maiuscola e il resto minuscolo
+       for i in range(len(self.dati)):
+           self.dati[i][1] = self.dati[i][1].capitalize()
+           self.dati[i][2] = self.dati[i][2].capitalize()
        
    def get_email(self,nome,cognome):
        #restituisce la mail istituzionale del Mapelli, dati nome e cognome
@@ -60,12 +68,12 @@ class DbImport():
       
 class TutorImport(DbImport):
    # sottoclasse che specifica la query da utilizzare
-   query = "INSERT INTO tutor (nome,cognome,email,password)  VALUES (?,?,?,?)"
+   query = "INSERT INTO tutor (cognome,nome,email,password)  VALUES (?,?,?,?)"
    
 class TutorImportPg(DbImport):
    # per connettersi al database su PostgreSQL tabella "OffPcto_tutor" di mysite usando con Django
    
-   query = 'INSERT INTO "OffPcto_tutor" (nome,cognome,email) VALUES (%s,%s,%s)'
+   query = 'INSERT INTO "OffPcto_tutor" (cognome,nome,email) VALUES (%s,%s,%s)'
   
    def __init__(self,fname,dbname):
        super().__init__(fname,dbname)
