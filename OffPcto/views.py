@@ -2,7 +2,7 @@ from django.shortcuts import render
 from OffPcto.models import *
 
 def index(request):
-    return render(request,"OffPcto/index.html",{})
+    return render(request,'"OffPcto"/index.html',{})
     
 def tutor(request):
      elenco = Tutor.objects.all()
