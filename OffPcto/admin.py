@@ -1,4 +1,9 @@
 from django.contrib import admin
-from .models import Tutor
+from .models import Tutor, Aziende
 
 admin.site.register(Tutor)
+#admin.site.register(Aziende)
+
+@admin.register(Aziende)
+class AziendeAdmin(admin.ModelAdmin):
+    list_display = ['ragione_sociale','sede_comune','sede_provincia']
