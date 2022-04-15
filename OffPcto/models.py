@@ -17,7 +17,6 @@ class Aziende(models.Model):
     telefono = models.CharField(max_length=200,null=True)
     email = models.CharField(max_length=100)
     settore = models.CharField(max_length=200,null=True)
-    score = models.IntegerField(default=0)
     
     def __str__(self):
        return(self.ragione_sociale)
