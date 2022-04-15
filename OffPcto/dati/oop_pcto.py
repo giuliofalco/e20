@@ -82,7 +82,8 @@ class TutorImportPg(DbImport):
            
    def connect(self):
       import psycopg2
-      conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
+      #conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
+      conn =  psycopg2.connect(dbname=d3034gq117jmk1 host=ec2-44-194-167-63.compute-1.amazonaws.com port=5432 user=yycpzjmtozwhci password=4b99951991961c1f66cd7f0f07dbe35972aa854164f9f7fc31b37237c3bc8827 sslmode=require)
       return conn
            
    
