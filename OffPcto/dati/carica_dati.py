@@ -3,11 +3,11 @@ from oop_pcto import *
 
 # AGGIORNAMENTO DATABASE POSTGRES
 
-object = TutorImportPg('tutor.csv','mysite')
-object.aggiornaDb()
+#object = TutorImportPg('tutor.csv','mysite')
+#object.aggiornaDb()
 
-# object = AziendeImportPg('aziende.tsv','mysite')
-# object.aggiornaDb()
+object = AziendeImportPg('aziende.tsv','mysite')
+object.aggiornaDb()
 
 # AGGIORNAMENTO DATABASE SQLITE
 

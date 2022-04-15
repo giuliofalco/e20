@@ -6,7 +6,7 @@ class Importa:
             
    def __init__(self,nome_file):
        self.nome_file = nome_file     # il nome del file da importare
-       self.csep = ','                # il carattere separatore
+       self.csep = ';'                # il carattere separatore
        self.campi = ""                # i nomi dei campi
        self.dati = self.carica_dati() # i dati come lista e l'intestazione con in nomi dei campi
        self.lower_nomi()              # capitalizza i nomi
@@ -52,7 +52,6 @@ class DbImport():
   def __init__(self,fname,dbname):
        self.dbname = dbname          # nome del database
        self.source = Importa(fname)  # importa i dati dal file csv creando l'oggetto
-       self.source.togli_id()        # elimina l'id
        self.source.fill_data()       # completa con email e password temporanea
   
   def connect(self):
@@ -69,7 +68,28 @@ class DbImport():
 class TutorImport(DbImport):
    # sottoclasse che specifica la query da utilizzare
    query = "INSERT INTO tutor (cognome,nome,email,password)  VALUES (?,?,?,?)"
-   
+   def __init__(self,fname,dbname):
+         super().__init__(fname,dbname) 
+         self.source.togli_id()         # elimina l'id primo campo dai dati
+         
+class AziendeImport(DbImport):
+    query = "INSERT INTO Aziende (partita_iva,ragione_sociale,sede_comune,sede_provincia,telefono,email,settore) VALUES(?,?,?,?,?,?,?)"
+    
+    def __init__(self,fname,dbname):
+        super().__init__(fname,dbname)    
+        self.source.dati = [[item[2],item[0],item[4],item[6],item[8],item[9],item[16]] for item in self.source.dati]
+        self.elimina_duplicati()
+
+    def elimina_duplicati(self):
+        # toglie le linee duplicate presenti in dati
+        piva = set()
+        new_list = []
+        for item in self.source.dati:
+            if not item[0] in piva:
+               new_list.append(item)
+               piva.add(item[0])
+        self.source.dati = new_list
+
 class TutorImportPg(DbImport):
    # per connettersi al database su PostgreSQL tabella "OffPcto_tutor" di mysite usando con Django
    
@@ -82,11 +102,19 @@ class TutorImportPg(DbImport):
            
    def connect(self):
       import psycopg2
-      #conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
-      conn =  psycopg2.connect(dbname=d3034gq117jmk1 host=ec2-44-194-167-63.compute-1.amazonaws.com port=5432 user=yycpzjmtozwhci password=4b99951991961c1f66cd7f0f07dbe35972aa854164f9f7fc31b37237c3bc8827 sslmode=require)
+      conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
       return conn
            
+class AziendeImportPg(AziendeImport):
    
+   query = 'INSERT INTO "OffPcto_aziende" (partita_iva,ragione_sociale,sede_comune,sede_provincia,telefono,email,settore) VALUES(%s,%s,%s,%s,%s,%s,%s)'
+   
+   def connect(self):
+      import psycopg2
+      #conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
+      conn =  psycopg2.connect("dbname=d3034gq117jmk1 host=ec2-44-194-167-63.compute-1.amazonaws.com port=5432 user=yycpzjmtozwhci password=4b99951991961c1f66cd7f0f07dbe35972aa854164f9f7fc31b37237c3bc8827 sslmode=require")
+      return conn
+ 
    
    
   
