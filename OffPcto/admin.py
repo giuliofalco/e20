@@ -5,7 +5,7 @@ from .models import Tutor, Aziende
 #admin.site.register(Aziende)
 
 @admin.register(Tutor)
-class TutorAdmin(admin.ModelAdmin);
+class TutorAdmin(admin.ModelAdmin):
     list_display = ['cognome','nome','email','classi']
 
 @admin.register(Aziende)
