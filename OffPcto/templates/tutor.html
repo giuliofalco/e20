@@ -17,9 +17,9 @@
                <h2>Elenco Tutor</h2>
                <table>
                       <th>Nomi Tutor <th> Classi                
-                      {%for nome in object_list %}
+                      {%for tutor in object_list %}
                         <tr>
-                        <td class=nome>{{nome}} <td class=classe> {{classi}}           
+                        <td class=nome>{{tutor}} <td class=classe> {{tutor.classi}}           
                       {%endfor %}
                </table>
           </div>
