@@ -8,6 +8,9 @@ class Tutor(models.Model):
     
     def __str__(self):
        return(f"{self.cognome} {self.nome}")
+    
+    class meta:
+        ordering = ['cognome','nome']
        
 class Aziende(models.Model):
     partita_iva = models.CharField(max_length=80,null=True)
