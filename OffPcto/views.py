@@ -2,6 +2,8 @@ from django.shortcuts import render
 from OffPcto.models import *
 from django.templatetags.static import static
 
+from .filters import AziendeFilter
+
 def index(request):
     return render(request,'index.html',{})
     
@@ -12,7 +14,10 @@ def tutor(request):
 
 def aziende(request):
     elenco = Aziende.objects.all()
-    context = {'object_list': elenco}
+
+    myfilter = AziendeFilter(request.GET,queryset=elenco)
+    elenco = myfilter.qs
+    context = {'object_list': elenco, 'myfilter':myfilter}
     return render(request,"aziende.html",context)
 
 def carica_tutor(request):

@@ -9,13 +9,6 @@ class Importa:
        self.csep = csep               # il carattere separatore
        self.campi = ""                # i nomi dei campi
        self.dati = self.carica_dati() # i dati come lista e l'intestazione con in nomi dei campi
-       self.lower_nomi()              # capitalizza i nomi
-   
-   def lower_nomi(self):
-       # sistema i cognomi e i nomi con la prima lettera maiuscola e il resto minuscolo
-       for i in range(len(self.dati)):
-           self.dati[i][1] = self.dati[i][1].capitalize()
-           self.dati[i][2] = self.dati[i][2].capitalize()
        
    def get_email(self,nome,cognome):
        #restituisce la mail istituzionale del Mapelli, dati nome e cognome
@@ -35,25 +28,71 @@ class Importa:
       return [item.strip().split(self.csep) for item in listaRighe] 
                                     # ritorna la lista con campi separati
           
-   def togli_id(self):
-     # toglie dai dati il primo campo id
-     self.dati = [item[1:] for item in self.dati]
-       
-   def fill_data(self):
-       # fill data with email and password
-       for item in self.dati:
-          item.append(self.get_email(item[1].lower(),item[0].lower()))
-          item.append("Mapelli-2021")
-          
+class ImportaTutor(Importa):
+    
+    def __init__(self,nome_file):
+        super().__init__(nome_file)
+        self.lower_nomi()
+        self.fill_data()
+        self.togli_id()
+
+    def lower_nomi(self):
+        # sistema i cognomi e i nomi con la prima lettera maiuscola e il resto minuscolo
+        for i in range(len(self.dati)):
+           self.dati[i][1] = self.dati[i][1].capitalize()
+           self.dati[i][2] = self.dati[i][2].capitalize() 
+
+    def fill_data(self): 
+        # fill data with email and password
+        for item in self.dati:
+           item.append(self.get_email(item[1].lower(),item[0].lower()))
+           item.append("Mapelli-2021")
+
+    def togli_id(self):
+        # toglie dai dati il primo campo id
+        self.dati = [item[1:] for item in self.dati]
+
+class ImportaAziende(Importa):
+    def __init__(self,fname):
+        super().__init__(fname,';')    
+        self.dati = [[item[2],item[0],item[4],item[6],item[8],item[9],item[16]] for item in self.dati]
+        self.elimina_duplicati()
+
+    def elimina_duplicati(self):
+        # toglie le linee duplicate presenti in dati
+        piva = set()
+        new_list = []
+        for item in self.dati:
+            if not item[0] in piva:
+               new_list.append(item)
+               piva.add(item[0])
+        self.dati = new_list
+
+class ImportaClassi(Importa):
+    def __init__(self,fname):
+        super().__init__(fname) 
+        self.dati = self.raccogli_classi()
+        self.dati = self.inverti()
+
+    def raccogli_classi(self):
+       # raccoglie i dati per aggiornare il db
+       diz = {}   # dizionario con chiave il tutor e valore la stringa con la classi
+       for riga in self.dati:
+           for item in riga[2:]:
+               if item:
+                  diz[item] = diz.get(item,'') + riga[0] + ' '
+       return diz.items()
+
+    def inverti(self):
+       return [(item[1],item[0]) for item in self.dati]
+
 class DbImport():
   # classe per aggiornare il database
   query="" # query generica da ridefinire nella classi figlie
 
   def __init__(self,fname,dbname):
        self.dbname = dbname          # nome del database
-       self.source = Importa(fname)  # importa i dati dal file csv creando l'oggetto
-       self.source.fill_data()       # completa con email e password temporanea
-  
+
   def connect(self):
       import sqlite3
       conn = sqlite3.connect(self.dbname)
@@ -69,42 +108,37 @@ class TutorImport(DbImport):
    # sottoclasse che specifica la query da utilizzare
    query = "INSERT INTO tutor (cognome,nome,email,password)  VALUES (?,?,?,?)"
    def __init__(self,fname,dbname):
-         super().__init__(fname,dbname) 
-         self.source.togli_id()         # elimina l'id primo campo dai dati
+       self.source = ImportaTutor(fname)
+       self.dbname = dbname
+
+class TutorImportPg(TutorImport):
+   # per connettersi al database su PostgreSQL tabella "OffPcto_tutor" di mysite usando con Django
+   
+    query = 'INSERT INTO "OffPcto_tutor" (cognome,nome,email) VALUES (%s,%s,%s)'
+
+    def __init__(self,fname,dbname):
+        super().__init__(fname,dbname)
+        for item in self.source.dati:
+            item.pop()                # tolgo la password dai dati
+
+    def connect(self):
+        import psycopg2
+        conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
+        return conn    
+
+class TutorImportHeroku(TutorImportPg):
+
+    def connect(self): 
+        import psycopg2  
+        conn =  psycopg2.connect("dbname=d3034gq117jmk1 host=ec2-44-194-167-63.compute-1.amazonaws.com port=5432 user=yycpzjmtozwhci password=4b99951991961c1f66cd7f0f07dbe35972aa854164f9f7fc31b37237c3bc8827 sslmode=require")
+        return conn  
          
 class AziendeImport(DbImport):
     query = "INSERT INTO Aziende (partita_iva,ragione_sociale,sede_comune,sede_provincia,telefono,email,settore) VALUES(?,?,?,?,?,?,?)"
     
     def __init__(self,fname,dbname):
-        super().__init__(fname,dbname)    
-        self.source.dati = [[item[2],item[0],item[4],item[6],item[8],item[9],item[16]] for item in self.source.dati]
-        self.elimina_duplicati()
-
-    def elimina_duplicati(self):
-        # toglie le linee duplicate presenti in dati
-        piva = set()
-        new_list = []
-        for item in self.source.dati:
-            if not item[0] in piva:
-               new_list.append(item)
-               piva.add(item[0])
-        self.source.dati = new_list
-
-class TutorImportPg(DbImport):
-   # per connettersi al database su PostgreSQL tabella "OffPcto_tutor" di mysite usando con Django
-   
-    query = 'INSERT INTO "OffPcto_tutor" (cognome,nome,email) VALUES (%s,%s,%s)'
-  
-    def __init__(self,fname,dbname):
-        super().__init__(fname,dbname)
-        for item in self.source.dati:
-           item.pop()  # tolgo la password dai dati
-           
-    def connect(self):
-        import psycopg2
-        conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
-        return conn
-           
+        self.source = ImportaAziende(fname)    
+       
 class AziendeImportPg(AziendeImport):
    
     query = 'INSERT INTO "OffPcto_aziende" (partita_iva,ragione_sociale,sede_comune,sede_provincia,telefono,email,settore) VALUES(%s,%s,%s,%s,%s,%s,%s)'
@@ -113,37 +147,37 @@ class AziendeImportPg(AziendeImport):
       import psycopg2
       conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
       return conn
- 
+
+class AziendeImportHeroku(AziendeImportPg):
+
+    def connect(self):
+      import psycopg2
+      conn =  psycopg2.connect("dbname=d3034gq117jmk1 host=ec2-44-194-167-63.compute-1.amazonaws.com port=5432 user=yycpzjmtozwhci password=4b99951991961c1f66cd7f0f07dbe35972aa854164f9f7fc31b37237c3bc8827 sslmode=require")
+      return conn
+
 class Classi_tutor(DbImport):
   # per aggiornare i dati delle classi dei tutor. SQLite
    
     query = "update tutor set classi = ? WHERE cognome like ?"
 
     def __init__(self,fname,dbname):
-         super().__init__(fname,dbname)
-         self.source.dati = self.raccogli_classi()
-         self.source.dati = self.inverti()
-
-    def raccogli_classi(self):
-       # raccoglie i dati per aggiornare il db
-       diz = {}   # dizionario con chiave il tutor e valore la stringa con la classi
-       for riga in self.source.dati:
-           for item in riga[2:]:
-               if item:
-                  diz[item] = diz.get(item,'') + riga[0] + ' '
-       return diz.items()
-
-    def inverti(self):
-       return [(item[1],item[0]) for item in self.source.dati]
+        self.dbname = dbname
+        self.source = ImportaClassi(fname)
       
 class Classi_tutorPg(Classi_tutor):
-  # per connettersi al Postgres locale
+  # per connettersi al Postgres locale Django OffPcto
      
     query = 'update "OffPcto_tutor" set classi = %s WHERE cognome like %s'
 
     def connect(self): 
         import psycopg2  
-        #conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
-        conn =  psycopg2.connect("dbname=d3034gq117jmk1 host=ec2-44-194-167-63.compute-1.amazonaws.com port=5432 user=yycpzjmtozwhci password=4b99951991961c1f66cd7f0f07dbe35972aa854164f9f7fc31b37237c3bc8827 sslmode=require")
+        conn = psycopg2.connect(database="mysite", user="giulio", password="benoni58",host = "127.0.0.1")
         return conn  
   
+class Classi_tutorHeroku(Classi_tutorPg):
+  # per connettersi al Postgres di Heroku
+     
+    def connect(self): 
+        import psycopg2  
+        conn =  psycopg2.connect("dbname=d3034gq117jmk1 host=ec2-44-194-167-63.compute-1.amazonaws.com port=5432 user=yycpzjmtozwhci password=4b99951991961c1f66cd7f0f07dbe35972aa854164f9f7fc31b37237c3bc8827 sslmode=require")
+        return conn

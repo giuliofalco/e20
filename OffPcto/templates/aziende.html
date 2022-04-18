@@ -1,20 +1,40 @@
 <html>
     <head>
+           <script>
+               function home() {
+                      // torna alla home
+                      url = "{% url 'OffPcto:index' %}";
+                      document.location = url;
+              }
+
+           </script>
            <style>
               h2 {text-align: center;}
-              #container {width:70%;
+              #container {width:90%;
                           margin: auto;
                          }
-              .ragione_sociale {width: 60%;}
+              .ragione_sociale {width: 70%;}
+              .provincia {width: 10%;}
               table {width: 90%;}
               th  {background: #C90;}
               td  {padding-left: 15; background: lavender;}
+              #id_sede_provincia  {width: 50px;}
            </style>
     </head>
     
     <body>
-         <div id=container>
-               <h2>Elenco Aziende</h2>
+       
+       <div id=container>
+              <h2>Elenco Aziende</h2>
+       
+              <form method="get">
+                     Azienda: {{myfilter.form.ragione_sociale}}
+                     Comune: {{myfilter.form.sede_comune}}
+                     Provincia: {{myfilter.form.sede_provincia}}
+                     <input type="submit" value="cerca">
+                     <input type="button" value="home page" onClick="home()"> 
+              </form>
+       
                <table>
                       <th>Ragione Sociale <th> Comune <th> Provincia               
                       {%for nome in object_list %}
