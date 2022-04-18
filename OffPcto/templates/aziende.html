@@ -1,29 +1,23 @@
-<html>
-    <head>
-           <script>
-               function home() {
-                      // torna alla home
-                      url = "{% url 'OffPcto:index' %}";
-                      document.location = url;
-              }
+{% extends "base.html" %}
 
-           </script>
-           <style>
-              h2 {text-align: center;}
-              #container {width:90%;
+       {% block head %}
+          
+              <style>
+                     h2 {text-align: center;}
+                     #container {width:90%;
                           margin: auto;
-                         }
-              .ragione_sociale {width: 70%;}
-              .provincia {width: 10%;}
-              table {width: 90%;}
-              th  {background: #C90;}
-              td  {padding-left: 15; background: lavender;}
-              #id_sede_provincia  {width: 50px;}
-           </style>
-    </head>
-    
-    <body>
-       
+                     }
+                     .ragione_sociale {width: 70%;}
+                     .provincia {width: 10%;}
+                     table {width: 90%;}
+                     th  {background: #C90;}
+                     td  {padding-left: 15; background: lavender;}
+                     #id_sede_provincia  {width: 50px;}
+              </style>
+       {% endblock %}
+   
+       {% block content %}
+
        <div id=container>
               <h2>Elenco Aziende</h2>
        
@@ -32,10 +26,9 @@
                      Comune: {{myfilter.form.sede_comune}}
                      Provincia: {{myfilter.form.sede_provincia}}
                      <input type="submit" value="cerca">
-                     <input type="button" value="home page" onClick="home()"> 
               </form>
        
-               <table>
+              <table>
                       <th>Ragione Sociale <th> Comune <th> Provincia               
                       {%for nome in object_list %}
                         <tr>
@@ -43,8 +36,7 @@
                         <td class=comune>{{nome.sede_comune}} 
                         <td class=provincia> {{nome.sede_provincia}}           
                       {%endfor %}
-               </table>
-          </div>
-    </body>
+              </table>
+       </div>
 
-</html>
+      {% endblock %}
