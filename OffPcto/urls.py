@@ -7,6 +7,6 @@ urlpatterns = [
       path('',views.index,name="index"),
       path('tutor/',views.tutor,name="tutor"),
       path('aziende/',views.aziende,name="aziende"),
-      path('carica_tutor/',views.carica_tutor,name='carica_tutor')
+      #path('aziende/<int:page_num>',views.aziende,name="aziende")
      # path('aziende/',AziendeListView.as_view(),name='AziendeListView'),
 ]

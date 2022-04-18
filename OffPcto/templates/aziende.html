@@ -9,17 +9,38 @@
                      }
                      .ragione_sociale {width: 70%;}
                      .provincia {width: 10%;}
-                     table {width: 90%;}
+                     table {width: 90%; margin-bottom: 5px;}
                      th  {background: #C90;}
                      td  {padding-left: 15; background: lavender;}
                      #id_sede_provincia  {width: 50px;}
+                     .pagine a {text-decoration: none}
+                     .pagine {background: rgb(82, 115, 146); padding: 2px; margin:2px;
+                             cursor: pointer; color: white;}
+                     #titolo {font-weight: bold; color: blue;}
+
               </style>
+              <script>
+                     function choose_page(page) {
+                        var url = document.location;
+                        if (url.toString().indexOf('?') == -1)                    
+                           newurl =url + "?pagina="+page;
+                        else {
+                           nuova = url.toString().replace(/pagina=\d+/,'pagina='+page);
+                          
+                           if (url.toString() == nuova)
+                              newurl= url + "&pagina="+page;
+                           else
+                              newurl = nuova;   
+                        }
+                        document.location = newurl;                        
+                     }
+              </script>
        {% endblock %}
    
        {% block content %}
 
        <div id=container>
-              <h2>Elenco Aziende</h2>
+              
        
               <form method="get">
                      Azienda: {{myfilter.form.ragione_sociale}}
@@ -27,7 +48,7 @@
                      Provincia: {{myfilter.form.sede_provincia}}
                      <input type="submit" value="cerca">
               </form>
-       
+              <span id="titolo">Elenco Aziende</span> Pagina {{numpag}} di {{totpagine}}
               <table>
                       <th>Ragione Sociale <th> Comune <th> Provincia               
                       {%for nome in object_list %}
@@ -37,6 +58,10 @@
                         <td class=provincia> {{nome.sede_provincia}}           
                       {%endfor %}
               </table>
+  
+              {%for pg in pagelist %}              
+                     <span id={{pg}} class=pagine onClick=choose_page({{pg}})>{{pg}} </span>
+              {% endfor%}
        </div>
-
+      
       {% endblock %}

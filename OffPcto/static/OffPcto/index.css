@@ -67,16 +67,16 @@ header ul h2 a.active
     position: absolute;
     top: 1%;
     left: 3%;
-     width: 150px; 
-     height: 150px;
+     width: 120px; 
+     height: 120px;
 }
 
 #logo2 {
    position: absolute;
    top: 1%;
    right: 3%;
-    width: 120px; 
-    height: 120px;
+    width: 100px; 
+    height: 100px;
    float: right;
 }
 
