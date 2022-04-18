@@ -2,4 +2,4 @@ django
 gunicorn
 django-heroku
 whitenoise
-django_filters
+django_filter
