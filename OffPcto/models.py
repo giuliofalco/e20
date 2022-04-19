@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Tutor(models.Model):
     nome = models.CharField(max_length=200)
@@ -11,9 +12,9 @@ class Tutor(models.Model):
     
     class meta:
         ordering = ['cognome','nome']
-       
+
 class Aziende(models.Model):
-    partita_iva = models.CharField(max_length=80,null=True)
+    partita_iva = models.CharField(max_length=80,null=True,unique=True)
     ragione_sociale = models.CharField(max_length=200)
     tutor_referente_azienda = models.CharField(max_length=200,null=True,blank=True)
     sede_comune = models.CharField(max_length=200,null=True)
@@ -27,3 +28,8 @@ class Aziende(models.Model):
     
     class Meta:
         ordering = ['ragione_sociale']
+
+class Contatti(models.Model):
+    data = models.DateField(default=timezone.now)
+    note = models.TextField
+    azienda = models.ForeignKey(Aziende,to_field='partita_iva',on_delete=models.DO_NOTHING)
