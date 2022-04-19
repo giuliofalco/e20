@@ -35,4 +35,7 @@ def aziende(request):
               }
     return render(request,"aziende.html",context)
 
-    
+def dettaglio_azienda(request,piva):
+    azienda = Aziende.objects.get(partita_iva=piva)
+    context = {'azienda':azienda,}
+    return render(request,"dettaglio_azienda.html",context)   

@@ -7,7 +7,7 @@
                      #container {width:90%;
                           margin: auto;
                      }
-                     .ragione_sociale {width: 50%;}
+                     .ragione_sociale {width: 50%; cursor: pointer;}
                      .comune    {width: 20%}
                      .provincia {width: 7%;}
                      
@@ -39,6 +39,12 @@
                         }
                         document.location = newurl;                        
                      }
+
+                     function dettaglio(piva) {
+                      // vai alla pagina di dettaglio Azienda     
+                            url = "{% url 'OffPcto:aziende' %}" + piva;
+                            document.location = url;
+                     }
               </script>
        {% endblock %}
    
@@ -59,7 +65,7 @@
                       <th>Ragione Sociale <th> Comune <th> Provincia <th> Settore              
                       {%for nome in object_list %}
                         <tr>
-                        <td class=ragione_sociale>{{nome.ragione_sociale}} 
+                        <td class=ragione_sociale onClick=dettaglio("{{nome.partita_iva}}")>{{nome.ragione_sociale}} 
                         <td class=comune>{{nome.sede_comune}} 
                         <td class=provincia> {{nome.sede_provincia}}  
                         <td class=settore> {{nome.settore}}          

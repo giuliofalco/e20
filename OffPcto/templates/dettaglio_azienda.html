@@ -1,0 +1,20 @@
+{%extends 'base.html' %}
+
+{%block head%}
+        <style>
+            #dati {text-align: center;}
+            #dati b {color:brown;}
+
+        </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2> {{azienda.ragione_sociale}} </h2>
+
+    <div id="dati">
+           <b>Telefono:</b> {{azienda.telefono}} <b>Email:</b> {{azienda.email}} <br>
+           <b>Comune:</b> {{azienda.sede_comune}} <b>Prov. :</b> {{azienda.sede_provincia}}
+    </div>
+
+{% endblock%}
