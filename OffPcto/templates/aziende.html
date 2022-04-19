@@ -16,6 +16,7 @@
                      .pagine a {text-decoration: none}
                      .pagine {background: rgb(82, 115, 146); padding: 2px; margin:2px;
                              cursor: pointer; color: white;}
+                     #pagina_corr {background: gold; padding: 3px; margin: 3px;}       
                      #titolo {font-weight: bold; color: blue;}
 
               </style>
@@ -59,6 +60,10 @@
                       {%endfor %}
               </table>
   
+              {%for pg in pagelist0 %}              
+                     <span id={{pg}} class=pagine onClick=choose_page({{pg}})>{{pg}} </span>
+              {% endfor%}
+              <span id="pagina_corr">{{numpag}}</span>
               {%for pg in pagelist %}              
                      <span id={{pg}} class=pagine onClick=choose_page({{pg}})>{{pg}} </span>
               {% endfor%}

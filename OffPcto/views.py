@@ -21,8 +21,9 @@ def aziende(request):
 
     pag = Paginator(elenco,20)
     totpagine = pag.num_pages
-    pagelist = range(1,totpagine+1)
     numpag = request.GET.get('pagina',1)
+    pagelist = range(int(numpag)+1,totpagine+1)
+    pagelist0 = range(1,int(numpag))
     pagina = pag.page(numpag)
 
     context = {'object_list': pagina,           # la pagina con i dati da visualizzare
@@ -30,6 +31,7 @@ def aziende(request):
                'totpagine': totpagine,
                'numpag' : numpag,
                'pagelist': pagelist, 
+               'pagelist0': pagelist0,
               }
     return render(request,"aziende.html",context)
 
