@@ -31,5 +31,6 @@ class Aziende(models.Model):
 
 class Contatti(models.Model):
     data = models.DateField(default=timezone.now)
-    note = models.TextField
     azienda = models.ForeignKey(Aziende,to_field='partita_iva',on_delete=models.DO_NOTHING)
+    tutor = models.ForeignKey(Tutor,on_delete=models.CASCADE)
+    note = models.TextField(null=True,blank=True)
