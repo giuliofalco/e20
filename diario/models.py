@@ -69,8 +69,8 @@ class Alimento(models.Model):
         
 class Consumazione(models.Model):
     from . import config
-    #PASTI = [(0,'fuori_pasto'),(1,'colazione'),(2,'merenda_mat'),
-    #         (3,'pranzo'),(4,'merenda_pom'),(5,'cena'),(6,'dopo_cena')]
+    PASTI = [(0,'fuori_pasto'),(1,'colazione'),(2,'merenda_mat'),
+             (3,'pranzo'),(4,'merenda_pom'),(5,'cena'),(6,'dopo_cena')]
 
     diario = models.ForeignKey(Diario,on_delete=models.CASCADE)
     tipo_pasto = models.IntegerField(choices=config.PASTI,default=0) 

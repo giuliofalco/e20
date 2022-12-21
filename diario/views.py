@@ -50,7 +50,7 @@ def settimana(request,w):
       # e il valore una lista di elementi il cui primo elemento è il weekday, e il secondo
       # la lista degli alimenti della consumazione in quel giorno
       
-      #PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom','cena','dopo_cena']
+      PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom','cena','dopo_cena']
       # inizializzo la struttura: lista con tante righe quanti sono i tipi di pasto
       # ogni righe è una lista, il primo elemento il nome del pasto, il secondo una lista di 7
       # elementi, ciascuno dei quali conterrà gli alimenti consumati in quel giorno e il quel pasto
