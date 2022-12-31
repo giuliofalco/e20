@@ -8,6 +8,7 @@
              dt {font-weight: bold; margin: 10px;}
              #scheda {display: none; margin-top: 15px;}
              td {padding: 10px;}
+             #user {color: red;}
          </style>
          <script>
                   function apri() {
@@ -20,7 +21,7 @@
     </head>
     
     <body>
-             <h1> Diario settimanale pasti </h1>
+             <h1> Diario settimanale pasti <span id=user>Barbara</span> </h1>
              <a href= {% url 'admin:index' %} >admin</a> - 
              <a href="javascript:apri()">Registra</a>
             
