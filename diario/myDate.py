@@ -66,7 +66,7 @@ class MyDate():
       for i in range(len(lista)):
           if lista[i] >= valore:
             return i
-      return -1
+      return -1 
 
     def data_delta(self,g):
       # restituisce (giorno,mese) trascorsi g giorni dall'inizio anno
@@ -87,7 +87,13 @@ class MyDate():
     def str_week(self,week):
          # ritorna giorno e mese di inzio e fine come stringa
          t = self.delta_settimana(week)
-         return "da " + str(t[0][0]) + " " + self.mesi[t[0][1]] + " al " + str(t[1][0]-1) + " " + self.mesi[t[1][1]]
+         #return "da " + str(t[0][0]) + " " + str(self.mesi[t[0][1]]) + " al " + str(t[1][0]-1) + " " + str(self.mesi[t[1][1]])
+         res = "da " + str(t[0][0]) + " " + str(self.mesi[t[0][1]]) + " al " 
+         if t[1][0] == "e":         
+             res = res + "fine anno"
+         else:
+             res = res + str(t[1][0]-1) + " " + str(self.mesi[t[1][1]])
+         return res
     
     def data_wday(self,week,day):
         return self.data_delta((week-1)*7+self.iso+day)  
