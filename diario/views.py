@@ -115,7 +115,7 @@ def modifica(request,id,week,pasto,day):
         alimlist = ""                                   # si richiede di creare un nuovo 
                                                         # oggetto Diario
         d = myDate.MyDate()
-        miadata = d.data_wday(week,day-1)               # calcolo la data con la mia funzione
+        miadata = d.data_wday(week,day)                 # calcolo la data con la mia funzione
         data  = "{}-{}-{}".format(2022,miadata[1]+1,miadata[0])     # formato data come tupla anno,mese,giorno
         strdata = "{}/{}/{}".format(2022,miadata[1]+1,miadata[0])   # formato data come stringa europea
         alimenti = list(Alimento.objects.all())                     # tutti gli alimenti

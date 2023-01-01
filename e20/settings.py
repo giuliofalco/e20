@@ -37,6 +37,7 @@ LOGIN_URL = 'diario:mioLogin'
 # Application definition
 
 INSTALLED_APPS = [
+    'giulio.apps.GiulioConfig',
     'diario.apps.DiarioConfig',
     'django.contrib.admin',
     'django.contrib.auth',
