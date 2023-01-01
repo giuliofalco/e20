@@ -1,0 +1,72 @@
+<html>
+    <head>
+       <style>
+           #pasto {color: red;}
+                table { width: 350px; margin-bottom : 30px; border: 1px solid black;
+                       border-collapse: collapse}
+                td  {width: 20px; height: 60px; padding: 0px 10px 2px 10px; border: 1px solid black;
+                     padding: 5px; cursor: pointer; }
+                th  {margin-bottom: 20px; padding: 10px; background: gold;
+                     border: 1px solid black}
+              
+                td img {width: 28px;}
+                .center {text-align: center};
+       </style>
+    </head>
+    
+    </body>
+           {% load static %}
+           <h2> Cosa hai mangiato oggi {{strdata}} a <span id=pasto>{{strpasto}}</span></h2>
+           <form  action= "{% url 'giulio:registra' %}" method="post"> 
+               {% csrf_token %}
+              
+                <table>
+                <th style="width: 80%"><a href={% url 'admin:index' %}diario/alimento>Alimenti</a></th><th>canc</th>
+                {% for al in alimlist %}
+                  <tr>
+                     <td> {{al}} </td> 
+                     <td class=center> 
+                        <a href="{% url 'giulio:cancella' id pasto al.id week giorno%}">
+                            <img src="{% static 'diario/cestino.png' %}">
+                        </a> 
+                     </td> 
+                  </tr>
+                {% endfor %}
+                <tr>
+                <td>
+                 
+                <select name=alimento>
+             
+                  {% for ele in alimenti %}
+                     <option value={{ele.id}}> {{ele}}
+                  {% endfor %}
+             
+                </select>
+                <input type=submit value=Aggiungi>
+                <td class="center">
+                  <a href="{%url 'giulio:settimana' week %}">
+                     <img src="{% static 'diario/arrow.png' %}">   
+                  </a>     
+                </table> 
+                
+                <hr>
+                {% if id != 0 %}
+                   Sono sicuro che hai dimenticato qualcosa. Aggiungilo !!
+                {% else %}
+                   Ti sei deciso finalmente a registrare il pasto, non dimenticare nulla !!
+                {% endif %}
+                <br>
+                <input type=hidden name=objid value={{id}}><br>
+                <input type=hidden name=pasto value={{pasto}}><br>
+                <input type=hidden name=giorno value={{giorno}}><br>
+                <input type=hidden name=data value="{{data}}"><br>
+                <input type=hidden name=week value="{{week}}"><br>
+                <input type=hidden name=strpasto value="{{strpasto}}"><br>
+
+                
+                
+          </form> 
+    
+    </body>
+
+</html>

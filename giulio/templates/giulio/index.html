@@ -2,7 +2,7 @@
     <head>
          {% load static %}
          <style>
-             body {background-image: url({% static 'diario/modello.jpg' %});
+             body {background-image: url({% static 'diario/modella.jpg' %});
                    background-repeat: no-repeat;}
              h1 {color: blue;}
              dt {font-weight: bold; margin: 10px;}
@@ -17,21 +17,20 @@
                   function chiudi() {
                       document.getElementById('scheda').style.display = 'none';
                   }
-                  
-                  function giulio() {
-                     document.location = {% url 'giulio:index' %};
+                  function barbara() {
+                      document.location = {% url 'diario:index' %}
                   }
          </script>
     </head>
     
     <body>
-             <h1> Diario settimanale pasti <span id=user>Barbara</span> </h1>
+             <h1> Diario settimanale pasti <span id=user>Giulio</span> </h1>
              <a href= {% url 'admin:index' %} >admin</a> - 
-             <a href="javascript:apri()">Registra</a> -
-             <a href="javascript:giulio()">Giulio</a>
+             <a href="javascript:apri()">Registra</a> - 
+             <a href="javascript:barbara()">Barbara</a>
             
              <div id=scheda>
-               <form method=post action = {% url 'diario:inserisci' %}>
+               <form method=post action = {% url 'giulio:inserisci' %}>
                    {% csrf_token %}
                    <table>
                       <tr>
@@ -46,7 +45,7 @@
             
              <dl>
              {% for elemento in lista_settimanale %}
-                  <dt>settimana: <a href="{% url 'diario:settimana' elemento.0 %}">{{elemento.0}} </a>
+                  <dt>settimana: <a href="{% url 'giulio:settimana' elemento.0 %}">{{elemento.0}} </a>
                   </dt>
                   {% for giorno in elemento.1 %}
                        <dd><i>{{giorno.week_day}} </i>{{giorno.note}}</dd>
