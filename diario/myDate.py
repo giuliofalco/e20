@@ -14,8 +14,8 @@ class MyDate():
         if self.anno_bisestile():
            self.g_mesi[1] = 29  # se anno bisestile allora febbraio ha 29 giorni
         self.G_mesi()           # G_mesi, somma cumulativa dei giorni dei mesi 
-        #self.iso()              # inzio della settimana ISO dell'anno corrente (giorno in cui è lunedì) 
-        self.iso = 3 
+        self.iso()              # inzio della settimana ISO dell'anno corrente (giorno in cui è lunedì) 
+        #self.iso = 3 
        
           # aggiorna settimane, i giorni di inizio delle settimane
 
@@ -80,8 +80,8 @@ class MyDate():
 
     def delta_settimana(self,week):
        # restituisce la data di inizio e fine  della settimana week ((giorno,mese),(giorno,mese))
-       inizio = self.data_delta((week-1)*7+self.iso-1)
-       fine   = self.data_delta((week-1)*7+self.iso + 6)
+       inizio = self.data_delta((week-1)*7+self.iso)
+       fine   = self.data_delta((week-1)*7+self.iso + 7)
        return (inizio, fine)
           
 
@@ -97,4 +97,6 @@ class MyDate():
          return res
     
     def data_wday(self,week,day):
+      # calcola la data corrispondente alla settimana specificate e al giorno (0..6)
+      # quanti giorni sono passati dal primo lunedi dell'anno (iso) trascorse week settimane e aggiunto day
         return self.data_delta((week-1)*7+self.iso+day)  
