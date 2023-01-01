@@ -90,21 +90,21 @@ def modifica(request,id,week,pasto,day):
      # apre il template omonimo che permette di inserire o cancellare alimenti di un 
      # particolare giorno della settimana. Attivata al click su una casella di settimana 
      # il parametro pasto è la sua versione stringa
-     #PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
+     # PASTI = {'fuori_pasto':0,'colazione':1,'merenda_mat':2,'pranzo':3,'merenda_pom':4,
      #         'cena':5,'dopo_cena':6} 
      data = ""
      if id != 0: 
  
          diario = Diario.objects.get(id=id)              # l'oggetto registrazione con l'id 
-                                                        # del parametro
+                                                         # del parametro
          liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
          plist = liscons.filter(tipo_pasto = config.PASTIC[pasto])  # lista con la cons corrisp al
-                                                        # tipo_pasto
+                                                         # tipo_pasto
          alimlist = plist[0].alimento.all()              # lista degli alimenti
          alimId = [al.id for al in alimlist]             # tutti gli id della lista di 
-                                                        # alimenti trovati
+                                                         # alimenti trovati
          alims  = list(Alimento.objects.all())           # tutti gli alimenti, come lista
-                                                        # di oggetti 
+                                                         # di oggetti 
                                                         
          alimenti = [elem for elem in alims if elem.id not in alimId]
                                                         # gli alimenti non ancora scelti
@@ -115,7 +115,7 @@ def modifica(request,id,week,pasto,day):
         alimlist = ""                                   # si richiede di creare un nuovo 
                                                         # oggetto Diario
         d = myDate.MyDate()
-        miadata = d.data_wday(week,day)                 # calcolo la data con la mia funzione
+        miadata = d.data_wday(week,day-1)               # calcolo la data con la mia funzione
         data  = "{}-{}-{}".format(2022,miadata[1]+1,miadata[0])     # formato data come tupla anno,mese,giorno
         strdata = "{}/{}/{}".format(2022,miadata[1]+1,miadata[0])   # formato data come stringa europea
         alimenti = list(Alimento.objects.all())                     # tutti gli alimenti
