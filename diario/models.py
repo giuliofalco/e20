@@ -12,7 +12,7 @@ class Dieta(models.Model):
 # il posto dove conservare la dieta, ogni oggetto è un giorno della settimana
     WEEKDAYS = ('lunedi','martedi','mercoledi','giovedi','venerdi','sabato','domenica')
     
-    giorno = models.IntegerField(unique=True) # giorno della settimana 1 lun, 2 mar. ...
+    giorno = models.IntegerField(unique=True) # giorno della settimana iso 1 lun, 2 mar. ...
     note = models.CharField(max_length=200,blank=True)
 
     def __str__(self):
@@ -67,6 +67,16 @@ class Alimento(models.Model):
     def __str__(self):
        return self.nome
         
+class Categoria(models.Model):
+    # tabella categoria da implementare al posto della lista
+    nome = nome = models.CharField(max_length=50, unique=True)
+
+    class meta:
+       ordering=['nome']
+
+    def __str__(self):
+       return self.nome
+
 class Consumazione(models.Model):
     from . import config
     PASTI = [(0,'fuori_pasto'),(1,'colazione'),(2,'merenda_mat'),

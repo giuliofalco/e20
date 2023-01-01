@@ -1,0 +1,60 @@
+<html>
+    <head>
+         <style>
+                h2    {color: blue;}
+                table {width: 900px; margin-bottom : 30px; border: 1px solid black;
+                       border-collapse: collapse}
+                td  {width: 30px; height: 60px; padding: 0px 10px 2px 10px; border: 1px solid black;
+                     padding: 5px; cursor: pointer;}
+                th  {margin-bottom: 20px; padding: 10px; background: gold;
+                     border: 1px solid black}
+                .pasto {background: #e9f2c6;}
+         </style>
+         <script>
+                 function parse(stringa) {
+                    var s = stringa.replace(/&#x27;/g,"'");
+                    return(eval(s));
+                 }
+                 frutta = parse('{{altro}}');
+                 
+                 function update(url) {
+                    //alert(url);
+                    document.location=url;
+                 }
+         </script>
+    </head>
+    
+    <body>
+           
+             <h2> Settimana Num. {{settimana}} {{periodo}} </h2>
+            
+             <table>
+             <th>giorni</th>
+             {%for g in giorni %}
+                 <th> {{g}} </th>
+             {% endfor %}
+             
+             {% for riga in struttura %}  
+               <tr>
+                      <td class=pasto> {{riga.0}} </td> 
+              
+                      {% for elem in riga.1 %}
+           <td onclick='update("{% url 'giulio:modifica' elem.1 settimana riga.0 forloop.counter %}")'> 
+                        
+                         {% for alim in elem.0 %}
+                            {{alim}},
+                         {% endfor %}
+                         
+                         
+                         
+                         </td>
+                      {% endfor %}
+                      
+               </tr>            
+             {% endfor %}
+             
+             </table>
+             <a href="{%url 'giulio:index' %}"> Come Back Home </a>
+    </body>
+
+</html>
