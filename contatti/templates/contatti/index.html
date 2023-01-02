@@ -1,0 +1,28 @@
+{% extends "contatti/base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div id="descrizione"> 
+        <h2 style="font-weight:bold;">CONTATTI</h2> 
+        <p> 
+            Piattaforma per la registrazione delle informazioni sulle aziende da contattare<br>
+            Archivio aziende e contatti permettono di tenere traccia delle comunicazioni e iniziative marketing intercorse.
+        </p>      
+    </div>
+   
+   <img id="imm1" src={% static "contatti/immagine.jpeg" %}>
+   
+   <div id=descrizione>
+    <p>Il progetto nasce dall'esigenza di migliorare l'azione di marketing per il lancio di serivi di E20</p>    
+    <p>
+     E20 è rappresentata da un gruppo di professionisti della progettazione e sviluppo di sistemi software
+     <br>
+     E20 è specializzata in sistemi di prenotazione di eventi online, con sistemi personalizzati
+    </p>
+      
+ 
+    </div>
+  	<hr/>
+        <div id=credits>Giulio Falco & Barbara Biagini</div>
+{% endblock %}

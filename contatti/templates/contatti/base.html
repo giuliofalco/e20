@@ -1,0 +1,47 @@
+{% load static %}
+<html>
+    <head> 
+        <meta charset='utf8'>
+        <title>OFFICINA contatti</title>
+        <link rel="stylesheet" type="text/css" href={% static 'contatti/index.css' %}>
+        <link rel="stylesheet" type="text/css" href={% static 'contatti/menu.css' %}>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        {% block head %}
+          
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block testata %}
+        <img id="logo1" src={% static "contatti/logo.png" %}>
+               
+        <header class="robo">
+          <h1 class="titolo">OFFICINA CONTATTI</h1>
+            <ul>
+                <li>PCTO
+                    <ul>
+                       <li><a href="">Home</a></li>
+                    </ul>
+                </li>
+                <li><a href="" class="aziende">AZIENDE</a></li>
+                <li><a href="" class="tutor">AGENTI</a></li>
+                <li><a href="">CONTATTI</a></li>
+                <li>AUTENTICAZIONE 
+                    <ul>
+                        <li><a href="/admin" class="tutor"> LOG-IN</a></li>
+                        <li><a href="/admin/logout" class="tutor"> LOG-OUT</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+             
+        </header>
+        <span id=sessione style="margin-left: 40px">Sessione {{user}}</span>
+        <span id=stampa><a href="javascript:window.print()">Print Page</a></span>
+        <hr/>
+        {% endblock %}
+        
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
