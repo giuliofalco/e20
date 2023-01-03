@@ -7,7 +7,7 @@
                      #container {width:90%;
                           margin: auto;
                      }
-                     .ragione_sociale {width: 50%; cursor: pointer;}
+                     .nome      {width: 50%; cursor: pointer;}
                      .comune    {width: 20%}
                      .provincia {width: 7%;}
                      
@@ -40,9 +40,9 @@
                         document.location = newurl;                        
                      }
 
-                     function dettaglio(piva) {
+                     function dettaglio(id) {
                       // vai alla pagina di dettaglio Azienda     
-                            
+                            url = "{% url 'contatti:aziende' %}" + '/' + id;
                             document.location = url;
                      }
 
@@ -67,7 +67,7 @@
                       {%for nome in object_list %}
                         <tr>
                         <td class=settore> {{nome.archivio}}
-                        <td class=ragione_sociale>{{nome.nome}} 
+                        <td class=nome onClick=dettaglio("{{nome.id}}")>{{nome.nome}} 
                         <td class=comune>{{nome.citta}} 
                         <td class=provincia> {{nome.provincia}}    
                         <td class=settore> {{nome.web}}

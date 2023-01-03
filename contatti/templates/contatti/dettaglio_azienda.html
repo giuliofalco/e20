@@ -1,0 +1,113 @@
+{%extends 'contatti/base.html' %}
+{% load static %}
+
+{%block head%}
+        <style>
+            .dati {text-align: center; margin-top: 30px;}
+            b {color:brown;}
+            #settore {text-align:center; margin-top: -20px; }
+            #container { margin:auto; background: pink}
+            .commento { margin-top: 5px; margin-right: 10px;
+                        width: 600px; height: 150px;
+                        text-align: left; padding: 10px;}
+            #lista_contatti {width: 100%; background: pink;}
+            .contatto {float: left; margin-left: 100px;}
+            h3 {color: blue;}
+            table {width: 50%; margin-bottom: 5px;
+                   margin-left: 100px;
+                   margin-bottom: 50px;
+                  }
+            th  {background: lightgray;}
+            td  {background: lavender;}
+            textarea {margin-bottom: 10px;}
+            #id_num_studenti {width:60px;}
+        </style>   
+        
+        <script>
+
+            function email() {
+                
+                recipient = document.getElementById('tutor').value;
+
+                if (recipient == "")
+                    return;
+                var testo = "Gentile Collega,\n\n";
+                 testo +=  "ho il piacere di condividere il contatto riguardante il pcto ";
+                 testo +=  "che spero ti sara' utile\n";
+                 testo +=  "In allegato troverai la pagina con le informazioni rilevanti \n\n";
+                 testo +=  "Ti saluto cordialmente\n\n";
+                 testo +=  "prof.ssa Stefania Agresta - figura strumentale PCTO ";    
+                 var subj = escape("Informazione PCTO");
+                 document.location= "mailto:"+recipient+"?subject="+subj+"&body="+escape(testo);
+                 return;
+            } 
+            function salva(id){
+                alert(id);
+                url = "{% url 'contatti:aziende' %}{{azienda.id}}" + "?contatto=" + id;
+                url = url + "&note=" + document.getElementById(id).value;
+                agente = document.getElementById("agente"+id).value;
+                url = url + "&agente=" + agente;
+                document.location = url
+                alert('saved')
+            }
+
+            function cancella_contatto(idcontatto,idazienda) {
+                /* cancella un contatto*/
+                alert(idcontatto + " " + idazienda);
+                risp = confirm("vuoi cancellare il contatto ?");
+                if (risp) {
+                    url = "{%url 'contatti:cancella_contatto' %}/" + idcontatto + "/" + idazienda
+                    document.location=url;
+                }
+                else
+                    alert('cancellazione annullata') 
+
+            }
+        </script>
+
+        </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2> {{azienda.nome}} </h2>
+    <div id=settore>
+       {{azienda.settore}}
+    </div>
+    <div class="dati">
+          
+           <b>Telefono:</b> {{azienda.phone}} <b>Email:</b> {{azienda.mail}} <br>
+           <b>Comune:</b> {{azienda.citta}} <b>Prov. :</b> {{azienda.provincia}}
+    </div>
+    
+ <div class="w3-container">  
+    <a href="/admin/contatti/aziende/{{azienda.id}}">Admin</a>
+    <h3>Contatti</h3>
+    <hr>      
+        {% for con in contatti %}
+                <div class="contatto">
+                {{con.data}} {{con.agente}} <p>
+                <form method="GET" action="{% url 'contatti:aziende' %}/{{azienda.id}}">
+                    <input type="hidden" name="contatto" value={{con.id}}>
+                    <input type="hidden" name="agente" value={{con.agente.id}}>
+                    <textarea id="{{con.id}}" name="note" class="commento">{{con.note}}</textarea> <br>
+                    <input type="submit" value="Save">  
+                    <input type="button" value="Print to PDF" onClick="window.print()"> 
+                </form>  
+           
+                </div>
+        {% endfor %}
+        {% if not contatti %}
+                <form method="POST" action="{%url 'contatti:add_contatto'%}">
+                    {% csrf_token %}
+                    <table class="w3-table-all w3-card-4" style="width: 60%">
+                        {{form.as_table}}
+                        <tr><td colspan="2"><input type="submit" value="Crea Contatto"></td></tr>
+                    </table>
+                  
+                </form>   
+        {% endif%}
+    <br clear="all">
+
+</div>
+{% endblock%}
