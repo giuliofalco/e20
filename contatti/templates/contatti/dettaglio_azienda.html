@@ -55,6 +55,7 @@
             function cancella_contatto(idcontatto,idazienda) {
                 /* cancella un contatto*/
                 alert(idcontatto + " " + idazienda);
+                return;
                 risp = confirm("vuoi cancellare il contatto ?");
                 if (risp) {
                     url = "{%url 'contatti:cancella_contatto' %}/" + idcontatto + "/" + idazienda
@@ -98,6 +99,7 @@
                     <textarea id="{{con.id}}" name="note" class="commento">{{con.note}}</textarea> <br>
                     <input type="submit" value="Save">  
                     <input type="button" value="Print to PDF" onClick="window.print()"> 
+                    <input type="button" value="Cancella" onclick="cancella_contatto('{{con.id}}','{{azienda.id}}')">
                 </form>  
            
                 </div>
