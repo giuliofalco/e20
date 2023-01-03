@@ -1,0 +1,79 @@
+{% extends "contatti/base.html" %}
+
+       {% block head %}
+          
+              <style>
+                     h2 {text-align: center;}
+                     #container {width:90%;
+                          margin: auto;
+                     }
+                     .ragione_sociale {width: 50%; cursor: pointer;}
+                     .comune    {width: 20%}
+                     .provincia {width: 7%;}
+                     
+                    /* table {width: 100%; margin-bottom: 5px;}
+                     th  {background: #C90;}
+                     td  {padding-left: 15; background: lavender;} */
+                     #id_sede_provincia  {width: 50px;}
+                     .pagine a {text-decoration: none}
+                     .pagine {background: rgb(82, 115, 146); padding: 2px; margin:2px;
+                             cursor: pointer; color: white;}
+                     #pagina_corr {background: gold; padding: 3px; margin: 3px;}       
+                     #titolo {font-weight: bold; color: blue;}
+
+              </style>
+              <script>
+                     function choose_page(page) {
+                     // va alla pagina di elenco aziende specificata da page
+                        var url = document.location;
+                        // se la pagina è stata chiamata senza filtri
+                        if (url.toString().indexOf('?') == -1)                    
+                           newurl =url + "?pagina="+page;
+                        else {
+                           nuova = url.toString().replace(/pagina=\d+/,'pagina='+page);
+                           // se la pagina non è mai stata usata prima
+                           if (url.toString() == nuova)
+                              newurl= url + "&pagina="+page;
+                           else
+                              newurl = nuova;   
+                        }
+                        document.location = newurl;                        
+                     }
+
+                     function dettaglio(piva) {
+                      // vai alla pagina di dettaglio Azienda     
+                            
+                            document.location = url;
+                     }
+
+              </script>
+       {% endblock %}
+   
+       {% block content %}
+
+       <div id=container>
+              <form method="get">
+                     Settore: {{myfilter.form.archivio}}
+                     Azienda: {{myfilter.form.nome}}
+                     Comune: {{myfilter.form.citta}}
+                     Provincia: {{myfilter.form.provincia}}
+                    
+                     <input type="submit" value="cerca">
+              </form>
+           
+              <span id="titolo">Elenco Aziende</span>
+              <table class="w3-table-all w3-card-4">
+                      <th>Nome <th> Citta <th> Provincia <th> Tipologia <th>Web</th>              
+                      {%for nome in elenco %}
+                        <tr>
+                        <td class=settore> {{nome.archivio}}
+                        <td class=ragione_sociale>{{nome.nome}} 
+                        <td class=comune>{{nome.citta}} 
+                        <td class=provincia> {{nome.provincia}}    
+                        <td class=settore> {{nome.web}}
+
+                      {%endfor %}
+              </table>
+       </div>
+      
+      {% endblock %}

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import  Aziende
 
-# Register your models here.
+@admin.register(Aziende)
+class AziendeAdmin(admin.ModelAdmin):
+     list_display = ['nome','categoria','citta']

@@ -5,4 +5,5 @@ app_name="contatti"
 
 urlpatterns = [
       path('',views.index,name="index"),
+      path('aziende',views.aziende,name="aziende"),
 ]
