@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 ARCHIVIO = (
              ('R','Ristoranti'),
@@ -31,3 +32,27 @@ class Aziende(models.Model):
     
     class Meta:
         ordering = ['archivio','nome']
+
+class Agenti(models.Model):
+    nome = models.CharField(max_length=50)
+    cognome = models.CharField(max_length=50)
+    email = models.CharField(max_length=50,unique=True)
+    
+    def __str__(self):
+       return(f"{self.cognome} {self.nome}")
+    
+    class meta:
+        ordering = ['cognome','nome']
+
+class Contatti(models.Model):
+    data = models.DateField(default=timezone.now)
+    azienda = models.ForeignKey(Aziende,on_delete=models.DO_NOTHING,null=True)
+    agente = models.ForeignKey(Agenti,on_delete=models.CASCADE)
+    note = models.TextField(null=True,blank=True)
+
+    def __str__(self):
+       return(self.data.strftime("%d/%m/%Y") + " " + self.agente.cognome)
+
+    class Meta:
+        ordering = ['-data']
+
