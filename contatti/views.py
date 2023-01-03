@@ -78,10 +78,12 @@ def add_contatto(request):
             contatto.save()
     return HttpResponseRedirect('aziende/'+str(idazienda))
 
-def cancella_contatto (request,idcontatto,idazienda):
+def cancella_contatto (request):
     # cancella un contatto - non ancora testato
     # idcontatto = request.GET.get('idcontatto')
+    idcontatto = request.GET.get('idcontatto')
+    idazienda = request.GET.get('idazienda')
     record = Contatti.objects.get(id=idcontatto)
     record.delete()
-    idazienda = request.GET.get('idazienda')
+   
     return HttpResponseRedirect('aziende/'+ str(idazienda))

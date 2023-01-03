@@ -54,11 +54,10 @@
 
             function cancella_contatto(idcontatto,idazienda) {
                 /* cancella un contatto*/
-                alert(idcontatto + " " + idazienda);
-                return;
+                
                 risp = confirm("vuoi cancellare il contatto ?");
                 if (risp) {
-                    url = "{%url 'contatti:cancella_contatto' %}/" + idcontatto + "/" + idazienda
+                    url = "{% url 'contatti:cancella_contatto' %}?idcontatto=" + idcontatto + "&idazienda=" + idazienda
                     document.location=url;
                 }
                 else

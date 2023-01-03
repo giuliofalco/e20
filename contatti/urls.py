@@ -8,5 +8,5 @@ urlpatterns = [
       path('aziende',views.aziende,name="aziende"),
       path('aziende/<str:id>',views.dettaglio_azienda,name="dettaglio_aziende"),
       path('add_contatto',views.add_contatto,name="add_contatto"),
-      path('candella_contatto',views.cancella_contatto,name="cancella_contatto"),
+      path('cancella_contatto',views.cancella_contatto,name="cancella_contatto"),
 ]
