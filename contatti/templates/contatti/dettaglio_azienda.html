@@ -21,6 +21,7 @@
             td  {background: lavender;}
             textarea {margin-bottom: 10px;}
             #id_num_studenti {width:60px;}
+            #nuovo_contatto {display:none;}
         </style>   
         
         <script>
@@ -61,7 +62,10 @@
                 }
                 else
                     alert('cancellazione annullata') 
+            }
 
+            function nuovo_contatto() {
+                document.getElementById('nuovo_contatto').style.display='block';
             }
         </script>
 
@@ -81,7 +85,8 @@
     </div>
     
  <div class="w3-container">  
-    <a href="/admin/contatti/aziende/{{azienda.id}}">Admin</a>
+    <a href="/admin/contatti/aziende/{{azienda.id}}">Admin</a> -
+    <a href="javascript:nuovo_contatto()">Nuovo Contatto</a>
     <h3>Contatti</h3>
     <hr>      
         {% for con in contatti %}
@@ -97,7 +102,8 @@
            
                 </div>
         {% endfor %}
-        {% if not contatti %}
+       
+        <div id="nuovo_contatto">
                 <form method="POST" action="{%url 'contatti:add_contatto'%}">
                     {% csrf_token %}
                     <table class="w3-table-all w3-card-4" style="width: 60%">
@@ -106,7 +112,8 @@
                     </table>
                   
                 </form>   
-        {% endif%}
+        </div>
+       
     <br clear="all">
 
 </div>
