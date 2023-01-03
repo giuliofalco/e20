@@ -61,10 +61,10 @@
                      <input type="submit" value="cerca">
               </form>
            
-              <span id="titolo">Elenco Aziende</span>
+              <span id="titolo">Elenco Aziende</span> Pagina {{numpag}} di {{totpagine}} ({{numero_aziende}} aziende)
               <table class="w3-table-all w3-card-4">
                       <th>Nome <th> Citta <th> Provincia <th> Tipologia <th>Web</th>              
-                      {%for nome in elenco %}
+                      {%for nome in object_list %}
                         <tr>
                         <td class=settore> {{nome.archivio}}
                         <td class=ragione_sociale>{{nome.nome}} 
@@ -74,6 +74,14 @@
 
                       {%endfor %}
               </table>
+              <p>
+              {%for pg in pagelist0 %}              
+                     <span id={{pg}} class=pagine onClick=choose_page({{pg}})>{{pg}} </span>
+              {% endfor%}
+                     <span id="pagina_corr">{{numpag}}</span>
+              {%for pg in pagelist %}              
+                     <span id={{pg}} class=pagine onClick=choose_page({{pg}})>{{pg}} </span>
+              {% endfor%}
        </div>
       
       {% endblock %}
