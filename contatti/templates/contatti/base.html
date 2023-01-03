@@ -18,12 +18,8 @@
         <header class="robo">
           <h1 class="titolo">OFFICINA CONTATTI</h1>
             <ul>
-                <li>PCTO
-                    <ul>
-                       <li><a href="">Home</a></li>
-                    </ul>
-                </li>
-                <li><a href="" class="aziende">AZIENDE</a></li>
+                <li><a href="{% url 'contatti:index' %}"> HOME </a></li>
+                <li><a href="{% url 'contatti:aziende' %}" class="aziende">AZIENDE</a></li>
                 <li><a href="" class="tutor">AGENTI</a></li>
                 <li><a href="">CONTATTI</a></li>
                 <li>AUTENTICAZIONE 

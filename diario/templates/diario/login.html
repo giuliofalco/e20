@@ -12,7 +12,7 @@
    <body>
        
       <div id=box>
-         <h2>Diario Alimentare - Login</h2>
+         <h2>E20 - Login</h2>
          <form method="post" action="{% url 'diario:autentica' %}">
             {% csrf_token %}
             <input type="hidden" name="next" value={{next}}>
@@ -27,7 +27,7 @@
                                         
             </table>
             <div id=msg> {{msg}} </div>
-            <a href={% url 'diario:index' %}>Diario</a>
+            <a href={% url 'diario:index' %}>Diario</a> - <a href={% url 'contatti:index' %}>Contatti</a>
          </form>
       </box>
     </body>
