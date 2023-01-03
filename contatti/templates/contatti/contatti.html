@@ -1,0 +1,33 @@
+{% extends "contatti/base.html" %}
+
+{% block head %}
+<style>
+   
+    #container {width: 80%; margin:auto}
+    .data {width: 12%;}
+    .agente {width: 15%;}
+    .azienda {width: 20%;}
+    
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="w3.container w3-pale-blue" >
+    <h1 class="w3-text-black">Elenco Contatti</h1>
+<table class="w3-table-all w3-card-4" style="width:90%; margin: auto;">
+    <th>Data</th><th>Agente</th><th>Azienda</th><th>Note</th>
+
+    {%for con in contatti %} 
+        <tr>
+            <td class="data"> {{con.data}}  </td>
+            <td class="agente"> {{con.agente}} </td>
+            <td class="azienda"><a href="{% url 'contatti:aziende'%}/{{con.azienda.id}}">{{con.azienda}}</a></td>
+            <td class="note"> {{con.note}}  </td>
+        </tr>
+    {% endfor %}
+
+</table>    
+</div>
+
+
+{% endblock %}

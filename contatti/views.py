@@ -63,6 +63,12 @@ def dettaglio_azienda(request,id):
     context['form'] = form
     return render(request,"contatti/dettaglio_azienda.html",context) 
 
+def contatti(request):
+    # elenco dei contatti in ordine decrescente di data
+    contatti = Contatti.objects.all()
+    context = {'contatti': contatti}
+    return render(request,"contatti/contatti.html",context) 
+
 def add_contatto(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
