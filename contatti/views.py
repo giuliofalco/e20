@@ -39,6 +39,7 @@ def aziende(request):
     # context['user'] = visualizza_utente(request)
     return render(request,"contatti/aziende.html",context)
 
+@login_required
 def dettaglio_azienda(request,id):
     # mostra i dati dell'aziende e dei contatti associati
     azienda = Aziende.objects.get(id=id)
@@ -63,12 +64,14 @@ def dettaglio_azienda(request,id):
     context['form'] = form
     return render(request,"contatti/dettaglio_azienda.html",context) 
 
+@login_required
 def contatti(request):
     # elenco dei contatti in ordine decrescente di data
     contatti = Contatti.objects.all()
     context = {'contatti': contatti}
     return render(request,"contatti/contatti.html",context) 
 
+@login_required
 def add_contatto(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -84,6 +87,7 @@ def add_contatto(request):
             contatto.save()
     return HttpResponseRedirect('aziende/'+str(idazienda))
 
+@login_required
 def cancella_contatto (request):
     # cancella un contatto - non ancora testato
     # idcontatto = request.GET.get('idcontatto')
