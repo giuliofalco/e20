@@ -91,8 +91,9 @@
     <hr>      
         {% for con in contatti %}
                 <div class="contatto">
-                {{con.data}} {{con.agente}} <p>
+                {{con.data}} {{con.agente}}
                 <form method="GET" action="{% url 'contatti:aziende' %}/{{azienda.id}}">
+                    Evidenziato: <input type="checkbox" name="evidenziato" {% if con.evidenziato %} checked {%endif%} >  <br>
                     <input type="hidden" name="contatto" value={{con.id}}>
                     <input type="hidden" name="agente" value={{con.agente.id}}>
                     <textarea id="{{con.id}}" name="note" class="commento">{{con.note}}</textarea> <br>

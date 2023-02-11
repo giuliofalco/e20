@@ -49,10 +49,11 @@ class Contatti(models.Model):
     azienda = models.ForeignKey(Aziende,on_delete=models.DO_NOTHING,null=True)
     agente = models.ForeignKey(Agenti,on_delete=models.CASCADE)
     note = models.TextField(null=True,blank=True)
+    evidenziato = models.BooleanField(default=False)
 
     def __str__(self):
        return(self.data.strftime("%d/%m/%Y") + " " + self.agente.cognome)
 
     class Meta:
-        ordering = ['-data']
+        ordering = ['-evidenziato','-data']
 

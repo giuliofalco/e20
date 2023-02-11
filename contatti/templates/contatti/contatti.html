@@ -1,5 +1,5 @@
 {% extends "contatti/base.html" %}
-
+{% load static %}
 {% block head %}
 <style>
    
@@ -7,6 +7,7 @@
     .data {width: 12%;}
     .agente {width: 15%;}
     .azienda {width: 20%;}
+    #spunta {width:30px;}
     
 </style>
 {% endblock %}
@@ -15,12 +16,13 @@
 <div class="w3.container w3-pale-green" >
     <h1 class="w3-text-black">Elenco Contatti</h1>
 <table class="w3-table-all w3-card-4" style="width:90%; margin: auto;">
-    <th>Data</th><th>Agente</th><th>Azienda</th><th>Note</th>
+    <th>Data</th><th>Agente</th><th>Star</th><th>Azienda</th><th>Note</th>
 
     {%for con in contatti %} 
         <tr>
             <td class="data"> {{con.data}}  </td>
             <td class="agente"> {{con.agente}} </td>
+            <td>{%if con.evidenziato %} <img id=spunta src="{% static '/contatti/spunta.png' %}" ALT=*> {%endif%}</td>
             <td class="azienda"><a href="{% url 'contatti:aziende'%}/{{con.azienda.id}}">{{con.azienda}}</a></td>
             <td class="note"> {{con.note}}  </td>
         </tr>
