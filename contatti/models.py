@@ -3,7 +3,9 @@ from django.utils import timezone
 
 ARCHIVIO = (
              ('R','Ristoranti'),
-             ('H','Hotel')
+             ('H','Hotel'),
+             ('G','Gelaterie'),
+             ('C','Casse'),
 )
 
 class Aziende(models.Model):
