@@ -1,0 +1,29 @@
+{% extends "contatti/base.html" %}
+{% load static %}
+{% block head %}
+<style>
+   
+    #tabella {width:30%; margin:auto;}
+    #pulsanti {text-align:center;}
+    
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="w3.container w3-pale-green" >
+    <h1 class="w3-text-black">Inserimento Azienda</h1>
+    <form id=myform method="POST" action="/contatti/insert">
+        {% csrf_token %}
+        <table id="tabella">
+           {{form.as_table}}
+        </table>
+
+        <p id="pulsanti">
+         <input  type=submit value="Invia"> <input type=button value="Annulla">
+        </p>
+        
+    </form>  
+</div>
+
+
+{% endblock %}

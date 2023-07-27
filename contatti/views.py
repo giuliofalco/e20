@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import *
 from django.http import HttpResponseRedirect
+from django.forms import modelform_factory
 
 def index(request):
     
@@ -99,3 +100,16 @@ def cancella_contatto (request):
     record.delete()
    
     return HttpResponseRedirect('aziende/'+ str(idazienda))
+
+def insertCompany(request):
+    # inserisce una nuova azienda
+    
+    form = AziendeForm()
+    if request.method == 'POST':
+        form = AziendeForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/contatti/aziende")    
+    template = "insertCompany.html"
+    context = {'form': form}
+    return(render(request,template,context))

@@ -19,7 +19,12 @@
           <h1 class="titolo">OFFICINA CONTATTI</h1>
             <ul>
                 <li><a href="{% url 'contatti:index' %}"> HOME </a></li>
-                <li><a href="{% url 'contatti:aziende' %}" class="aziende">AZIENDE</a></li>
+                <li>AZIENDE
+                    <ul>
+                       <li> <a href="{% url 'contatti:aziende' %}" class="aziende">ELENCO</a> </li>
+                       <li> <a href="{% url 'contatti:insert' %}"  class="aziende">NUOVA</a> </li>
+                    </ul>
+                </li>
                 <li><a href="" class="tutor">AGENTI</a></li>
                 <li><a href="{% url 'contatti:contatti' %}">CONTATTI</a></li>
                 <li>AUTENTICAZIONE 
