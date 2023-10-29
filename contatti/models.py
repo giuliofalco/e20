@@ -52,6 +52,7 @@ class Contatti(models.Model):
     agente = models.ForeignKey(Agenti,on_delete=models.CASCADE)
     note = models.TextField(null=True,blank=True)
     evidenziato = models.BooleanField(default=False)
+    da_chimare = models.BooleanField(default=False)
 
     def __str__(self):
        return(self.data.strftime("%d/%m/%Y") + " " + self.agente.cognome)

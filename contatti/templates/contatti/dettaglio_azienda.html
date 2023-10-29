@@ -81,7 +81,8 @@
     <div class="dati">
           
            <b>Telefono:</b> {{azienda.phone}} <b>Email:</b> {{azienda.mail}} <br>
-           <b>Comune:</b> {{azienda.citta}} <b>Prov. :</b> {{azienda.provincia}}
+           <b>Comune:</b> {{azienda.citta}} <b>Prov. :</b> {{azienda.provincia}} <br>
+           <b>Indirizzo:</b>{{azienda.indirizzo}}
     </div>
     
  <div class="w3-container">  
@@ -93,7 +94,8 @@
                 <div class="contatto">
                 {{con.data}} {{con.agente}}
                 <form method="GET" action="{% url 'contatti:aziende' %}/{{azienda.id}}">
-                    Evidenziato: <input type="checkbox" name="evidenziato" {% if con.evidenziato %} checked {%endif%} >  <br>
+                    Evidenziato: <input type="checkbox" name="evidenziato" {% if con.evidenziato %} checked {%endif%} > 
+                    Da chiamare: <input type="checkbox" name="da_chiamare" {% if con.da_chiamare %} checked {%endif%}><br>
                     <input type="hidden" name="contatto" value={{con.id}}>
                     <input type="hidden" name="agente" value={{con.agente.id}}>
                     <textarea id="{{con.id}}" name="note" class="commento">{{con.note}}</textarea> <br>

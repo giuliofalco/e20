@@ -7,6 +7,7 @@
     .data {width: 12%;}
     .agente {width: 15%;}
     .azienda {width: 20%;}
+    .azienda_rossa {width: 20%; color:red}
     #spunta {width:30px;}
     
 </style>
@@ -23,7 +24,13 @@
             <td class="data"> {{con.data}}  </td>
             <td class="agente"> {{con.agente}} </td>
             <td>{%if con.evidenziato %} <img id=spunta src="{% static '/contatti/spunta.png' %}" ALT=*> {%endif%}</td>
-            <td class="azienda"><a href="{% url 'contatti:aziende'%}/{{con.azienda.id}}">{{con.azienda}}</a></td>
+            {%if con.da_chiamare %}
+                <td class="azienda_rossa">
+            {%else%}
+                <td class="azienda">
+            {%endif%}
+                <a href="{% url 'contatti:aziende'%}/{{con.azienda.id}}">{{con.azienda}}</a>
+            </td>
             <td class="note"> {{con.note}}  </td>
         </tr>
     {% endfor %}
