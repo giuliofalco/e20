@@ -53,12 +53,14 @@ def dettaglio_azienda(request,id):
     note = request.GET.get('note','')
     agente = request.GET.get('agente','')
     evidenziato = request.GET.get('evidenziato','')
+    da_chiamare = request.GET.get('da_chiamare','')
     if contatto:
         obj = Contatti.objects.get(id=contatto)
         obj.note = note
         nuovo_agente = Agenti.objects.get(id=agente)
         obj.agente = nuovo_agente
         obj.evidenziato = evidenziato != ''
+        obj.da_chiamare = da_chiamare != ''
         obj.save()
 
     context = {'azienda':azienda, 'contatti': contatti, 'agenti':agenti,}
