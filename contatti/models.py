@@ -60,3 +60,16 @@ class Contatti(models.Model):
     class Meta:
         ordering = ['-evidenziato','-data']
 
+INTERESSI = ((1,'Comande'),(2,'Prenotazioni'), (3, 'Menù digitale'), (4,'Sito web'), (5,'Tutto'))
+class RichiesteContatti(models.Model):
+    data = models.DateField(default=timezone.now) # data della prenotazione
+    nome = models.CharField(max_length=50,null=True,blank=True)
+    cognome = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    telefono = models.CharField(max_length=50)
+    interessi = models.IntegerField(choices=INTERESSI,default=4)
+    note = models.TextField(null=True,blank=True)
+
+    def __str__(self):
+        return f"{self.cognome} {self.email}"
+
