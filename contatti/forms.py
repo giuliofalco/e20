@@ -17,3 +17,17 @@ class AziendeForm(ModelForm):
          model = Aziende
          fields = ['archivio','nome','indirizzo','citta','phone','mail']
 
+class ContattiForm(ModelForm):
+
+    class Meta:
+        model = RichiesteContatti
+        fields = ['nome','cognome','email','telefono','interessi','note']
+        labels = {
+            'nome': 'Nome',
+            'cognome':'Cognome',
+            'email' : 'Email',
+            'telefono' : 'Telefono',
+            'interessi' : 'Interessi',
+            'note' : 'Note',
+        }
+

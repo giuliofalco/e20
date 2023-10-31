@@ -115,3 +115,9 @@ def insertCompany(request):
     template = "insertCompany.html"
     context = {'form': form}
     return(render(request,template,context))
+
+def richieste_contatti(request):
+    # permette di visualizzare e ricevere i dati di una form di contatti dei potenziali clienti
+    myform=ContattiForm()
+    context = {"myform":myform}
+    return render(request,"contatti/richieste_contatti.html",context)
