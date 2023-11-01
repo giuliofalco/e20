@@ -135,7 +135,8 @@ def richieste_contatti(request):
             contatto.interessi = interessi
             contatto.note = note
             contatto.save()  # Salva la richiesta di contattto nel database
-            return HttpResponse("Grazie richiesta di contatto ricevuta")
+            context={}
+            return render(request,"contatti/conferma.html",context)
     else:
         myform=ContattiForm()
         
