@@ -4,7 +4,7 @@ from .filters import AziendeFilter
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import *
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.forms import modelform_factory
 
 def index(request):
@@ -118,6 +118,28 @@ def insertCompany(request):
 
 def richieste_contatti(request):
     # permette di visualizzare e ricevere i dati di una form di contatti dei potenziali clienti
-    myform=ContattiForm()
+    if request.method == "POST":
+        myform=ContattiForm(request.POST)
+        if myform.is_valid:
+            cognome = request.POST.get('cognome')
+            nome = request.POST.get('nome')
+            email = request.POST.get('email')
+            telefono = request.POST.get('telefono')
+            interessi = request.POST.get('interessi')
+            note = request.POST.get('note')
+            contatto = RichiesteContatti()
+            contatto.cognome = cognome
+            contatto.nome = nome
+            contatto.email = email
+            contatto.telefono = telefono
+            contatto.interessi = interessi
+            contatto.note = note
+            contatto.save()  # Salva la richiesta di contattto nel database
+            return HttpResponse("Grazie richiesta di contatto ricevuta")
+    else:
+        myform=ContattiForm()
+        
+
     context = {"myform":myform}
     return render(request,"contatti/richieste_contatti.html",context)
+    

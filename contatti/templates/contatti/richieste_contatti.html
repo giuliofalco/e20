@@ -1,24 +1,60 @@
-{% extends "contatti/base.html" %}
 {% load static %}
 
-{% block head %}
+<HTML>
+    <HEAD>
+        <meta charset='utf8'>
+        <title> Contatti</title>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <style>
-        
+        H1  {color:#c00}
+        table {text-align:left;margin-left:5px}
+        label {font-size:18px}
+        div {text-align:left;margin-left:5px}
+        button {font-size:2em;margin-left:20px}
      
     </style>
     <script>
         
-        
+        function iscrivimi() {
+            var privacy = document.getElementById('privacy');
+            var myform =  document.getElementById('form_contatti');
+            if (!privacy.checked) {
+                alert("Autorizzare il trattamento dei dati, selezionando l'apposita casella ");
+                return;
+            }
+            myform.submit();
+        } 
 
     </script>
-{% endblock %}
 
-{% block content %}
-<h1>E20  WEBSITE form di raccolta contatti</h1>
-<form>
-    <table>
-    {{myform.as_table}}
-    </table>
-</form>
 
-{% endblock %}
+</HEAD>
+<BODY>
+<div>
+    <img id="logo1" src={% static "contatti/logo.png" %}>
+    <h1>E20  WEBSITE form di raccolta contatti</h1>
+    <form method="post" id="form_contatti">
+    {%csrf_token%}
+    <div>
+        <table class="w3-table w3-card4">
+        {{myform.as_table}}
+        </table>
+        <button class="w3-blue" type="button">Invia </button>
+        <button class="w3-blue" type="reset">Annulla </button>
+    </div>
+    </form>
+    
+</div>
+<div>
+  <b>AUTORIZZAZIONE AL TRATTAMENTO DEI DATI </b>
+  Autorizzo il trattamento dei miei dati personali ai sensi dell'art. 13 Dlgs 196 del 30 giugno 2003 e dell'art. 13 GDPR (Regolamento UE 2016/679) ai soli fini di comunicazione dell'avvenuta registrazione. I dati saranno trattati secondo il regolamento in materia di privacy di Camy.e20.website disponibile per consultazione:
+  <a href="https://e20.website/privacy-policy/">E20website privacy policy</a> <br>
+  Se si desidera essere rimossi dal database o per annullare la prenotazione, scrivere una mail a:
+  <p></p><a href="mailto:info@e20.website">Send email info@e20website</a></p>
+  <input id="privacy" type="checkbox"> Acconsento al trattamento dei dati forniti <p>
+  <br>
+    * i campi contrassegnati sono obbligatori
+</div>
+</BODY>
+</HTML>

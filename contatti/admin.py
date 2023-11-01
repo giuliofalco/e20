@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Aziende, Agenti, Contatti
+from .models import  Aziende, Agenti, Contatti, RichiesteContatti
 
 class ContattiInline(admin.StackedInline):
     model = Contatti
@@ -15,6 +15,10 @@ class AziendeAdmin(admin.ModelAdmin):
 @admin.register(Agenti)
 class AgentiAdmin(admin.ModelAdmin):
      list_display = ['nome','cognome','email']
+
+@admin.register(RichiesteContatti)
+class RichiesteContattiAdmin(admin.ModelAdmin):
+     list_display = ['id','data','nome','cognome','email','telefono','interessi','note']
        
 
 

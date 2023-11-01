@@ -62,7 +62,7 @@ class Contatti(models.Model):
 
 INTERESSI = ((1,'Comande'),(2,'Prenotazioni'), (3, 'Menù digitale'), (4,'Sito web'), (5,'Tutto'))
 class RichiesteContatti(models.Model):
-    data = models.DateField(default=timezone.now) # data della prenotazione
+    data = models.DateField(default=timezone.now,blank=True,null=True) # data della prenotazione
     nome = models.CharField(max_length=50,null=True,blank=True)
     cognome = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
