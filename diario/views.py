@@ -9,8 +9,9 @@ from . import myDate
 #from datetime import date
 import datetime as dt
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def index(request):
    lista = Diario.objects.all()
    # costruisco la lista con i numeri delle settimane
@@ -85,7 +86,7 @@ def settimana(request,w):
                   
       return render(request,'diario/settimana.html',context)
 
-from django.contrib.auth.decorators import login_required
+
 
 @login_required 
 def modifica(request,id,week,pasto,day): 
