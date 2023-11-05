@@ -8,7 +8,9 @@ from django.urls import reverse
 from . import myDate 
 #from datetime import date
 import datetime as dt
+from django.contrib.auth import authenticate, login
 
+@login_required
 def index(request):
    lista = Diario.objects.all()
    # costruisco la lista con i numeri delle settimane
@@ -32,6 +34,7 @@ def index(request):
  
    return render(request, 'diario/index.html', context)
 
+@login_required
 def settimana(request,w):
       from . import config
       
@@ -127,7 +130,8 @@ def modifica(request,id,week,pasto,day):
                }
      
      return render(request,'diario/modifica.html',context)
-  
+
+@login_required  
 def registra(request):
 # registra la modifica effettuata aggiungendo un alimento al pasto della settimana 
 
@@ -172,6 +176,7 @@ def inserisci(request):
     
     return HttpResponseRedirect(reverse('diario:index'))
 
+@login_required
 def cancella(request,idGiorno,pasto,al,week,day):
    # riceve i'id della registrazione giornaliera, il numero della consumazione 
    # e il nome alimento. Lo cancella dalla lista della consumazione
@@ -191,7 +196,7 @@ def mioLogin(request):
    context = {'next':next,}
    return render(request,'diario/login.html',context)
 
-from django.contrib.auth import authenticate, login
+
 
 def autentica(request):
    # riceve dalla finestra di autenticazione e controlla per effettuare il login
