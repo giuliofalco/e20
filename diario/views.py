@@ -10,7 +10,7 @@ from . import myDate
 import datetime as dt
 from django.contrib.auth import authenticate, login
 
-@login_required
+
 def index(request):
    lista = Diario.objects.all()
    # costruisco la lista con i numeri delle settimane
