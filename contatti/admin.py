@@ -10,6 +10,7 @@ class ContattiInline(admin.StackedInline):
 @admin.register(Aziende)
 class AziendeAdmin(admin.ModelAdmin):
      list_display = ['nome','categoria','citta']
+     list_filter = ['citta','provincia']
      inlines = [ContattiInline]
 
 @admin.register(Agenti)
