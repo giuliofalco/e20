@@ -66,7 +66,7 @@ class RichiesteContatti(models.Model):
     nome = models.CharField(max_length=50,null=True,blank=True)
     cognome = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
-    telefono = models.CharField(max_length=50)
+    telefono = models.CharField(max_length=50,null=True,blank=True)
     interessi = models.IntegerField(choices=INTERESSI,default=5)
     note = models.TextField(null=True,blank=True)
 

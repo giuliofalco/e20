@@ -120,7 +120,7 @@ def richieste_contatti(request):
     # permette di visualizzare e ricevere i dati di una form di contatti dei potenziali clienti
     if request.method == "POST":
         myform=ContattiForm(request.POST)
-        if myform.is_valid:
+        if myform.is_valid():
             cognome = request.POST.get('cognome')
             nome = request.POST.get('nome')
             email = request.POST.get('email')

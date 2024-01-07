@@ -2,6 +2,7 @@ from datetime import date
 from django import forms
 from contatti.models import *
 from django.forms import ModelForm
+from captcha.fields import CaptchaField
 
 
 class DateInput(forms.DateInput):
@@ -18,14 +19,15 @@ class AziendeForm(ModelForm):
          fields = ['archivio','nome','indirizzo','citta','phone','mail']
 
 class ContattiForm(ModelForm):
-
+    captcha = CaptchaField()
     class Meta:
         model = RichiesteContatti
+       
         fields = ['nome','cognome','email','telefono','interessi','note']
         labels = {
-            'nome': 'Nome',
-            'cognome':'Cognome',
-            'email' : 'Email',
+            'nome': '*Nome',
+            'cognome':'*Cognome',
+            'email' : '*Email',
             'telefono' : 'Telefono',
             'interessi' : 'Interessi',
             'note' : 'Note',

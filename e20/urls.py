@@ -23,4 +23,5 @@ urlpatterns = [
     path('giulio/',include('giulio.urls')),
     path('contatti/',include('contatti.urls')),
     path('', RedirectView.as_view(url='diario/', permanent=True)),
+    path('captcha/', include('captcha.urls')),
 ]
