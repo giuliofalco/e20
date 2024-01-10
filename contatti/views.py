@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import *
 from django.http import HttpResponseRedirect, HttpResponse
-from django.forms import modelform_factory
+from django.forms import modelform_factory 
+import requests
 
 def index(request):
     
@@ -120,7 +121,13 @@ def richieste_contatti(request):
     # permette di visualizzare e ricevere i dati di una form di contatti dei potenziali clienti
     if request.method == "POST":
         myform=ContattiForm(request.POST)
-        if myform.is_valid:
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        data = {
+        'secret': '6LerqUspAAAAAAMQSSxFve-GNSfN52gUgQj0_Mh9 ',
+        'response': recaptcha_response }
+        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        if response.json()['success']:
+          if myform.is_valid:
             cognome = request.POST.get('cognome')
             nome = request.POST.get('nome')
             email = request.POST.get('email')
