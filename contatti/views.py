@@ -123,11 +123,11 @@ def richieste_contatti(request):
         myform=ContattiForm(request.POST)
         recaptcha_response = request.POST.get('g-recaptcha-response')
         data = {
-        'secret': '6LerqUspAAAAAAMQSSxFve-GNSfN52gUgQj0_Mh9 ',
-        'response': recaptcha_response }
+            'secret': '6LerqUspAAAAAAMQSSxFve-GNSfN52gUgQj0_Mh9 ',
+            'response': recaptcha_response }
         response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-        if response.json()['success']:
-          if myform.is_valid:
+        if myform.is_valid() and response.json()['success'] : 
+
             cognome = request.POST.get('cognome')
             nome = request.POST.get('nome')
             email = request.POST.get('email')
