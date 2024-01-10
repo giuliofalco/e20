@@ -2,7 +2,7 @@ from datetime import date
 from django import forms
 from contatti.models import *
 from django.forms import ModelForm
-
+from django_recaptcha.fields import ReCaptchaField
 
 class DateInput(forms.DateInput):
     input_type='date'
@@ -18,7 +18,7 @@ class AziendeForm(ModelForm):
          fields = ['archivio','nome','indirizzo','citta','phone','mail']
 
 class ContattiForm(ModelForm):
-
+    captcha = ReCaptchaField()
     class Meta:
         model = RichiesteContatti
         fields = ['nome','cognome','email','telefono','interessi','note']
