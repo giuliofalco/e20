@@ -9,6 +9,7 @@
     .azienda {width: 20%;}
     .azienda_rossa {width: 20%; color:red}
     #spunta {width:30px;}
+    #myform {margin-left:130px;}
     
 </style>
 {% endblock %}
@@ -16,8 +17,20 @@
 {% block content %}
 <div class="w3.container w3-pale-green" >
     <h1 class="w3-text-black">Elenco Contatti</h1>
+    <form method="get" id="myform">
+        Azienda: {{myFilter.form.azienda}}
+        Città: {{myFilter.form.citta}}
+        Note: {{myFilter.form.note}}
+        Da chiamare: {{myFilter.form.da_chiamare}}
+        <!--
+        
+        Provincia: {{myFilter.form.provincia}}
+        -->
+       
+        <input type="submit" value="cerca">
+    </form>
 <table class="w3-table-all w3-card-4" style="width:90%; margin: auto;">
-    <th>Data</th><th>Agente</th><th>Star</th><th>Azienda</th><th>Note</th>
+    <th>Data</th><th>Agente</th><th>Star</th><th>Azienda</th><th>Località</th><th>Note</th>
 
     {%for con in contatti %} 
         <tr>
@@ -31,6 +44,7 @@
             {%endif%}
                 <a href="{% url 'contatti:aziende'%}/{{con.azienda.id}}">{{con.azienda}}</a>
             </td>
+            <td class="localita"> {{con.azienda.citta}}  </td>
             <td class="note"> {{con.note}}  </td>
         </tr>
     {% endfor %}

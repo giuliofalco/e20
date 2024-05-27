@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from contatti.models import *
-from .filters import AziendeFilter
+from .filters import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import *
@@ -74,7 +74,9 @@ def dettaglio_azienda(request,id):
 def contatti(request):
     # elenco dei contatti in ordine decrescente di data
     contatti = Contatti.objects.all()
-    context = {'contatti': contatti}
+    myFilter = ContattiFilter(request.GET,queryset=contatti)
+    contatti = myFilter.qs
+    context = {'contatti': contatti,'myFilter': myFilter}
     return render(request,"contatti/contatti.html",context) 
 
 @login_required
