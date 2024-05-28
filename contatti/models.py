@@ -45,7 +45,7 @@ class Agenti(models.Model):
     def __str__(self):
        return(f"{self.cognome} {self.nome}")
     
-    class meta:
+    class Meta:
         ordering = ['cognome','nome']
 
 class Contatti(models.Model):
