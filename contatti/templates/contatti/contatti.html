@@ -9,7 +9,10 @@
     .azienda {width: 20%;}
     .azienda_rossa {width: 20%; color:red}
     #spunta {width:30px;}
-    #myform {margin-left:130px;}
+    #myform {margin-left:100px;}
+    .custom-province-field {
+           width: 40px;  /* Imposta la larghezza desiderata */
+    }
     
 </style>
 {% endblock %}
@@ -23,8 +26,6 @@
         Città: {{myFilter.form.citta}}
         Note: {{myFilter.form.note}}
         Da chiamare: {{myFilter.form.da_chiamare}}
-       
-        
         Provincia: {{myFilter.form.provincia}}
        
         <input type="submit" value="cerca">
