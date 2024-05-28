@@ -1,14 +1,16 @@
 from django.db import models
 from django.utils import timezone
 
-ARCHIVIO = (
+ARCHIVIO = [
              ('R','Ristoranti'),
              ('H','Hotel'),
              ('G','Gelaterie'),
              ('C','Casse'),
-)
+    ]
+DA_CHIAMARE = [('1','Da chiamare'),]
 
 class Aziende(models.Model):
+   
     archivio = models.CharField(max_length=2,default='R',blank=True,null=True,choices=ARCHIVIO) # R=ristorante v H=hotel
     categoria = models.CharField(max_length=150,null=True)
     nome = models.CharField(max_length=250)
@@ -73,3 +75,11 @@ class RichiesteContatti(models.Model):
     def __str__(self):
         return f"{self.cognome} {self.email}"
 
+class Blacklist(models.Model):
+    email = models.EmailField(unique=True)
+    num = models.PositiveIntegerField(default=0)
+    nome = models.CharField(max_length = 80, null = True, blank=True)
+    cognome = models.CharField(max_length = 80, null = True, blank=True)
+
+    def __str__(self):
+        return self.email

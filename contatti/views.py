@@ -74,9 +74,12 @@ def dettaglio_azienda(request,id):
 def contatti(request):
     # elenco dei contatti in ordine decrescente di data
     contatti = Contatti.objects.all()
+    
     myFilter = ContattiFilter(request.GET,queryset=contatti)
     contatti = myFilter.qs
     context = {'contatti': contatti,'myFilter': myFilter}
+    
+    
     return render(request,"contatti/contatti.html",context) 
 
 @login_required
