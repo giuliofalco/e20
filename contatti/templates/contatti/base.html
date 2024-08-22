@@ -12,12 +12,30 @@
         {% endblock %}
     </head>
 
+    <style>
+        #menu         {margin-left: 20px;}
+        #menu-piccolo {margin-top: 30px; margin-left: 50px;}
+    
+    </style>
+    <script>
+        function myFunction(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else  {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+    </script>
+
     <body>
         {% block testata %}
-        <img id="logo1" src={% static "contatti/logo.png" %}>
+     
                
         <header class="robo">
-          <h1 class="titolo">OFFICINA CONTATTI</h1>
+          <h1 class="titolo">  OFFICINA CONTATTI</h1>
+          <img id="logo1" src={% static "contatti/logo.png" %}>
+          <!-- VECCHIO MENU
             <ul>
                 <li><a href="{% url 'contatti:index' %}"> HOME </a></li>
                 <li>AZIENDE
@@ -36,8 +54,59 @@
                     </ul>
                 </li>
 
-            </ul>
-             
+            </ul>  -->
+         
+            <!-- NUOVO MENU SCHERMI GRANDI -->
+          
+            <div class="w3-bar w3-show-large w3-hide-small w3-hide-medium w3-light-blue" id="menu">         <!-- MAIN MENU--> 
+
+                <a href="{% url 'contatti:index' %}" class="w3-bar-item w3-button ">HOME</a>
+                
+                <div class="w3-dropdown-hover">                                              <!-- DRPOP DOWN --> 
+                    <button class="w3-button" href="#">AZIENDE</button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">                 <!--  DROP CONTENT--> 
+                        <a href="{% url 'contatti:aziende' %}" class="w3-bar-item w3-button">ELENCO</a> 
+                        <a href="{% url 'contatti:insert' %}" class="w3-ber-item w3-button"> NUOVA </a>
+                    </div>           
+                </div>
+
+                <a href="{% url 'contatti:contatti' %}" class="w3-bar-item w3-button ">CONTATTI</a>
+
+                <div class="w3-dropdown-hover">
+                    <button class="w3-button" href="#">AUTENTICAZIONE</button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                        <a class="w3-bar-item w3-button" href="/admin"> LOG-IN </a>
+                        <a class="w3-bar-item w3-button" href="/admin/logout"> LOG-OUT </a>
+                    </div>
+                </div>
+
+            </div>    
+
+            <!-- MENU SCHERMI PICCOLI -->
+            <div id="menu-piccolo">
+            <button class="w3-button w3-hide-large w3-xlarge"  onclick="myFunction('mySidebar')">☰</button>
+            <!-- Sidebar intero Menu a scomparsa-->
+            <div class="w3-sidebar  w3-bar-block w3-border-right w3-light-gray" style="display:none; height: 50vh; overflow-y: scroll;" id="mySidebar">
+            <!-- Voci principale del menu a scomparsa -->
+            <button onclick="myFunction('mySidebar')" class="w3-bar-item w3-large">CHIUDI &times;</button>
+          
+            <button onclick="myFunction('aziende')" class="w3-bar-item w3-large">AZIENDE &times;</button>
+                <!-- Opzioni -->
+                <div class="w3-sidebar" style="display:none" id="aziende">
+                    <a href="{% url 'contatti:aziende' %}"><button class="w3-bar-item w3-button w3-light-blue">ELENCO</button></a>
+                    <a href="{% url 'contatti:insert' %}"><button class="w3-bar-item w3-button w3-light-blue">NUOVA</button></a>
+                </div>
+
+            <a href="{% url 'contatti:contatti' %}"><button class="w3-bar-item w3-large">CONTATTI &times;</button></a>
+            <button onclick="myFunction('autenticazione')" class="w3-bar-item w3-large">ADMIN &times;</button>
+                <!-- Opzioni -->
+                <div class="w3-sidebar" style="display:none" id="autenticazione">
+                    <a href="/admin"><button class="w3-bar-item w3-button w3-light-blue">LOGIN</button></a>
+                    <a href="/admin/logout"><button class="w3-bar-item w3-button w3-light-blue">LOGOUT</button></a>
+                </div>
+            
+            </div>    
+        </div>
         </header>
         <span id=sessione style="margin-left: 40px">Sessione {{user}}</span>
         <span id=stampa><a href="javascript:window.print()">Print Page</a></span>
