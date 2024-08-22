@@ -13,6 +13,7 @@
     .custom-province-field {
            width: 40px;  /* Imposta la larghezza desiderata */
     }
+    .campi {display: flex; flex-wrap: wrap; width: 100%; justify-content: space-around;}
     
 </style>
 {% endblock %}
@@ -21,14 +22,16 @@
 <div class="w3-container w3-pale-green" >
     <h1 class="w3-text-black">Elenco Contatti</h1>
     <form method="get" id="myform">
-        
-        Azienda: {{myFilter.form.azienda}}
-        Città: {{myFilter.form.citta}}
-        Note: {{myFilter.form.note}}
-        Da chiamare: {{myFilter.form.da_chiamare}}
-        Provincia: {{myFilter.form.provincia}}
+    <div class="campi">
+        <div>  Azienda <br> {{myFilter.form.azienda}} </div>
+        <div>Città <br> {{myFilter.form.citta}} </div>
+        <div>Note <br> {{myFilter.form.note}} </div> 
+        <div>Da chiamare <br> {{myFilter.form.da_chiamare}}  </div>
+        <div>Provincia <br> {{myFilter.form.provincia}} </div> 
+        <div> <br><input type="submit" value="cerca"> </div>
+    </div>
        
-        <input type="submit" value="cerca">
+  
     </form>
 <table class="w3-table-all w3-card-4" style="width:90%; margin: auto;">
     <th>Data</th><th>Agente</th><th>Star</th><th>Azienda</th><th>Località</th><th>Note</th>
