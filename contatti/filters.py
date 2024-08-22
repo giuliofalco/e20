@@ -30,6 +30,7 @@ class ContattiFilter(django_filters.FilterSet):
         self.filters['provincia'].field.widget.attrs.update({'class': 'custom-province-field'})
         self.filters['azienda'].field.widget.attrs.update({'class': 'custom-aziende-field'})
         self.filters['note'].field.widget.attrs.update({'class': 'custom-note-field'})
+        self.filters['citta'].field.widget.attrs.update({'class': 'custom-citta-field'})
 
     def filtro_attivo(self, queryset, name, value):
         if value == '1':
