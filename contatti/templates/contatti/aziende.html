@@ -20,6 +20,7 @@
                              cursor: pointer; color: white;}
                      #pagina_corr {background: gold; padding: 3px; margin: 3px;}       
                      #titolo {font-weight: bold; color: blue;}
+                     .campi {display: flex; flex-wrap: wrap; width: 100%; justify-content: space-around;}
 
               </style>
               <script>
@@ -52,13 +53,15 @@
        {% block content %}
 
        <div id=container>
+             
               <form method="get">
-                     Settore: {{myfilter.form.archivio}}
-                     Azienda: {{myfilter.form.nome}}
-                     Comune: {{myfilter.form.citta}}
-                     Provincia: {{myfilter.form.provincia}}
-                    
+                     <div class="campi">
+                     <div>Settore: <br> {{myfilter.form.archivio}}</div>
+                     <div>Azienda:<br> {{myfilter.form.nome}}</div>
+                     <div>Comune:<br> {{myfilter.form.citta}}</div>
+                     <div>Provincia:<br> {{myfilter.form.provincia}}</div>
                      <input type="submit" value="cerca">
+                     </div>
               </form>
            
               <span id="titolo">Elenco Aziende</span> Pagina {{numpag}} di {{totpagine}} ({{numero_aziende}} aziende)
