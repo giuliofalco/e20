@@ -125,11 +125,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Rome'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -152,3 +152,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 RECAPTCHA_PUBLIC_KEY = '6LerqUspAAAAAA8b1CW0fbvcdAhzTZwb0vyFofPV'
 RECAPTCHA_PRIVATE_KEY = '6LerqUspAAAAAAMQSSxFve-GNSfN52gUgQj0_Mh9'
+
+CREDENTIALS_PATH = os.path.join(BASE_DIR, 'contatti/credentials/')

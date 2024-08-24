@@ -67,6 +67,19 @@
             function nuovo_contatto() {
                 document.getElementById('nuovo_contatto').style.display='block';
             }
+
+            function calendario() {
+                // inserisce un evento in calendario
+                data = prompt('data evento da inserire (yyyy-mm-gg)');
+                msg  = prompt('messaggio (default da richiamare)');
+                nome = "{{azienda.nome}}";
+                if (!msg)
+                   msg = 'Da richiamare';
+                url = "/contatti/calendario/"+data+"/"+nome+"/"+msg;
+                document.location = url;
+
+            } 
+
         </script>
 
         </style>
@@ -103,6 +116,8 @@
                     <input type="submit" value="Save">  
                     <input type="button" value="Print to PDF" onClick="window.print()"> 
                     <input type="button" value="Cancella" onclick="cancella_contatto('{{con.id}}','{{azienda.id}}')">
+                    <input type="button" value="Evento in Calendario" onclick="calendario()">
+               
                 </form>  
            
                 </div>

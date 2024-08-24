@@ -7,6 +7,15 @@ from .forms import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.forms import modelform_factory 
 import requests
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from googleapiclient.discovery import build
+import os
+import pickle
+from django.conf import settings
+# Definisci gli SCOPES necessari per interagire con Google Calendar
+SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
 def index(request):
     
@@ -152,7 +161,63 @@ def richieste_contatti(request):
     else:
         myform=ContattiForm()
         
-
     context = {"myform":myform}
     return render(request,"contatti/richieste_contatti.html",context)
+
+def calendario(request,data,target, msg):
+    # inserisce l'evento in calendario. Su account info@e20.website
+
+    # Percorso per il file token.pickle che memorizza il token di accesso
+    token_path = os.path.join(settings.CREDENTIALS_PATH, 'token.pickle')
+    # Percorso per il file credentials.json che hai scaricato da Google Cloud Console
+    credentials_path = os.path.join(settings.CREDENTIALS_PATH, 'credentials.json')
+
+    creds = None
+
+    # Controlla se esiste già un token di accesso salvato
+    if os.path.exists(token_path):
+        with open(token_path, 'rb') as token_file:
+            creds = pickle.load(token_file)
     
+    # Se non ci sono credenziali valide, esegui il flusso di autenticazione
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Salva il token di accesso per le esecuzioni future
+        with open(token_path, 'wb') as token_file:
+            pickle.dump(creds, token_file)
+
+    # Costruisci il servizio Google Calendar
+    service = build('calendar', 'v3', credentials=creds)
+
+    # Definisci l'evento di prova da aggiungere al calendario
+    event = {
+        'summary': 'Evento da Contatti',
+        'location': 'Monza, Italia',
+        'description': f'{msg} {target}',
+        'start': {
+            'dateTime': f'{data}T09:00:00+02:00',
+            'timeZone': 'Europe/Rome',
+        },
+        'end': {
+            'dateTime': f'{data}T09:00:00+02:00',
+            'timeZone': 'Europe/Rome',
+        },
+        'attendees': [
+            {'email': 'gfalco58@gmail.com'},         # sostituire con indirizzo email del destinatario
+            {'emailì': 'barbarabbiagini@gmail.com'},
+        ],
+        'reminders': {
+            'useDefault': False,
+            'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10},
+            ],
+        },
+    }
+    # Inserisci l'evento nel calendario
+    event = service.events().insert(calendarId='primary', body=event).execute()
+    return HttpResponse(f'Evento registrato con successo');

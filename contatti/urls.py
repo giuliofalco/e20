@@ -12,4 +12,5 @@ urlpatterns = [
       path('contatti',views.contatti,name="contatti"),
       path('insert',views.insertCompany,name='insert'),
       path('richieste_contatti',views.richieste_contatti,name='richieste_contatti'),
+      path('calendario/<str:data>/<str:target>/<str:msg>/',views. calendario,name=' calendario'),
 ]
