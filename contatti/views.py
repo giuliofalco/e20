@@ -208,7 +208,7 @@ def calendario(request,data,target, msg):
         },
         'attendees': [
             {'email': 'gfalco58@gmail.com'},         # sostituire con indirizzo email del destinatario
-            {'emailì': 'barbarabbiagini@gmail.com'},
+            {'email': 'barbarabbiagini@gmail.com'},
         ],
         'reminders': {
             'useDefault': False,
