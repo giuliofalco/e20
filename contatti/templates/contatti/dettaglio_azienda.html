@@ -70,14 +70,56 @@
 
             function calendario() {
                 // inserisce un evento in calendario
-                data = prompt('data evento da inserire (yyyy-mm-gg)');
-                msg  = prompt('messaggio (default da richiamare)');
-                nome = "{{azienda.nome}}";
+                // Chiedi la data in formato europeo dd-mm-yyyy
+                const date = prompt("Inserisci la data dell'evento (formato dd/mm/yyyy):");
+                // Chiedi l'ora d'inizio
+                startTime = prompt("Inserisci l'ora d'inizio dell'evento (formato hh:mm, es. 14:00):");
+                if (!startTime)
+                   startTime = "09:00";
+                if (startTime.length == 1)
+                    startTime = `0${startTime}:00`;
+                if (startTime.length == 2)
+                    startTime = `${startTime}:00`;
+
+                // Dividi la data nel formato dd-mm-yyyy
+                const [day, month, year] = date.split('/');
+                // Costruisci la stringa in formato ISO yyyy-mm-dd
+                const isoDate = `${year}-${month}-${day}T${startTime}:00`;
+                // Converti la data e l'ora in un oggetto Date
+                const startDateTime = new Date(isoDate);
+                // Calcola l'offset del fuso orario in minuti e lo converte in millisecondi
+                const timezoneOffset = startDateTime.getTimezoneOffset() * 60000;
+                // Sottrai l'offset per ottenere l'ora locale in ISO 8601
+                const localStartDateTime = new Date(startDateTime.getTime() - timezoneOffset).toISOString().slice(0, -1);
+                // Crea la data di fine aggiungendo 1 ora
+                const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000 - timezoneOffset).toISOString().slice(0, -1);
+               
+                const formattedStart = localStartDateTime;
+                const formattedEnd = endDateTime; 
+
+                msg  = prompt('messaggio (default: "da richiamare")');
+                target = "{{azienda.nome}}";
                 if (!msg)
                    msg = 'Da richiamare';
-                url = "/contatti/calendario/"+data+"/"+nome+"/"+msg;
-                document.location = url;
 
+                // Esempio di chiamata AJAX per inviare i dati al server
+                fetch(`/contatti/calendario/${formattedStart}/${formattedEnd}/${target}/${msg}`, {
+                    method: 'GET', // O 'POST' se stai inviando dati con POST
+                    headers: {
+                       'Content-Type': 'application/json'
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Evento creato con successo!");
+                    } else {
+                        alert("Errore nella creazione dell'evento.");
+                    }
+                });
+                 /*
+                url = `/contatti/calendario/${formattedStart}/${formattedEnd}/${target}/${msg}`
+                alert(url);
+               // document.location = url;
+                 */
             } 
 
         </script>

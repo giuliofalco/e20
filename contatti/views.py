@@ -164,7 +164,7 @@ def richieste_contatti(request):
     context = {"myform":myform}
     return render(request,"contatti/richieste_contatti.html",context)
 
-def calendario(request,data,target, msg):
+def calendario(request,start,end,target,msg):
     # inserisce l'evento in calendario. Su account info@e20.website
 
     # Percorso per il file token.pickle che memorizza il token di accesso
@@ -199,11 +199,11 @@ def calendario(request,data,target, msg):
         'location': 'Monza, Italia',
         'description': f'{msg} {target}',
         'start': {
-            'dateTime': f'{data}T09:00:00+02:00',
+            'dateTime': f'{start}',
             'timeZone': 'Europe/Rome',
         },
         'end': {
-            'dateTime': f'{data}T09:00:00+02:00',
+            'dateTime': f'{end}',
             'timeZone': 'Europe/Rome',
         },
         'attendees': [
