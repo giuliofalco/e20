@@ -37,6 +37,7 @@ LOGIN_URL = 'diario:mioLogin'
 # Application definition
 
 INSTALLED_APPS = [
+    'agenda.apps.AgendaConfig',
     'contatti.apps.ContattiConfig',
     'giulio.apps.GiulioConfig',
     'diario.apps.DiarioConfig',
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_recaptcha',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +157,9 @@ RECAPTCHA_PUBLIC_KEY = '6LerqUspAAAAAA8b1CW0fbvcdAhzTZwb0vyFofPV'
 RECAPTCHA_PRIVATE_KEY = '6LerqUspAAAAAAMQSSxFve-GNSfN52gUgQj0_Mh9'
 
 CREDENTIALS_PATH = os.path.join(BASE_DIR, 'contatti/credentials/')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+

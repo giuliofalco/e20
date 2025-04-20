@@ -1,0 +1,13 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+</head>
+<body>
+    <textarea id="editor"></textarea>
+    <script>
+        CKEDITOR.replace('editor');
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+{% load custom_filters %}
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editor Giorno</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .link {text-decoration: none}
+        .colonne {height: 700px; margin:0px;}
+        .custom-row {
+            display: flex; /* Usa Flexbox per allineare le colonne in una riga */
+            gap: 10px; /* Spazio tra le colonne */
+            flex-wrap: wrap; /* Permette di andare a capo se lo spazio è insufficiente */
+            width:100%;
+        }
+
+        .custom-column {
+            flex: 1; /* Ogni colonna occupa una parte uguale dello spazio disponibile */
+            min-width: 22%; /* Limita la dimensione minima delle colonne */
+            box-sizing: border-box; /* Include padding e bordi nella dimensione totale */
+            padding: 5px; /* Riduce il padding interno */
+        }
+
+        .cke_contents {
+            min-height: 300px !important; /* Imposta un'altezza minima */
+            max-height: 700px !important; /* Limita l'altezza massima */
+            width: 400px !important;       /* Imposta la larghezza al 100% del contenitore */
+        }
+    </style>
+    {{ form.media }} 
+</head>
+<body class="w3-light-grey">
+
+    <header class="w3-container w3-light-blue w3-center w3-padding-16 ">
+        <h1>
+       
+        <a href="{%url 'day_editor' prev_year  prev_month prev_day %}" class="link">
+           <img src="{%static '/agenda/go-previous.png' %}">
+        </a>
+        {{weekday}} {{ entry_date.day }} {{mese}} {{entry_date.year}}
+        <a href="{%url 'day_editor' next_year  next_month next_day %}" class="link">
+        <img src="{%static '/agenda/go-next.png' %}">
+        </a>
+        </h1>
+        
+    </header>
+
+    <div class="w3-container w3-margin-top w3-padding w3-white w3-card-4"  >
+        <form method="post" class="w3-container">
+            {% csrf_token %}
+            <div class="custom-row" >
+
+                <div class="custom-row-column colonne" >
+                    <h3>ASSENZE</h3>   
+                    {{ form.assenze }}
+                </div>
+                <div class="custom-row-column colonne">
+                    <h3>EVENTI</h3>  
+                    {{ form.eventi }}
+                </div>
+                <div class="custom-row-column colonne">
+                    <h3>CLASSI IN USCITA</h3>  
+                    {{ form.uscite}}
+                </div>
+                <div class="custom-row-column colonne">
+                    <h3>NOTE</h3>  
+                    {{ form.note }}
+                </div>
+            </div>
+            <div class="w3-center w3-margin-top">
+                <button type="submit" class="w3-button w3-blue w3-round w3-large w3-hover-light-blue">Salva</button>
+                <a href="{% url 'calendar_view' %}" class="w3-button w3-grey w3-round w3-hover-dark-grey">Torna al Calendario</a>
+                <a href="http://mapelli.selfip.org/supplenze" class="w3-button w3-green">
+                 Supplenze
+                </a>
+            </div>
+           
+        </form>
+    </div>
+
+    <footer class="w3-container w3-center w3-margin-top">
+       
+    </footer>
+
+</body>
+</html>
