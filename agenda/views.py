@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import FileResponse
 from collections import OrderedDict
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 WEEKDAY = ('Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica')
@@ -91,7 +93,7 @@ def day_editor(request, year, month, day):
         form = DayEntryForm(request.POST, instance=day_entry)
         if form.is_valid():
             form.save()
-            response = redirect('calendar_view')
+            response = HttpResponseRedirect(reverse('calendar_view'))
             response.set_cookie(
                 key=day_entry.date.strftime('%Y-%m-%d'),
                 value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
