@@ -91,7 +91,7 @@ def day_editor(request, year, month, day):
         form = DayEntryForm(request.POST, instance=day_entry)
         if form.is_valid():
             form.save()
-            return redirect('calendar_view')
+            response = redirect('calendar_view')
     else:
         form = DayEntryForm(instance=day_entry)
         context = {'form': form, 'entry_date': entry_date, 'mese':MESI[month-1],
@@ -101,13 +101,13 @@ def day_editor(request, year, month, day):
                    'weekday' : weekday, 
         }
         response = render(request, 'agenda/day_editor.html', context )
-        response.set_cookie(
-           key=day_entry.date.strftime('%Y-%m-%d'),
-           value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
-           max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
-        )
+    response.set_cookie(
+        key=day_entry.date.strftime('%Y-%m-%d'),
+        value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+        max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
+    )
     
-        return response
+    return response
 
 
 @xframe_options_exempt
