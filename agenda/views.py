@@ -15,6 +15,7 @@ from django.http import FileResponse
 from collections import OrderedDict
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from urllib.parse import quote, unquote
 
 
 WEEKDAY = ('Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica')
@@ -50,19 +51,23 @@ def calendar_view(request):
         "date": date(year, month, day),
         "is_today": today.year == year and today.month == month and today.day == day,
         }
-        print(year, month, day) # debug
-        try: # se il giorno esste nel database controllo se è stato aggiornato piu di recente verificando il cookie
+        print("giorno =",year, month, day) # debug
+        try: # se il giorno esiste nel database controllo se è stato aggiornato piu di recente verificando il cookie
             record_giorno = DayEntry.objects.get(date=date(year,month,day))
-            cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d %H:%M"))
+            cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d"))
             updated =   record_giorno.updated_at.strftime("%Y-%m-%d %H:%M")
+            print("updated_at=",updated,"cooky=",cookie)
             if record_giorno.vuoto():
                 dot = False
+            elif cookie:
+                dot = updated != cookie
             else:
-                dot = cookie != updated
+                dot = False
         except DayEntry.DoesNotExist: # se non esiste quel giorno nel database ignoro
             dot = False
         
-        giorno['dot'] = updated
+        giorno['dot'] = dot
+       
         
         days.append(giorno)
    
@@ -114,6 +119,7 @@ def day_editor(request, year, month, day):
                 value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M'),
                 max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
         )
+        print (f'setto il cooky {day_entry.date.strftime('%Y-%m-%d')} = {day_entry.updated_at.strftime('%Y-%m-%d %H:%M')}')
         return response
 
 
