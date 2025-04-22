@@ -96,7 +96,7 @@ def day_editor(request, year, month, day):
             response = HttpResponseRedirect(reverse('calendar_view'))
             response.set_cookie(
                 key=day_entry.date.strftime('%Y-%m-%d'),
-                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M'),
                 max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
             )
             return response
@@ -111,7 +111,7 @@ def day_editor(request, year, month, day):
         response = render(request, 'agenda/day_editor.html', context )
         response.set_cookie(
                 key=day_entry.date.strftime('%Y-%m-%d'),
-                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M'),
                 max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
         )
         return response
