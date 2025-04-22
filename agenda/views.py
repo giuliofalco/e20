@@ -119,7 +119,6 @@ def day_editor(request, year, month, day):
                 value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M'),
                 max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
         )
-        print (f'setto il cooky {day_entry.date.strftime('%Y-%m-%d')} = {day_entry.updated_at.strftime('%Y-%m-%d %H:%M')}')
         return response
 
 
