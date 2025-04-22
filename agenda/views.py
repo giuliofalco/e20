@@ -58,11 +58,11 @@ def calendar_view(request):
             if record_giorno.vuoto():
                 dot = False
             else:
-                dot = cookie != updated.strftime("%Y-%m-%d %H:%M")
+                dot = cookie != updated
         except DayEntry.DoesNotExist: # se non esiste quel giorno nel database ignoro
             dot = False
         
-        giorno['dot'] = dot
+        giorno['dot'] = updated
         
         days.append(giorno)
    
