@@ -51,7 +51,7 @@ def calendar_view(request):
         print(year, month, day) # debug
         try: # se il giorno esste nel database controllo se è stato aggiornato piu di recente verificando il cookie
             record_giorno = DayEntry.objects.get(date=date(year,month,day))
-            cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d"))
+            cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d %H:%M:%S"))
             updated =   record_giorno.updated_at.strftime("%Y-%m-%d")
             if record_giorno.vuoto():
                 dot = False
@@ -103,7 +103,7 @@ def day_editor(request, year, month, day):
         response = render(request, 'agenda/day_editor.html', context )
         response.set_cookie(
            key=day_entry.date.strftime('%Y-%m-%d'),
-           value=day_entry.updated_at.strftime('%Y-%m-%d'),
+           value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
            max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
         )
     
