@@ -102,7 +102,7 @@ def day_editor(request, year, month, day):
         }
         response = render(request, 'agenda/day_editor.html', context )
         response.set_cookie(
-           key=day_entry.date.strftime('%Y-%m-%d %H:%M:%S'),
+           key=day_entry.date.strftime('%Y-%m-%d'),
            value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
            max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
         )
