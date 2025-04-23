@@ -169,8 +169,9 @@ CKEDITOR_CONFIGS = {
         'toolbar': [
             
             ['TextColor','BGColor','Bold','Underline','NumberedList', 'BulletedList'],
-            ['FontSize']
+            ['FontSize','Smiley'],
         ],
+       # 'extraPlugins': ','.join(['specialchar']),  # Assicurati che il plugin sia abilitato
 
         'height': 500,
         'width': '100%',
