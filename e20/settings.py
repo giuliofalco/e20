@@ -163,3 +163,23 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        #'toolbar': 'full',
+        'toolbar': [
+            
+            ['TextColor','BGColor','Bold','Underline','NumberedList', 'BulletedList'],
+            ['FontSize']
+        ],
+
+        'height': 500,
+        'width': '100%',
+        'extraAllowedContent': 'img[width,height]',
+        'extraPlugins': ','.join(['uploadimage', 'uploadwidget',]),
+        'filebrowserBrowseUrl': '/ckeditor/browse/',
+        'filebrowserImageBrowseUrl': '/ckeditor/browse/',
+        'filebrowserUploadUrl': '/ckeditor/upload/',
+        'filebrowserImageUploadUrl': '/ckeditor/upload/',
+        'imageUploadUrl': '/ckeditor/uploads/'
+    }
+}
