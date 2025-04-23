@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <style>
         .link {text-decoration: none}
-        .colonne {height: 500px; margin:0px;}
+        .colonne {height: 500px; width:400px; margin:0px;}
         .custom-row {
             display: flex; /* Usa Flexbox per allineare le colonne in una riga */
             gap: 5px;     /* Spazio tra le colonne */
@@ -56,17 +56,19 @@
             <div class="custom-row" >
 
                 <div class="custom-row-column colonne" >
-                    <h3>ASSENZE</h3>   
+                    <h3>APPUNTAMENTI</h3>   
                     {{ form.assenze }}
                 </div>
                 <div class="custom-row-column colonne">
                     <h3>EVENTI</h3>  
                     {{ form.eventi }}
                 </div>
+                <!-- 
                 <div class="custom-row-column colonne">
                     <h3>CLASSI IN USCITA</h3>  
                     {{ form.uscite}}
                 </div>
+                -->
                 <div class="custom-row-column colonne">
                     <h3>NOTE</h3>  
                     {{ form.note }}
