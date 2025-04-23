@@ -21,7 +21,8 @@
             flex: 1;        /* Ogni colonna occupa una parte uguale dello spazio disponibile */
             /* min-width: 30%; /* Limita la dimensione minima delle colonne */
             box-sizing: border-box; /* Include padding e bordi nella dimensione totale */
-            padding: 5px;   /* Riduce il padding interno */
+            padding: 0px;   /* Riduce il padding interno */
+            margin: 0px;
             width:100%;
         }
 
@@ -55,7 +56,7 @@
         
     </header>
 
-    <div class="w3-container w3-margin-top w3-padding w3-white w3-card-4"  >
+    <div class="w3-container  w3-white w3-card-4"  style="padding-left:0px;">
         <form method="post" class="w3-container">
             {% csrf_token %}
             <div class="custom-row" >
