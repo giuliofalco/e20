@@ -16,6 +16,7 @@ from collections import OrderedDict
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from urllib.parse import quote, unquote
+from django.contrib.auth import logout
 
 
 WEEKDAY = ('Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica')
@@ -192,3 +193,7 @@ def monthly_report(request):
         data_by_month[month].sort(key=lambda x: x['date'],reverse=True)
     # Passa i dati al template
     return render(request, 'agenda/monthly_report.html', {'data_by_month': data_by_month, 'parola':parola})
+
+def logout_view(request):
+    logout(request)
+    return redirect('calendar_view')
