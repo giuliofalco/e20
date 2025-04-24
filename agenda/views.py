@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from datetime import date, datetime, timedelta
 import calendar
-from .models import DayEntry, Projects
+from .models import DayEntry
 from .forms import DayEntryForm
 from .filters import *
 from calendar import monthrange
