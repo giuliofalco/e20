@@ -24,6 +24,9 @@ MESI = ('Gennaio', 'Febbraio', 'Marzo','Aprile',
         'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre',
         'Ottobre', 'Novembre', 'Dicembre')
         
+def checkFull(record):
+    # restitisce True se c'è qualcosa in uno dei campi del record
+    return record.assenze or record.eventi or record.uscite or record.note
 
 #@login_required
 def calendar_view(request):
@@ -63,9 +66,10 @@ def calendar_view(request):
                 dot = updated != cookie
             else:
                 dot = False
+            giorno['full'] = checkFull(record_giorno) # controllo che ci sia qualcosa di significativo in uno dei campi
         except DayEntry.DoesNotExist: # se non esiste quel giorno nel database ignoro
             dot = False
-        
+            giorno['full']= False # il record è vuoto
         giorno['dot'] = dot
        
         

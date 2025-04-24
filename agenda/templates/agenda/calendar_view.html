@@ -31,6 +31,21 @@
         }
         .supplenze {margin-right: 10px;}
 
+        .td-con-triangolo {
+            position: relative;
+        }
+
+        .td-con-triangolo::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-bottom: 10px solid black;       /* lato verticale */
+            border-left: 10px solid transparent;   /* lato orizzontale invisibile */
+        }
+
     </style>
 </head>
 <body>
@@ -45,6 +60,7 @@
     </a>
     </h1>
   software by: E20.website <p>
+   
     <table class="w3-table w3-card-4 tabella">
             <tr>
                 <th>Lun</th>
@@ -62,7 +78,7 @@
                 {% endfor %}
                 {% for day in days %}
                     
-                    <td class="{% if day.is_today %}w3-yellow{% endif %}">
+                    <td class="{% if day.is_today %}w3-yellow{% endif %} {% if day.full %}td-con-triangolo {%endif%}">
                         <a href="{% url 'day_editor' year month day.day %}">{{ day.day }} </a>
                        
                         {% if  day.dot  %}
