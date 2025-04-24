@@ -75,8 +75,14 @@
                     <h3>NOTE</h3>  
                     {{ form.note }}
                 </div>
-
-                <!-- 
+               <!-- 
+                <div class="custom-row-column ">
+                    <h3>PROGETTI</h3>
+                    {%for progetto in elenco_progetti %}
+                       {{progetto.name}}<br>
+                    {%endfor%}
+                </div>
+                 
                 <div class="custom-row-column colonne">
                     <h3>CLASSI IN USCITA</h3>  
                     {{ form.uscite}}

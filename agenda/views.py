@@ -52,8 +52,8 @@ def calendar_view(request):
         }
         print("giorno =",year, month, day) # debug
         try: # se il giorno esiste nel database controllo se è stato aggiornato piu di recente verificando il cookie
-            record_giorno = DayEntry.objects.get(date=date(year,month,day))
-            cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d"))
+            record_giorno = DayEntry.objects.get(date=date(year,month,day),user=request.user)
+            cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d")+str(request.user))
             updated =   record_giorno.updated_at.strftime("%Y-%m-%d %H:%M")
             print("updated_at=",updated,"cooky=",cookie)
             if record_giorno.vuoto():
@@ -92,17 +92,30 @@ def day_editor(request, year, month, day):
     entry_date = date(year, month, day)
     prev_date = entry_date - timedelta(days=1)
     next_date = entry_date + timedelta(days=1)
-    day_entry, created = DayEntry.objects.get_or_create(date=entry_date)
+
+    # cerca l'entry solo tra quelle dell'utente
+    day_entry = DayEntry.objects.filter(user=request.user, date=entry_date).first()
+    created = False
+    if not day_entry:
+        # se non esiste, la crea assegnando l'utente
+        day_entry = DayEntry(user=request.user, date=entry_date)
+        day_entry.save()
+        created = True
+
+    # day_entry, created = DayEntry.objects.get_or_create(date=entry_date)
     weekday = WEEKDAY[entry_date.weekday()]
 
     if request.method == 'POST':
         form = DayEntryForm(request.POST, instance=day_entry)
         if form.is_valid():
-            form.save()
+            entry = form.save(commit=False)
+            entry.user = request.user  # riassicura che l'utente sia corretto
+            entry.save()
+
             response = HttpResponseRedirect(reverse('calendar_view'))
             response.set_cookie(
                 key=day_entry.date.strftime('%Y-%m-%d'),
-                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M'),
+                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M')+str(request.user),
                 max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
             )
             return response
@@ -120,7 +133,7 @@ def day_editor(request, year, month, day):
         response = render(request, 'agenda/day_editor.html', context )
         response.set_cookie(
                 key=day_entry.date.strftime('%Y-%m-%d'),
-                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M'),
+                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M')+str(request.user),
                 max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
         )
        
