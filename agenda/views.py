@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from datetime import date, datetime, timedelta
 import calendar
-from .models import DayEntry
+from .models import DayEntry, Projects
 from .forms import DayEntryForm
 from .filters import *
 from calendar import monthrange
@@ -23,12 +23,8 @@ WEEKDAY = ('Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Dom
 MESI = ('Gennaio', 'Febbraio', 'Marzo','Aprile',
         'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre',
         'Ottobre', 'Novembre', 'Dicembre')
-        
-def checkFull(record):
-    # restitisce True se c'è qualcosa in uno dei campi del record
-    return record.assenze or record.eventi or record.uscite or record.note
 
-#@login_required
+@login_required
 def calendar_view(request):
     today = date.today()
     year = int(request.GET.get('year', today.year))    # per default inizia dalla data odierna
@@ -66,7 +62,7 @@ def calendar_view(request):
                 dot = updated != cookie
             else:
                 dot = False
-            giorno['full'] = checkFull(record_giorno) # controllo che ci sia qualcosa di significativo in uno dei campi
+            giorno['full'] = not record_giorno.vuoto() # controllo che ci sia qualcosa di significativo in uno dei campi
         except DayEntry.DoesNotExist: # se non esiste quel giorno nel database ignoro
             dot = False
             giorno['full']= False # il record è vuoto
@@ -91,6 +87,7 @@ def calendar_view(request):
     }
     return render(request, 'agenda/calendar_view.html', context)
 
+@login_required
 def day_editor(request, year, month, day):
     entry_date = date(year, month, day)
     prev_date = entry_date - timedelta(days=1)
@@ -111,11 +108,14 @@ def day_editor(request, year, month, day):
             return response
     else:
         form = DayEntryForm(instance=day_entry)
+        # elenco_progetti = Projects.objects.all()
+
         context = {'form': form, 'entry_date': entry_date, 'mese':MESI[month-1],
                    'prev_day': prev_date.day, 'next_day':next_date.day, 
                    'prev_month':prev_date.month, 'next_month':next_date.month,
                    'prev_year': prev_date.year,'next_year': next_date.year, 
                    'weekday' : weekday, 
+                   #'elenco_progetti':elenco_progetti,
         }
         response = render(request, 'agenda/day_editor.html', context )
         response.set_cookie(
@@ -123,6 +123,7 @@ def day_editor(request, year, month, day):
                 value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M'),
                 max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
         )
+       
         return response
 
 
