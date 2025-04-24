@@ -9,7 +9,7 @@ class Projects(models.Model):
         return self.name
 
 class DayEntry(models.Model):
-    user    = models.ForeignKey(User, on_delete=models.CASCADE)
+    user    = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     date    = models.DateField(unique=False)   
     assenze = models.TextField(blank=True)   # docenti assenti
     eventi  = models.TextField(blank=True)   # eventi
