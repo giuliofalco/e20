@@ -245,3 +245,17 @@ def weekly_report(request):
         'data_by_week': data_by_week,
         'parola': parola
     })
+
+from django.shortcuts import redirect
+from datetime import datetime
+
+def redirect_to_day_editor(request, date_str):
+    # Converte la stringa della data nel formato "Lunedì 21-04-2025"
+    try:
+        date_obj = datetime.strptime(date_str, '%A %d-%m-%Y')
+    except ValueError:
+        # Se la data non è nel formato corretto, manda un errore o una risposta personalizzata
+        return redirect('agenda:weekly_report')
+    
+    # Redirige alla view 'day_editor' con i parametri year, month, day
+    return redirect('agenda:day_editor', year=date_obj.year, month=date_obj.month, day=date_obj.day)

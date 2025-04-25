@@ -10,4 +10,5 @@ urlpatterns = [
     path('monthly_report/', views.monthly_report, name='monthly_report'),
     path('logout_view',views.logout_view,name='logout_view'),
     path('weekly_report/', views.weekly_report, name='weekly_report'),
+    path('redirect/<str:date_str>/', views.redirect_to_day_editor, name='redirect_to_day_editor'),
 ]
