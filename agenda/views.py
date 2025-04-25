@@ -252,7 +252,7 @@ from datetime import datetime
 def redirect_to_day_editor(request, date_str):
     # Converte la stringa della data nel formato "Lunedì 21-04-2025"
     try:
-        date_obj = datetime.strptime(date_str, '%A %d-%m-%Y')
+        date_obj = datetime.strptime(date_str, '%d-%m-%Y %A')
     except ValueError:
         # Se la data non è nel formato corretto, manda un errore o una risposta personalizzata
         return redirect('agenda:weekly_report')
