@@ -57,14 +57,14 @@
             <tbody>
                 {% for day in days %}
                     <tr>
-                        <td style ="width:200px">
+                        <td style ="width:10%">
                             <a href="{% url 'agenda:redirect_to_day_editor' date_str=day.date %}">
                                 {{ day.date }}
                             </a>
                         </td>
-                        <td style="width:33%">{{ day.assenze|safe }}</td>
-                        <td style="width:33%">{{ day.eventi|safe }}</td>
-                        <td style="width:33%">{{ day.note|safe }}</td>
+                        <td style="width:30%">{{ day.assenze|safe }}</td>
+                        <td style="width:30%">{{ day.eventi|safe }}</td>
+                        <td style="width:30%">{{ day.note|safe }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
