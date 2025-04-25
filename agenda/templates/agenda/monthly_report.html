@@ -51,9 +51,9 @@
             <thead>
                 <tr>
                     <th>Data</th>
-                    <th>Assenze</th>
+                    <th>Appuntamenti</th>
                     <th>Eventi</th>
-                    <th>Uscite</th>
+                 <!--   <th>Uscite</th> -->
                     <th>Note</th>
                 </tr>
             </thead>
@@ -63,7 +63,7 @@
                         <td>{{ day.date }}</td>
                         <td>{{ day.assenze|safe }}</td>
                         <td>{{ day.eventi|safe}}</td>
-                        <td>{{ day.uscite|safe }}</td>
+                   <!-- <td>{{ day.uscite|safe }}</td> -->
                         <td>{{ day.note|safe}}</td>
                     </tr>
                 {% endfor %}
