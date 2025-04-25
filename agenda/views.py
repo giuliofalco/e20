@@ -211,7 +211,7 @@ def weekly_report(request):
         Q(eventi__isnull=False, eventi__gt='') |
         Q(uscite__isnull=False, uscite__gt='') |
         Q(note__isnull=False, note__gt='')
-    )
+    ).filter(user=request.user)
 
     # Organizza i dati per settimana
     data_by_week = defaultdict(list)
