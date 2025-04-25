@@ -60,11 +60,11 @@
             <tbody>
                 {% for day in days %}
                     <tr>
-                        <td>{{ day.date }}</td>
-                        <td>{{ day.assenze|safe }}</td>
-                        <td>{{ day.eventi|safe}}</td>
+                        <td style="width:10%">{{ day.date }}</td>
+                        <td style="width:30%">{{ day.assenze|safe }}</td>
+                        <td style="width:30%">{{ day.eventi|safe}}</td>
                    <!-- <td>{{ day.uscite|safe }}</td> -->
-                        <td>{{ day.note|safe}}</td>
+                        <td style="width:30%">{{ day.note|safe}}</td>
                     </tr>
                 {% endfor %}
             </tbody>
