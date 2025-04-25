@@ -73,6 +73,7 @@
                 </div>
 
                 <a href="{% url 'contatti:contatti' %}" class="w3-bar-item w3-button ">CONTATTI</a>
+                <a href="{% url 'agenda:calendar_view' %}" class="w3-bar-item w3-button ">AGENDA</a>
 
                 <div class="w3-dropdown-hover">
                     <button class="w3-button" href="#">AUTENTICAZIONE</button>
@@ -100,7 +101,7 @@
                 </div>
 
             <a href="{% url 'contatti:contatti' %}"><button class="w3-bar-item w3-large">CONTATTI &times;</button></a>
-            <button onclick="myFunction('autenticazione')" class="w3-bar-item w3-large">ADMIN &times;</button>
+            <button onclick="myFunction('autenticazione')" class="w3-bar-item w3-large">ADMIN&times;</button>
                 <!-- Opzioni -->
                 <div class="w3-sidebar" style="display:none" id="autenticazione">
                     <a href="/admin"><button class="w3-bar-item w3-button w3-light-blue">ADMIN</button></a>
