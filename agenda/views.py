@@ -17,6 +17,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from urllib.parse import quote, unquote
 from django.contrib.auth import logout
+import locale
+locale.setlocale(locale.LC_TIME, 'it_IT.UTF-8')
 
 
 WEEKDAY = ('Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica')
@@ -218,7 +220,8 @@ def weekly_report(request):
         end_of_week = start_of_week + timedelta(days=6)                    # Domenica
         week_key = (start_of_week, end_of_week)
         data_by_week[week_key].append({
-            'date': entry.date.strftime('%d-%m-%Y'),
+           # 'date': entry.date.strftime('%d-%m-%Y'),
+           'date': entry.date.strftime('%A %d-%m-%Y').capitalize(),
             'assenze': entry.assenze,
             'eventi': entry.eventi,
             'uscite': entry.uscite,
