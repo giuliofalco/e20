@@ -25,7 +25,7 @@ def index(request):
 @login_required
 def aziende(request):
     # fornisce l'elenco della aziende presenti nel database
-    elenco = Aziende.objects.all()
+    elenco = Aziende.objects.filter(user=request.user)
    
     numero_aziende = len(elenco)
     myfilter = AziendeFilter(request.GET,queryset=elenco)
@@ -82,7 +82,7 @@ def dettaglio_azienda(request,id):
 @login_required
 def contatti(request):
     # elenco dei contatti in ordine decrescente di data
-    contatti = Contatti.objects.all()
+    contatti = Contatti.objects.filter(user=request.user)
     
     myFilter = ContattiFilter(request.GET,queryset=contatti)
     contatti = myFilter.qs
@@ -104,6 +104,7 @@ def add_contatto(request):
             contatto.azienda = azienda
             contatto.agente = agente
             contatto.note = note
+            contatto.user = request.user
             contatto.save()
     return HttpResponseRedirect('aziende/'+str(idazienda))
 
@@ -125,6 +126,8 @@ def insertCompany(request):
     if request.method == 'POST':
         form = AziendeForm(request.POST)
         if form.is_valid():
+           form.save(commit=False)
+           form.instance.user = request.user
            form.save()
            return HttpResponseRedirect("/contatti/aziende")    
     template = "insertCompany.html"

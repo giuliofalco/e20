@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 ARCHIVIO = [
              ('R','Ristoranti'),
@@ -10,7 +11,7 @@ ARCHIVIO = [
 DA_CHIAMARE = [('1','Da chiamare'),]
 
 class Aziende(models.Model):
-   
+    user    = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     archivio = models.CharField(max_length=2,default='R',blank=True,null=True,choices=ARCHIVIO) # R=ristorante v H=hotel
     categoria = models.CharField(max_length=150,null=True)
     nome = models.CharField(max_length=250)
@@ -38,6 +39,7 @@ class Aziende(models.Model):
         ordering = ['archivio','nome']
 
 class Agenti(models.Model):
+    user    = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     nome = models.CharField(max_length=50)
     cognome = models.CharField(max_length=50)
     email = models.CharField(max_length=50,unique=True)
@@ -49,6 +51,7 @@ class Agenti(models.Model):
         ordering = ['cognome','nome']
 
 class Contatti(models.Model):
+    user    = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     data = models.DateField(default=timezone.now)
     azienda = models.ForeignKey(Aziende,on_delete=models.DO_NOTHING,null=True)
     agente = models.ForeignKey(Agenti,on_delete=models.CASCADE)
