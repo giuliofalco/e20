@@ -115,7 +115,7 @@ def day_editor(request, year, month, day):
             entry.user = request.user  # riassicura che l'utente sia corretto
             entry.save()
 
-            response = HttpResponseRedirect(reverse('calendar_view'))
+            response = HttpResponseRedirect(reverse('agenda:calendar_view'))
             response.set_cookie(
                 key=day_entry.date.strftime('%Y-%m-%d'),
                 value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M')+str(request.user),
@@ -220,8 +220,8 @@ def weekly_report(request):
         end_of_week = start_of_week + timedelta(days=6)                    # Domenica
         week_key = (start_of_week, end_of_week)
         data_by_week[week_key].append({
-           # 'date': entry.date.strftime('%d-%m-%Y'),
-           'date': entry.date.strftime('%A %d-%m-%Y').capitalize(),
+            # 'date': entry.date.strftime('%d-%m-%Y'),
+            'date': entry.date.strftime('%d-%m-%Y %A').capitalize(),
             'assenze': entry.assenze,
             'eventi': entry.eventi,
             'uscite': entry.uscite,
@@ -239,7 +239,7 @@ def weekly_report(request):
 
     # Ordina i giorni all'interno di ogni settimana (opzionale, decrescente)
     for week in data_by_week:
-        data_by_week[week].sort(key=lambda x: x['date'], reverse=True)
+        data_by_week[week].sort(key=lambda x: x['date'])
 
     return render(request, 'agenda/weekly_report.html', {
         'data_by_week': data_by_week,
