@@ -9,4 +9,5 @@ urlpatterns = [
     path('pdfs/<str:filename>', views.serve_pdf, name='serve_pdf'),
     path('monthly_report/', views.monthly_report, name='monthly_report'),
     path('logout_view',views.logout_view,name='logout_view'),
+    path('weekly_report/', views.weekly_report, name='weekly_report'),
 ]

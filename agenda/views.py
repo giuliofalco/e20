@@ -197,3 +197,48 @@ def monthly_report(request):
 def logout_view(request):
     logout(request)
     return redirect('calendar_view')
+
+from collections import defaultdict
+from datetime import timedelta
+
+def weekly_report(request):
+    # organizza il report per settimana
+    # Ottieni tutti i record con almeno un campo non vuoto
+    entries = DayEntry.objects.filter(
+        Q(assenze__isnull=False, assenze__gt='') |
+        Q(eventi__isnull=False, eventi__gt='') |
+        Q(uscite__isnull=False, uscite__gt='') |
+        Q(note__isnull=False, note__gt='')
+    )
+
+    # Organizza i dati per settimana
+    data_by_week = defaultdict(list)
+    for entry in entries:
+        start_of_week = entry.date - timedelta(days=entry.date.weekday())  # Lunedì
+        end_of_week = start_of_week + timedelta(days=6)                    # Domenica
+        week_key = (start_of_week, end_of_week)
+        data_by_week[week_key].append({
+            'date': entry.date.strftime('%d-%m-%Y'),
+            'assenze': entry.assenze,
+            'eventi': entry.eventi,
+            'uscite': entry.uscite,
+            'note': entry.note,
+        })
+
+    parola = ''
+    if request.method == 'POST':
+        parola = request.POST.get('q', '')
+        data_by_week = filtra_dizionario(data_by_week, parola)
+
+    # Ordina le settimane in ordine decrescente
+    sorted_weeks = sorted(data_by_week.keys(), key=lambda k: k[0], reverse=True)
+    data_by_week = {week: data_by_week[week] for week in sorted_weeks}
+
+    # Ordina i giorni all'interno di ogni settimana (opzionale, decrescente)
+    for week in data_by_week:
+        data_by_week[week].sort(key=lambda x: x['date'], reverse=True)
+
+    return render(request, 'agenda/weekly_report.html', {
+        'data_by_week': data_by_week,
+        'parola': parola
+    })
