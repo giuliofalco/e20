@@ -59,7 +59,7 @@
         <img src = "{%static 'agenda/go-next.png' %}">
     </a>
     </h1>
-  software by: E20.website - user: {{user}} (<a href="{%url 'logout_view'%}" style="color: blue; text-decoration: underline;">logout</a>)<p>
+  software by: E20.website - user: {{user}} (<a href="{%url 'agenda:logout_view'%}" style="color: blue; text-decoration: underline;">logout</a>)<p>
    
     <table class="w3-table w3-card-4 tabella">
             <tr>
@@ -79,7 +79,7 @@
                 {% for day in days %}
                     
                     <td class="{% if day.is_today %}w3-yellow{% endif %} {% if day.full %}td-con-triangolo {%endif%}">
-                        <a href="{% url 'day_editor' year month day.day %}">{{ day.day }} </a>
+                        <a href="{% url 'agenda:day_editor' year month day.day %}">{{ day.day }} </a>
                        
                         {% if  day.dot  %}
                            <span style="color: red;">●</span> <!-- Puntino rosso per modifiche non lette -->
@@ -96,7 +96,7 @@
             </tr>
         </table>
     <br>
-    <a href="{% url 'monthly_report'%}" class="w3-button w3-blue">Report</a>
+    <a href="{% url 'agenda:monthly_report'%}" class="w3-button w3-blue">Report</a>
    
     </div>
    
