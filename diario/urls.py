@@ -12,4 +12,5 @@ urlpatterns = [
       path('cancella/<int:idGiorno>/<int:pasto>/<int:al>/<int:week>/<int:day>',views.cancella,name="cancella"),
       path('mioLogin',views.mioLogin,name="mioLogin"),
       path('autentica',views.autentica,name="autentica"),
+      path('rimuovi_account/', views.rimuovi_account, name='rimuovi_account'),
 ]
