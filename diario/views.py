@@ -155,7 +155,7 @@ def registra(request):
        else:                                                # non esiste, lo creo
           d = dt.datetime.strptime(miadata, "%Y-%m-%d")
           d = d.date()
-          miodiario = Diario.objects.create(data=d) 
+          miodiario = Diario.objects.create(data=d,user=request.user) 
        consumazione = Consumazione.objects.create(diario=miodiario,tipo_pasto=pasto,user=request.user) # devo creare la consumazione comunque, non può esistere         
     else:
        miodiario = get_object_or_404(Diario,pk=objid)       # se ho fornito l'id, significa che l'oggetto esiste           
