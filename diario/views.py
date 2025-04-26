@@ -1,6 +1,6 @@
 #from typing_extensions import Required
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from diario.models import Diario, Consumazione, Alimento
 from django.template import loader
@@ -10,6 +10,8 @@ from . import myDate
 import datetime as dt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import logout
 
 @login_required
 def index(request):
@@ -197,11 +199,9 @@ def mioLogin(request):
    context = {'next':next,}
    return render(request,'diario/login.html',context)
 
-
-
 def autentica(request):
    # riceve dalla finestra di autenticazione e controlla per effettuare il login
-   utente  = request.POST.get('utonto') 
+   utente  = request.POST.get('username') 
    password = request.POST.get('password')
    next = request.POST.get('next')
    user = authenticate(request, username=utente, password=password)
@@ -211,6 +211,29 @@ def autentica(request):
       return HttpResponseRedirect(next)
    else:
       return render(request,'diario/login.html',{'msg':'Autenticazione Fallita', 'next':next} )
+   
+def rimuovi_account(request):
+   # per eliminare un account
+   print("METODO:", request.method)
+   print("POST:", request.POST)
+   print("GET:", request.GET)
+   next_url = request.POST.get('next') or '/'  # se non c'è, va alla home
+  
+   if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+       
+        if user is not None:
+            # Se autenticato correttamente, eliminiamo l'account
+            user.delete()
+            messages.success(request, "Il tuo account è stato eliminato con successo.")
+            logout(request)
+            return redirect(next_url)  # o un'altra pagina pubblica
+        else:
+            messages.error(request, "Username o password non corretti.")
+
+   return redirect(next_url)
 
 
 

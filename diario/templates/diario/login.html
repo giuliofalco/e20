@@ -1,6 +1,9 @@
+{% load static %}
 <html>
    <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" type="text/css" href="{% static 'diario/messages.css' %}">
+
       <style>
             #box {background: lightblue; padding: 15px; width: 80%; margin: auto;}
             h2 {color : blue; text-align: center;}
@@ -8,28 +11,50 @@
             #invio {text-align: center;}
             #msg  {color:#c00; text-align: center; margin-top: 10px;}
       </style>
+      <script>
+         function rimuovi_account() {
+            risp = confirm("vuoi veramente rimuovere l'account ?");
+            if (risp) {
+               let next = document.getElementById("next").value;
+               let form = document.getElementById("loginForm");
+               form.action = "{% url 'diario:rimuovi_account' %}";
+               form.submit();
+            }
+         }
+      </script>
    </head>
     
    <body>
        
       <div id=box>
          <h2>E20 - Login</h2>
-         <form method="post" action="{% url 'diario:autentica' %}">
+         {% if messages %}
+         <ul>
+            {% for message in messages %}
+               <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+         </ul>
+         {% endif %}
+
+         <form method="POST" action="{% url 'diario:autentica' %}" id="loginForm">
             {% csrf_token %}
-            <input type="hidden" name="next" value={{next}}>
+            <input type="hidden" name="next" value={{next}} id="next">
             <table>
                <tr>
-                  <td>Utente: <td><input type=text name="utonto">
+                  <td>Utente: <td><input type=text name="username">
                <tr>
                   <td>Password: <td> <input type=password name="password"> 
                <tr>
-                  <td id=invio colspan=2><input type=submit value="Invia"> 
-                                         <input type=reset value="Reset">
-                                        
+                  <td id=invio colspan=2>
+                     <input type=submit value="Autentica"> 
+                     <input type=reset value="Reset">                          
             </table>
             <div id=msg> {{msg}} </div>
-           
+           * se desideri rimuovere il tuo account, clicca su 
+           <a href="javascript:rimuovi_account()">rimuovi account</a>
          </form>
+       
+         
       </box>
     </body>
 </html>
