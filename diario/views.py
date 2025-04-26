@@ -15,7 +15,7 @@ from django.contrib.auth import logout
 
 @login_required
 def index(request):
-   lista = Diario.objects.all()
+   lista = Diario.objects.filter(user=request.user)
    # costruisco la lista con i numeri delle settimane
 
    weeks = [giorno.week() for giorno in lista]    # lista con i dati compresi i duplicati
@@ -39,15 +39,18 @@ def index(request):
 
 @login_required
 def settimana(request,w):
+      # mostra la tabella della settimana specificata
       from . import config
       
-      lista = Diario.objects.all()                        # tutte le registrazioni
-      weekly = [obj for obj in lista if obj.week() == w]  # solo quelle della settimana w   
+      lista = Diario.objects.filter(user=request.user)    # tutte le registrazioni
+      weekly = [obj for obj in lista if obj.week() == w]  # solo quelle della settimana w  
+   
       cons = [[w.week_day,list(w.consumazione_set.all())] for w in weekly]
       # estraggo da weekly (lista degli oggetti Diario di quella particolare settimana)
       # per ogni elemento di weekly le consumazioni ad esso associate. 
+      #     
       # Trasformo il querySet in lista
-      # produco una lista il cui elemnti sono il giorno della settimana 
+      # produco una lista il cui elemnti sono il giorno della settimana
       # ('lun', 'mart', seguito dalla data) e dalla lista delle consumazioni di quel giorno
      
       # per ottenere un report tabellare in cui ogni riga sia una consumazione e le colonne i
@@ -81,7 +84,7 @@ def settimana(request,w):
       md = myDate.MyDate()                         
       periodo = md.str_week(w)                     # calcolo data di inizio e fine 
                                                    # della settimana w
-      
+      print(struttura)
       FRUTTA =  ['pompelmi','fragole']
       context = {'settimana': w,'struttura': struttura, 'pasti':config.PASTIL, 'periodo': periodo, 
                  'altro': FRUTTA, 'giorni': GIORNI}
@@ -124,8 +127,8 @@ def modifica(request,id,week,pasto,day):
         miadata = d.data_wday(week,day-1)               # calcolo la data con la mia funzione
         data  = "{}-{}-{}".format(d.anno_corrente(),miadata[1]+1,miadata[0])     # formato data come tupla anno,mese,giorno
         strdata = "{}/{}/{}".format(d.anno_corrente(),miadata[1]+1,miadata[0])   # formato data come stringa europea
-        alimenti = list(Alimento.objects.all())                     # tutti gli alimenti
-     
+        alimenti = list(Alimento.objects.filter(user=request.user))                     # tutti gli alimenti
+        print(request.user,Alimento.objects.all())
      alimenti.sort(key=lambda x: x.nome.lower())
      context = {'alimlist': alimlist, 'id': id, 'pasto': config.PASTIC[pasto], 'strpasto': pasto,
                 'alimenti' : alimenti,'data': data, 'giorno':day, 'strdata': strdata,
@@ -146,14 +149,14 @@ def registra(request):
     strpasto = request.POST['strpasto']
     
     if objid == '0':                                        # non ho l'id, ma non so ancora se l'oggetto esiste
-       miodiario = Diario.objects.filter(data=miadata) # lo cerco attraverso la data, se esiste mi restituisce un Query Set con un solo elemento
+       miodiario = Diario.objects.filter(data=miadata,user=request.user) # lo cerco attraverso la data, se esiste mi restituisce un Query Set con un solo elemento
        if miodiario:                                        # miodiario esiste
           miodiario = miodiario[0]                          # mio diario deve essere un oggetto, non un Query Set. Prendo l'unico oggetto della lista        
        else:                                                # non esiste, lo creo
           d = dt.datetime.strptime(miadata, "%Y-%m-%d")
           d = d.date()
           miodiario = Diario.objects.create(data=d) 
-       consumazione = Consumazione.objects.create(diario=miodiario,tipo_pasto=pasto) # devo creare la consumazione comunque, non può esistere         
+       consumazione = Consumazione.objects.create(diario=miodiario,tipo_pasto=pasto,user=request.user) # devo creare la consumazione comunque, non può esistere         
     else:
        miodiario = get_object_or_404(Diario,pk=objid)       # se ho fornito l'id, significa che l'oggetto esiste           
        consumazione = miodiario.consumazione_set.filter(tipo_pasto=pasto)[0] # cerco le consumazioni associate, ce n'è sicuramente solo una  
@@ -173,6 +176,7 @@ def inserisci(request):
     note = request.POST.get('note')
     
     diario = Diario()
+    diario.user = request.user
     diario.data = data
     diario.note = note
     diario.save()
@@ -186,7 +190,7 @@ def cancella(request,idGiorno,pasto,al,week,day):
     from . import config
     #PASTI = ['fuori_pasto','colazione','merenda_mat','pranzo','merenda_pom',
     #        'cena','dopo_cena']
-    reg   = Diario.objects.get(id=idGiorno)       # identifico la registrazione giornaliera
+    reg   = Diario.objects.get(id=idGiorno,user=request.user)       # identifico la registrazione giornaliera
     liscons = reg.consumazione_set.all()          # identifico la consumazione
     plist = liscons.filter(tipo_pasto=pasto)[0]   # filtro rispetto al pasto
     plist.alimento.remove(al)                     # lo elimino dalla lista

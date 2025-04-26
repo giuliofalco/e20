@@ -25,10 +25,10 @@
     </head>
     
     <body>
-             <h1> Diario settimanale pasti <span id=user>Barbara</span> </h1>
+             <h1> Diario settimanale pasti <span id=user>{{ request.user.username }}</span> </h1>
              <a href= {% url 'admin:index' %} >admin</a> - 
              <a href="javascript:apri()">Registra</a> -
-             <a href="javascript:giulio()">Giulio</a>
+          
             
              <div id=scheda>
                <form method=post action = {% url 'diario:inserisci' %}>

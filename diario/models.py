@@ -4,6 +4,7 @@ from datetime import datetime
 from datetime import date
 from django.utils import timezone
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 def strdata(data):
     return str(data.day)+"/"+str(data.month)+"/"+str(data.year)
@@ -19,13 +20,15 @@ class Dieta(models.Model):
         return self.giorno
 
     def wday(self):
-        return WEEKDAYS[self.giorno]
+        return self.WEEKDAYS[self.giorno]
 
 class Diario(models.Model):
     WEEKDAYS = ('lunedi','martedi','mercoledi','giovedi','venerdi','sabato','domenica')
     
-    data = models.DateField(default=date.today(),unique=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
+    data = models.DateField(default=date.today)
     note = models.CharField(max_length=200,blank=True, default="")
+   
       
     class Meta:
         ordering = ['data']
@@ -57,6 +60,7 @@ class Alimento(models.Model):
     #              (6,'Legumi'),(7,'Dolci'),(8,'Patate'),(9,'Bevande'),(10,'Pesce')]
     config.CATEGORIE.sort(key=lambda x: x[1])
 
+    user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
     nome = models.CharField(max_length=50, unique=True)
     calorie = models.IntegerField(default=100)
     categoria = models.IntegerField(choices=config.CATEGORIE,default=0)
@@ -72,6 +76,7 @@ class Consumazione(models.Model):
     PASTI = [(0,'fuori_pasto'),(1,'colazione'),(2,'merenda_mat'),
              (3,'pranzo'),(4,'merenda_pom'),(5,'cena'),(6,'dopo_cena')]
 
+    user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
     diario = models.ForeignKey(Diario,on_delete=models.CASCADE)
     tipo_pasto = models.IntegerField(choices=config.PASTI,default=0) 
     alimento = models.ManyToManyField(Alimento)
