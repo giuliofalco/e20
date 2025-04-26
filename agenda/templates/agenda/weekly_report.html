@@ -39,7 +39,7 @@
     
     <form METHOD = POST ACTION="{% url 'agenda:weekly_report' %}">
         {% csrf_token %}
-        <a href="{% url 'agenda:calendar_view' %}"><img src="/static/agenda/go-previous.png"></a>
+        <a href="{% url 'agenda:calendar_view' %}"><img src="/static/agenda/go-home.png"></a>
         <input type="text" name="q" value="{{ parola }}"> <input type="submit" value="filtra">
     </form>
    
