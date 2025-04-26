@@ -1,22 +1,22 @@
-from django.shortcuts import render
-from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
-from datetime import date, datetime, timedelta
+import os
 import calendar
+from django.shortcuts import render, redirect
+from django.conf import settings
+from datetime import date, datetime, timedelta
 from .models import DayEntry
 from .forms import DayEntryForm
 from .filters import *
 from calendar import monthrange
-import os
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import FileResponse
-from collections import OrderedDict
+from collections import  defaultdict # ,OrderedDict
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from urllib.parse import quote, unquote
+#from urllib.parse import quote, unquote
 from django.contrib.auth import logout
+from datetime import datetime, timedelta
 import locale
 locale.setlocale(locale.LC_TIME, 'it_IT.UTF-8')
 
@@ -200,8 +200,7 @@ def logout_view(request):
     logout(request)
     return redirect('agenda:calendar_view')
 
-from collections import defaultdict
-from datetime import timedelta
+
 
 def weekly_report(request):
     # organizza il report per settimana
@@ -246,11 +245,8 @@ def weekly_report(request):
         'parola': parola
     })
 
-from django.shortcuts import redirect
-from datetime import datetime
-
 def redirect_to_day_editor(request, date_str):
-    # Converte la stringa della data nel formato "Lunedì 21-04-2025"
+    # Converte la stringa della data nel formato "21-04-2025 Lunedi" e rimanda a day_editor del giorno indicato
     try:
         date_obj = datetime.strptime(date_str, '%d-%m-%Y %A')
     except ValueError:
@@ -259,3 +255,10 @@ def redirect_to_day_editor(request, date_str):
     
     # Redirige alla view 'day_editor' con i parametri year, month, day
     return redirect('agenda:day_editor', year=date_obj.year, month=date_obj.month, day=date_obj.day)
+
+@login_required
+def genera_password(request):
+    # genera una passowrd da utilizzare per le registrazioni, 
+    # a partire dal nome del servizio ed una parola segreta
+    return render(request, 'agenda/genera_password.html')
+    
