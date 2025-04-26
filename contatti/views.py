@@ -17,6 +17,7 @@ from django.conf import settings
 # Definisci gli SCOPES necessari per interagire con Google Calendar
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
+@login_required
 def index(request):
     
     context = {}
