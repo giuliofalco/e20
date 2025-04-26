@@ -198,7 +198,7 @@ def monthly_report(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('calendar_view')
+    return redirect('agenda:calendar_view')
 
 from collections import defaultdict
 from datetime import timedelta
