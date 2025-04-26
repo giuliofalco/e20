@@ -17,7 +17,11 @@ from django.urls import reverse
 #from urllib.parse import quote, unquote
 from django.contrib.auth import logout
 from datetime import datetime, timedelta
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.contrib import messages
 import locale
+
 locale.setlocale(locale.LC_TIME, 'it_IT.UTF-8')
 
 
@@ -200,8 +204,6 @@ def logout_view(request):
     logout(request)
     return redirect('agenda:calendar_view')
 
-
-
 def weekly_report(request):
     # organizza il report per settimana
     # Ottieni tutti i record con almeno un campo non vuoto
@@ -261,4 +263,6 @@ def genera_password(request):
     # genera una passowrd da utilizzare per le registrazioni, 
     # a partire dal nome del servizio ed una parola segreta
     return render(request, 'agenda/genera_password.html')
-    
+
+
+
