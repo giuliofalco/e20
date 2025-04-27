@@ -65,10 +65,11 @@ def calendar_view(request):
             giorno['cookies']=cookies
             if record_giorno.vuoto():
                 dot = False
-            elif cookies:
-                dot = updated+str(request.user) != cookie
             else:
-                dot = True
+                if cookies:
+                   dot = updated+str(request.user) != cookies
+                else:
+                   dot = False
             giorno['full'] = not record_giorno.vuoto() # controllo che ci sia qualcosa di significativo in uno dei campi
         except DayEntry.DoesNotExist: # se non esiste quel giorno nel database ignoro
             dot = False
