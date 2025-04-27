@@ -177,7 +177,9 @@ def inserisci(request):
 
     data = request.POST.get('data')
     note = request.POST.get('note')
-    
+    if not request.user.is_authenticated:
+        # Puoi anche reindirizzare l'utente o restituire un errore
+        return redirect('login')  # o una pagina di errore
     diario = Diario()
     diario.user = request.user
     diario.data = data
