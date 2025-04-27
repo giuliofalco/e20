@@ -5,6 +5,8 @@ from datetime import date
 from django.utils import timezone
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 def strdata(data):
     return str(data.day)+"/"+str(data.month)+"/"+str(data.year)
@@ -90,4 +92,16 @@ class Consumazione(models.Model):
        pasti = [pasto[1] for pasto in self.PASTI]
        return pasti[self.tipo_pasto]
     
+class ProfiloUtente(models.Model):
+    # per memorizzare informazioni legate all'utente come immagine di sfondo ecc.
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    immagine_sfondo = models.ImageField(upload_to='sfondi/', blank=True, null=True)
 
+    def __str__(self):
+        return self.user.username
+
+
+@receiver(post_save, sender=User)
+def crea_profilo(sender, instance, created, **kwargs):
+    if created:
+        ProfiloUtente.objects.create(user=instance)

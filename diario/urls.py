@@ -15,4 +15,6 @@ urlpatterns = [
       path('rimuovi_account/', views.rimuovi_account, name='rimuovi_account'),
       path('gestisci_alimenti/', views.gestisci_alimenti, name='gestisci_alimenti'),
       path('elimina_giorni/', views.elimina_giorni, name='elimina_giorni'),
+      path('cambia_sfondo/', views.cambia_sfondo, name='cambia_sfondo'),
+      path('logout_view/', views.logout_view, name='logout_view'),
 ]

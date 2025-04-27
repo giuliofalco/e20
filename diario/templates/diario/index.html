@@ -2,8 +2,18 @@
     <head>
          {% load static %}
          <style>
-             body {background-image: url({% static 'diario/modello.jpg' %});
-                   background-repeat: no-repeat;}
+      
+              {% if user.profiloutente.immagine_sfondo %}
+                body {
+                 background-image: url("{{ user.profiloutente.immagine_sfondo.url }}");
+                 background-size: cover;
+                 background-position: center;
+                }
+              {% endif %}
+
+                /* body {background-image: url({% static 'diario/modello.jpg' %});
+                 background-repeat: no-repeat;} */
+             
              h1 {color: blue;}
              dt {font-weight: bold; margin: 10px;}
              #scheda {display: none; margin-top: 15px;}
@@ -32,9 +42,11 @@
     </head>
     
     <body>
-             <h1> Diario settimanale pasti <span id=user>{{ request.user.username }}</span> </h1>
+             <h1> Diario dieta settimanale <span id=user>{{ request.user.username }}</span> </h1>
              <input type="button" onclick="javascript:apri()" value="Inserisci nuovo giorno"> 
              <input type="button" value="Elimina giorni selezionati" onclick="javascript:elimina_giorni()">
+             - <a href="{% url 'diario:cambia_sfondo' %}">Cambia sfondo</a> - 
+             <a href="{% url 'diario:logout_view' %}">Logout</a>
              
              <div id=scheda>
                <form method=post action = {% url 'diario:inserisci' %}>

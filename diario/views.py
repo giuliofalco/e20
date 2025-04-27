@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.utils.http import urlencode
+from .forms import ProfiloUtenteForm
 
 @login_required
 def index(request):
@@ -289,3 +290,19 @@ def gestisci_alimenti(request):
     alimenti = Alimento.objects.filter(user=request.user).order_by('nome')
     return render(request, 'diario/gestisci_alimenti.html', {'alimenti': alimenti,'config': config, 'next':next})
 
+
+def cambia_sfondo(request):
+    # per cambiare lo sfondo della pagina principale
+    profilo = request.user.profiloutente
+    if request.method == 'POST':
+        form = ProfiloUtenteForm(request.POST, request.FILES, instance=profilo)
+        if form.is_valid():
+            form.save()
+            return redirect('diario:index')
+    else:
+        form = ProfiloUtenteForm(instance=profilo)
+    return render(request, 'cambia_sfondo.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('diario:index')

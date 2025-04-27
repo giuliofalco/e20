@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Diario, Alimento, Consumazione
+from .models import Diario, Alimento, Consumazione, ProfiloUtente
 from datetime import date
 
 WEEKDAYS = ('lunedi','martedi','mercoledi','giovedi','venerdi','sabato','domenica')
@@ -24,5 +24,6 @@ class AlimentoAdmin(admin.ModelAdmin):
     fields = ['user','nome','calorie','categoria']
     list_display = ['user','nome']
 
+admin.site.register(ProfiloUtente)
 
 
