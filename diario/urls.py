@@ -13,5 +13,6 @@ urlpatterns = [
       path('mioLogin',views.mioLogin,name="mioLogin"),
       path('autentica',views.autentica,name="autentica"),
       path('rimuovi_account/', views.rimuovi_account, name='rimuovi_account'),
-      path('gestisci_alimenti/', views.gestisci_alimenti, name='gestisci_alimenti')
+      path('gestisci_alimenti/', views.gestisci_alimenti, name='gestisci_alimenti'),
+      path('elimina_giorni/', views.elimina_giorni, name='elimina_giorni'),
 ]

@@ -187,6 +187,15 @@ def inserisci(request):
     return redirect('diario:index')  # o una pagina di errore
 
 @login_required
+def elimina_giorni(request):
+     # Gestisci l'eliminazione dei giorni selezionati
+        if request.method == 'POST':
+            giorni_da_cancellare = request.POST.getlist('giorni_da_cancellare')
+            for giorno_id in giorni_da_cancellare:
+                Diario.objects.filter(id=giorno_id).delete()
+        return redirect('diario:index') # ritorna alla pagina principale
+
+@login_required
 def cancella(request,idGiorno,pasto,al,week,day):
    # riceve i'id della registrazione giornaliera, il numero della consumazione 
    # e il nome alimento. Lo cancella dalla lista della consumazione

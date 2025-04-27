@@ -12,23 +12,30 @@
          </style>
          <script>
                   function apri() {
+                    // apre la scheda per inserire un nuovo giorno
                       document.getElementById('scheda').style.display = 'block';
                   }
+
                   function chiudi() {
+                    // chiude la scheda di inserimento nuovo giorno
                       document.getElementById('scheda').style.display = 'none';
                   }
-                  
-                  function giulio() {
-                     document.location = {% url 'giulio:index' %};
+
+                  function elimina_giorni() {
+                    // elimina i giorni selezionati
+                    risp = confirm("vuoi cancellare i giorni selezionati?");
+                    if (risp) {
+                        document.getElementById('form_elimina').submit();
+                    }
                   }
          </script>
     </head>
     
     <body>
              <h1> Diario settimanale pasti <span id=user>{{ request.user.username }}</span> </h1>
-             <input type="button" onclik="javascript:apri()" value="Inserisci nuovo giorno"> 
-             <input type="button" value="elimina giorni seleizonati"
-            
+             <input type="button" onclick="javascript:apri()" value="Inserisci nuovo giorno"> 
+             <input type="button" value="Elimina giorni selezionati" onclick="javascript:elimina_giorni()">
+             
              <div id=scheda>
                <form method=post action = {% url 'diario:inserisci' %}>
                    {% csrf_token %}
@@ -44,14 +51,21 @@
              </div>
             
              <dl>
-             {% for elemento in lista_settimanale %}
+            <form id="form_elimina"  method="post" action="{% url 'diario:elimina_giorni' %}">
+                {% csrf_token %}
+    
+                {% for elemento in lista_settimanale %}
                   <dt>settimana: <a href="{% url 'diario:settimana' elemento.0 %}">{{elemento.0}} </a>
                   </dt>
-                  {% for giorno in elemento.1 %}
-                       <dd><i>{{giorno.week_day}} </i>{{giorno.note}}</dd>
-                  {% endfor %}
-             {% endfor %}
-             
+                    {% for giorno in elemento.1 %}
+                        <dd>
+                           <input type="checkbox" name="giorni_da_cancellare" value="{{giorno.id}}">
+                           <i>{{giorno.week_day}} </i>{{giorno.note}}
+                       </dd>
+                    {% endfor %}
+                {% endfor %}
+
+             <form>
              </dl>
             
     </body>

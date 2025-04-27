@@ -1,0 +1,15 @@
+# File di credenziali
+*.env
+contatti/credentials/*.json
+contatti/credentials/token.pickle
+
+# Altri file di configurazione sensibili
+*.pem
+*.key
+# File Python compilati
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+
