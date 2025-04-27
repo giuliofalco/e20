@@ -89,7 +89,7 @@
                         <a href="{% url 'agenda:day_editor' year month day.day %}">{{ day.day }} </a>
                        
                         {% if  day.dot  %}
-                           d: {{day.updated_at}} {{day.cookies}}
+                           d: {{day.updated_at}} cookies: {{day.cookies}}
                            <span style="color: red;">●</span> <!-- Puntino rosso per modifiche non lette -->
                         {% endif %}
                     </td>
