@@ -59,10 +59,10 @@ def calendar_view(request):
         }
         try: # se il giorno esiste nel database controllo se è stato aggiornato piu di recente verificando il cookie
             record_giorno = DayEntry.objects.get(date=date(year,month,day),user=request.user)
-            cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d")+str(request.user))
+            cookies = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d")+str(request.user))
             updated =   record_giorno.updated_at.strftime("%Y-%m-%d %H:%M")
             giorno['updated_at']=updated
-            giorno['cookie']=cookie
+            giorno['cookies']=cookies
             if record_giorno.vuoto():
                 dot = False
             elif cookie:
