@@ -61,9 +61,8 @@ def calendar_view(request):
             record_giorno = DayEntry.objects.get(date=date(year,month,day),user=request.user)
             cookie = request.COOKIES.get(date(year,month,day).strftime("%Y-%m-%d")+str(request.user))
             updated =   record_giorno.updated_at.strftime("%Y-%m-%d %H:%M")
-            giorno['updated_at':updated]
-            giorno['cookie':cookie]
-            giorno['dot':dot]
+            giorno['updated_at']=updated
+            giorno['cookie']=cookie
             if record_giorno.vuoto():
                 dot = False
             elif cookie:
