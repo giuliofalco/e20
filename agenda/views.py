@@ -65,7 +65,7 @@ def calendar_view(request):
             giorno['cookies']=cookies
             if record_giorno.vuoto():
                 dot = False
-            elif cookie:
+            elif cookies:
                 dot = updated+str(request.user) != cookie
             else:
                 dot = True
