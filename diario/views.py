@@ -174,19 +174,17 @@ def registra(request):
 @login_required   #per mettere autenticazione inserisco solo il decoratore qui  
 def inserisci(request):
 # inserisce un nuovo oggetto evento del giorno nel diario nel sistema
-
-    data = request.POST.get('data')
-    note = request.POST.get('note')
-    if not request.user.is_authenticated:
-        # Puoi anche reindirizzare l'utente o restituire un errore
-        return redirect('login')  # o una pagina di errore
-    diario = Diario()
-    diario.user = request.user
-    diario.data = data
-    diario.note = note
-    diario.save()
-    
-    return HttpResponseRedirect(reverse('diario:index'))
+    if request.method == 'POST':
+        data = request.POST.get('data')
+        note = request.POST.get('note')
+        if not request.user.is_authenticated:
+          # Puoi anche reindirizzare l'utente o restituire un errore
+          return redirect('diario:mioLogin')
+        # Verifica se esiste già un diario per questa data
+        if not Diario.objects.filter(user=request.user, data=data).exists():
+            diario = Diario(user=request.user, data=data, note=note)
+            diario.save()
+    return redirect('diario:index')  # o una pagina di errore
 
 @login_required
 def cancella(request,idGiorno,pasto,al,week,day):
