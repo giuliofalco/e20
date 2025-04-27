@@ -87,7 +87,6 @@
                     
                     <td class="{% if day.is_today %}w3-yellow{% endif %} {% if day.full %}td-con-triangolo {%endif%}">
                         <a href="{% url 'agenda:day_editor' year month day.day %}">{{ day.day }} </a>
-                        d: {{day.updated_at}} cookies: {{day.cookies}}
                         {% if  day.dot  %}
                            <span style="color: red;">●</span> <!-- Puntino rosso per modifiche non lette -->
                         {% endif %}
