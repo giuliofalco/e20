@@ -26,9 +26,8 @@
     
     <body>
              <h1> Diario settimanale pasti <span id=user>{{ request.user.username }}</span> </h1>
-             <a href= {% url 'admin:index' %} >admin</a> - 
-             <a href="javascript:apri()">Registra</a> -
-          
+             <input type="button" onclik="javascript:apri()" value="Inserisci nuovo giorno"> 
+             <input type="button" value="elimina giorni seleizonati"
             
              <div id=scheda>
                <form method=post action = {% url 'diario:inserisci' %}>
