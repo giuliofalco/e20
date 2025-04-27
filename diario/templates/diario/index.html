@@ -3,22 +3,25 @@
          {% load static %}
          <style>
       
-              {% if user.profiloutente.immagine_sfondo %}
+             
                 body {
-                 background-image: url("{{ user.profiloutente.immagine_sfondo.url }}");
-                 background-size: cover;
-                 background-position: center;
+                  width:100%; height:100%;
+                  background-image: url("{{ user.profiloutente.immagine_sfondo.url }}");
+                 /*background-size: cover;*/
+                  background-repeat: no-repeat;
+                  background-position: center;
                 }
-              {% endif %}
+              
 
                 /* body {background-image: url({% static 'diario/modello.jpg' %});
                  background-repeat: no-repeat;} */
              
              h1 {color: blue;}
              dt {font-weight: bold; margin: 10px;}
-             #scheda {display: none; margin-top: 15px;}
+             #scheda {display: none;  }
              td {padding: 10px;}
              #user {color: red;}
+             #container { padding: 10px; height: 100%; width: 100%}
          </style>
          <script>
                   function apri() {
@@ -42,44 +45,46 @@
     </head>
     
     <body>
-             <h1> Diario dieta settimanale <span id=user>{{ request.user.username }}</span> </h1>
-             <input type="button" onclick="javascript:apri()" value="Inserisci nuovo giorno"> 
-             <input type="button" value="Elimina giorni selezionati" onclick="javascript:elimina_giorni()">
-             - <a href="{% url 'diario:cambia_sfondo' %}">Cambia sfondo</a> - 
-             <a href="{% url 'diario:logout_view' %}">Logout</a>
-             
-             <div id=scheda>
-               <form method=post action = {% url 'diario:inserisci' %}>
-                   {% csrf_token %}
-                   <table>
+     <div id="container"> 
+        <h1> Diario dieta settimanale <span id=user>{{ request.user.username }}</span> </h1>
+        <input type="button" onclick="javascript:apri()" value="Inserisci nuovo giorno"> 
+        <input type="button" value="Elimina giorni selezionati" onclick="javascript:elimina_giorni()">
+        - <a href="{% url 'diario:cambia_sfondo' %}">Cambia sfondo</a> - 
+        <a href="{% url 'diario:logout_view' %}">Logout</a> 
+        <div id="scheda">
+        <form method=post action = {% url 'diario:inserisci' %}>
+            {% csrf_token %}
+            <table>
                       <tr>
                       <td>Data:<br><input name=data type=date> 
                       <td>Note:<br> <input name=note type=text>
                       <tr>
                       <td><input type=submit value="Invia"> <td> 
                           <input type=button value="Annulla" onClick=chiudi()>
-                   </table>
-               </form>
-             </div>
-            
-             <dl>
-            <form id="form_elimina"  method="post" action="{% url 'diario:elimina_giorni' %}">
+            </table>
+        </form>
+        </div>  
+        <dl>
+        <form id="form_elimina"  method="post" action="{% url 'diario:elimina_giorni' %}">
                 {% csrf_token %}
     
                 {% for elemento in lista_settimanale %}
-                  <dt>settimana: <a href="{% url 'diario:settimana' elemento.0 %}">{{elemento.0}} </a>
-                  </dt>
-                    {% for giorno in elemento.1 %}
-                        <dd>
+                  <p>settimana: <a href="{% url 'diario:settimana' elemento.0 %}">{{elemento.0}} </a></p>
+                  <table style="width:300px;">
+                  {% for giorno in elemento.1 %}
+                        <tr>
+                        <td style="width:5%">
                            <input type="checkbox" name="giorni_da_cancellare" value="{{giorno.id}}">
-                           <i>{{giorno.week_day}} </i>{{giorno.note}}
-                       </dd>
+                        <td style="width:60%"">  <i>{{giorno.week_day}} 
+                        <td style="width:30%"> </i>{{giorno.note}}
+
+                       
                     {% endfor %}
+                  </table>
                 {% endfor %}
 
-             <form>
-             </dl>
+          <form>
+        </div>
             
     </body>
-
 </html>
