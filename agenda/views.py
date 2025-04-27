@@ -119,14 +119,9 @@ def day_editor(request, year, month, day):
             entry = form.save(commit=False)
             entry.user = request.user  # riassicura che l'utente sia corretto
             entry.save()
-
             response = HttpResponseRedirect(reverse('agenda:calendar_view'))
-            response.set_cookie(
-                key=day_entry.date.strftime('%Y-%m-%d'),
-                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M')+str(request.user),
-                max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
-            )
-            return response
+        else:
+            response = render(request, 'agenda/day_editor.html', {'form': form} )  
     else:
         form = DayEntryForm(instance=day_entry)
         # elenco_progetti = Projects.objects.all()
@@ -139,13 +134,13 @@ def day_editor(request, year, month, day):
                    #'elenco_progetti':elenco_progetti,
         }
         response = render(request, 'agenda/day_editor.html', context )
-        response.set_cookie(
-                key=day_entry.date.strftime('%Y-%m-%d'),
-                value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M')+str(request.user),
-                max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
-        )
-       
-        return response
+
+    response.set_cookie(
+        key=day_entry.date.strftime('%Y-%m-%d'),
+        value=day_entry.updated_at.strftime('%Y-%m-%d %H:%M')+str(request.user),
+        max_age=60 * 60 * 24 * 365  # Cookie valido per 1 anno
+            )  
+    return response
 
 
 
