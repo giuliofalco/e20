@@ -101,7 +101,7 @@ def day_editor(request, year, month, day):
     prev_date = entry_date - timedelta(days=1)
     next_date = entry_date + timedelta(days=1)
 
-    # cerca l'entry solo tra quelle dell'utente
+    # cerca l'entry specifica dell'utente loggato
     day_entry = DayEntry.objects.filter(user=request.user, date=entry_date).first()
     created = False
     if not day_entry:
@@ -124,14 +124,12 @@ def day_editor(request, year, month, day):
             response = render(request, 'agenda/day_editor.html', {'form': form} )  
     else:
         form = DayEntryForm(instance=day_entry)
-        # elenco_progetti = Projects.objects.all()
 
         context = {'form': form, 'entry_date': entry_date, 'mese':MESI[month-1],
                    'prev_day': prev_date.day, 'next_day':next_date.day, 
                    'prev_month':prev_date.month, 'next_month':next_date.month,
                    'prev_year': prev_date.year,'next_year': next_date.year, 
                    'weekday' : weekday, 
-                   #'elenco_progetti':elenco_progetti,
         }
         response = render(request, 'agenda/day_editor.html', context )
 
