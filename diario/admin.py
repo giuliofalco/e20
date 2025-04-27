@@ -24,6 +24,10 @@ class AlimentoAdmin(admin.ModelAdmin):
     fields = ['user','nome','calorie','categoria']
     list_display = ['user','nome']
 
-admin.site.register(ProfiloUtente)
+@admin.register(ProfiloUtente)
+class ProfiloUtenteAdmin(admin.ModelAdmin):
+    fields = ['user','immagine_sfondo']
+    list_display = ['user']
+
 
 
