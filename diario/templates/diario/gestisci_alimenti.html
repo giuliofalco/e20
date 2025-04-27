@@ -1,0 +1,59 @@
+<!-- gestisci_alimenti.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestione Alimenti</title>
+    <link rel="stylesheet" href="{% static 'diario/alimenti.css' %}">
+</head>
+<body>
+<h1>Gestione Alimenti</h1>
+
+<!-- Form per aggiungere un nuovo alimento -->
+<form method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Aggiungi un nuovo alimento</legend>
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" id="nome" required>
+
+        <label for="calorie">Calorie:</label>
+        <input type="number" name="calorie" id="calorie" value="100">
+
+        <label for="categoria">Categoria:</label>
+        <select name="categoria" id="categoria">
+            {% for val, desc in config.CATEGORIE %}
+                <option value="{{ val }}">{{ desc }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" name="aggiungi" class="btn">Aggiungi</button>
+    </fieldset>
+</form>
+
+<!-- Form per cancellare alimenti -->
+<form method="post" style="margin-top: 20px;">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Alimenti esistenti</legend>
+        {% if alimenti %}
+            <ul>
+            {% for alimento in alimenti %}
+                <li>
+                    <input type="checkbox" name="alimenti_selezionati" value="{{ alimento.id }}">
+                    {{ alimento.nome }} ({{ alimento.calorie }} kcal, Categoria: {{ alimento.get_categoria_display }})
+                </li>
+            {% endfor %}
+            </ul>
+            <button type="submit" name="cancella" class="btn btn-danger">Cancella Selezionati</button>
+        {% else %}
+            <p>Nessun alimento inserito.</p>
+        {% endif %}
+    </fieldset>
+</form>
+
+<!-- Pulsante Esci -->
+<button onclick='window.location.href= "/diario/{{next}}"' class="btn">Esci</button>
+
+</body>
+</html>

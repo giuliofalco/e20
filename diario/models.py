@@ -61,7 +61,7 @@ class Alimento(models.Model):
     config.CATEGORIE.sort(key=lambda x: x[1])
 
     user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
-    nome = models.CharField(max_length=50, unique=True)
+    nome = models.CharField(max_length=50)
     calorie = models.IntegerField(default=100)
     categoria = models.IntegerField(choices=config.CATEGORIE,default=0)
     

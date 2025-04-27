@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.utils.http import urlencode
 
 @login_required
 def index(request):
@@ -130,9 +131,11 @@ def modifica(request,id,week,pasto,day):
         alimenti = list(Alimento.objects.filter(user=request.user))                     # tutti gli alimenti
         print(request.user,Alimento.objects.all())
      alimenti.sort(key=lambda x: x.nome.lower())
+     # devo tornare qui alla fine, memorizzo l'indirizzo con tutti i parametri
+     next = "modifica/" + str(id) + "/" + str(week) + "/" + pasto + "/" + str(day)
      context = {'alimlist': alimlist, 'id': id, 'pasto': config.PASTIC[pasto], 'strpasto': pasto,
                 'alimenti' : alimenti,'data': data, 'giorno':day, 'strdata': strdata,
-                'week':week,
+                'week':week, 'next':next
                }
      
      return render(request,'diario/modifica.html',context)
@@ -240,4 +243,40 @@ def rimuovi_account(request):
    return redirect(next_url)
 
 
+# views.py
+from django.shortcuts import render, redirect
+from .models import Alimento
+from django.contrib.auth.decorators import login_required
+from . import config
+@login_required
+def gestisci_alimenti(request):
+    # per inserire un nuovo alimento
+
+    # per calcolare l'indirizzo di ritorno
+    next = request.GET.get('next') or '/'
+    url = reverse('diario:gestisci_alimenti')
+    query_string = urlencode({'next': next})
+    full_url = url+"?"+query_string
+    
+    if request.method == 'POST':
+        if 'aggiungi' in request.POST:
+            nome = request.POST.get('nome', '').strip()
+            calorie = request.POST.get('calorie', 100)
+            categoria = request.POST.get('categoria', 0)
+            if nome:  # Solo se il nome non è vuoto
+                Alimento.objects.create(
+                    user=request.user,
+                    nome=nome,
+                    calorie=calorie,
+                    categoria=categoria
+                )
+            return redirect(full_url)  # Ricarica la pagina"
+        
+        elif 'cancella' in request.POST:
+            da_cancellare = request.POST.getlist('alimenti_selezionati')
+            Alimento.objects.filter(user=request.user, id__in=da_cancellare).delete()
+            return redirect(full_url)
+
+    alimenti = Alimento.objects.filter(user=request.user).order_by('nome')
+    return render(request, 'diario/gestisci_alimenti.html', {'alimenti': alimenti,'config': config, 'next':next})
 

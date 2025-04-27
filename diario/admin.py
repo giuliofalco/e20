@@ -10,13 +10,19 @@ class ConsumazioneInline(admin.TabularInline):
 
 @admin.register(Diario)     
 class DiarioAdmin(admin.ModelAdmin):
-    fields = ['data','note']
-    list_display = ['data_registrazione','note']
+    fields = ['user','data','note']
+    list_display = ['user','data_registrazione','note']
     inlines =[ConsumazioneInline]
     
     def data_registrazione(self,obj):
         return WEEKDAYS[obj.data.isocalendar()[2]-1] + " " + obj.data.strftime("%d/%m/%Y")
              
 #admin.site.register(Diario,DiarioAdmin)
-admin.site.register(Alimento)
+#admin.site.register(Alimento)
+@admin.register(Alimento)
+class AlimentoAdmin(admin.ModelAdmin):
+    fields = ['user','nome','calorie','categoria']
+    list_display = ['user','nome']
+
+
 
