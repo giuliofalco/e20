@@ -111,7 +111,7 @@ def modifica(request,id,week,pasto,day):
          liscons = diario.consumazione_set.all()         # tutte le consumazioni relative a quell'id
          plist = liscons.filter(tipo_pasto = config.PASTIC[pasto])  # lista con la cons corrisp al
                                                          # tipo_pasto
-         alimlist = plist[0].alimento.all()              # lista degli alimenti
+         alimlist = plist[0].alimento.filter(user=request.user)              # lista degli alimenti
          alimId = [al.id for al in alimlist]             # tutti gli id della lista di 
                                                          # alimenti trovati
          alims  = list(Alimento.objects.all())           # tutti gli alimenti, come lista
@@ -129,7 +129,7 @@ def modifica(request,id,week,pasto,day):
         miadata = d.data_wday(week,day-1)               # calcolo la data con la mia funzione
         data  = "{}-{}-{}".format(d.anno_corrente(),miadata[1]+1,miadata[0])     # formato data come tupla anno,mese,giorno
         strdata = "{}/{}/{}".format(d.anno_corrente(),miadata[1]+1,miadata[0])   # formato data come stringa europea
-        alimenti = list(Alimento.objects.filter(user=request.user))                     # tutti gli alimenti
+        alimenti = list(Alimento.objects.filter(user=request.user))              # tutti gli alimenti
         print(request.user,Alimento.objects.all())
      alimenti.sort(key=lambda x: x.nome.lower())
      # devo tornare qui alla fine, memorizzo l'indirizzo con tutti i parametri
