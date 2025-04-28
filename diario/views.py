@@ -114,7 +114,7 @@ def modifica(request,id,week,pasto,day):
          alimlist = plist[0].alimento.filter(user=request.user)              # lista degli alimenti
          alimId = [al.id for al in alimlist]             # tutti gli id della lista di 
                                                          # alimenti trovati
-         alims  = list(Alimento.objects.all(user=request.user))           # tutti gli alimenti, come lista
+         alims  = list(Alimento.objects.get(user=request.user))           # tutti gli alimenti, come lista
                                                          # di oggetti 
                                                         
          alimenti = [elem for elem in alims if elem.id not in alimId]
