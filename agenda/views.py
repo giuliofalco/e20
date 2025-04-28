@@ -201,28 +201,55 @@ def logout_view(request):
 def weekly_report(request):
     # organizza il report per settimana
     # Ottieni tutti i record con almeno un campo non vuoto
+    entries = DayEntry.objects.filter(user=request.user)
+        
+    """ 
     entries = DayEntry.objects.filter(
         Q(assenze__isnull=False, assenze__gt='') |
         Q(eventi__isnull=False, eventi__gt='') |
         Q(uscite__isnull=False, uscite__gt='') |
         Q(note__isnull=False, note__gt='')
     ).filter(user=request.user)
-
+    """
     # Organizza i dati per settimana
-    data_by_week = defaultdict(list)
+    data_by_week = defaultdict(list) # lista di dizionari
+    # Il defaultdict(list) è una variante del dizionario Python dict che appartiene al modulo collections. 
+    # La caratteristica principale di defaultdict è che, se si tenta di accedere a una chiave che non esiste 
+    # nel dizionario, invece di generare un errore di tipo KeyError, restituisce automaticamente un valore predefinito,
+    #  che in questo caso è una lista vuota (list()).
     for entry in entries:
         start_of_week = entry.date - timedelta(days=entry.date.weekday())  # Lunedì
         end_of_week = start_of_week + timedelta(days=6)                    # Domenica
-        week_key = (start_of_week, end_of_week)
+        week_key = (start_of_week, end_of_week)                            # la settimana identificata dalla tupla data inizio data fine
         data_by_week[week_key].append({
-            # 'date': entry.date.strftime('%d-%m-%Y'),
-            'date': entry.date.strftime('%d-%m-%Y %A').capitalize(),
-            'assenze': entry.assenze,
+            'date': entry.date.strftime('%d-%m-%Y %A').capitalize(), # data seguito dal giorno della settimana
+            'assenze': entry.assenze,                                # resto dei dati
             'eventi': entry.eventi,
             'uscite': entry.uscite,
             'note': entry.note,
         })
+    # alla fine avrò nel dizionario tante chiavi quante sono le settimane con la lista di tutti giorni apaprtenenti 
+    # a quella settimana
+    
+    # Elenco dei giorni della settimana
+    weekdays = ['lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica'] 
+    
+    # Aggiungi giorni mancanti alla settimana
+    for week_key, entries_in_week in data_by_week.items():
+        # Ottieni la data di inizio della settimana (lunedì)
+        start_of_week = week_key[0]
+        # Crea un dizionario dei giorni della settimana con dati vuoti
+        days_in_week = {day: {'date': (start_of_week + timedelta(days=weekdays.index(day))).strftime('%d-%m-%Y %A'), 'assenze': '', 'eventi': '', 'uscite': '', 'note': ''} for day in weekdays}
 
+        # Aggiungi i dati reali per i giorni già presenti
+        for entry in entries_in_week:
+            day_name =  entry['date'].split(' ')[1].lower()  # Ottieni il nome del giorno (es. 'lunedì')
+            days_in_week[day_name] = entry  # Aggiungi i dati reali per il giorno specifico
+
+        # Riassociati i giorni mancanti con le voci aggiuntive
+        data_by_week[week_key] = list(days_in_week.values())
+    
+    # gestione del filtro di ricerca
     parola = ''
     if request.method == 'POST':
         parola = request.POST.get('q', '')
@@ -233,9 +260,9 @@ def weekly_report(request):
     data_by_week = {week: data_by_week[week] for week in sorted_weeks}
 
     # Ordina i giorni all'interno di ogni settimana (opzionale, decrescente)
-    for week in data_by_week:
-        data_by_week[week].sort(key=lambda x: x['date'])
-
+    #for week in data_by_week:
+       # data_by_week[week].sort(key=lambda x: x['date'])
+        
     return render(request, 'agenda/weekly_report.html', {
         'data_by_week': data_by_week,
         'parola': parola
