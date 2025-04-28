@@ -201,18 +201,18 @@ def logout_view(request):
 def weekly_report(request):
     # organizza il report per settimana
     # Ottieni tutti i record con almeno un campo non vuoto
-    entries = DayEntry.objects.filter(user=request.user)
-        
-    """ 
+    # entries = DayEntry.objects.filter(user=request.user)
+   
     entries = DayEntry.objects.filter(
         Q(assenze__isnull=False, assenze__gt='') |
         Q(eventi__isnull=False, eventi__gt='') |
         Q(uscite__isnull=False, uscite__gt='') |
         Q(note__isnull=False, note__gt='')
     ).filter(user=request.user)
-    """
+
     # Organizza i dati per settimana
     data_by_week = defaultdict(list) # lista di dizionari
+
     # Il defaultdict(list) è una variante del dizionario Python dict che appartiene al modulo collections. 
     # La caratteristica principale di defaultdict è che, se si tenta di accedere a una chiave che non esiste 
     # nel dizionario, invece di generare un errore di tipo KeyError, restituisce automaticamente un valore predefinito,
