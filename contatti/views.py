@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from contatti.models import *
 from .filters import *
 from django.contrib.auth.decorators import login_required
@@ -132,8 +133,31 @@ def insertCompany(request):
            form.save()
            return HttpResponseRedirect("/contatti/aziende")    
     template = "insertCompany.html"
-    context = {'form': form}
+    context = {'form': form, 'modifica': False}
     return(render(request,template,context))
+
+
+def updateCompany(request, id):
+    azienda = get_object_or_404(Aziende, pk=id, user=request.user)
+    if request.method == 'POST':
+        form = AziendeForm(request.POST, instance=azienda)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/contatti/aziende")
+    else:
+        form = AziendeForm(instance=azienda)
+
+    template = "insertCompany.html"  # stesso template
+    context = {'form': form, 'modifica': True, 'azienda_id': id }
+    return render(request, template, context)
+
+@login_required
+def deleteCompany(request, id):
+    print(f"Sto per cancellare l'azienda con id={id}")  # <- DEBUG
+    azienda = get_object_or_404(Aziende, pk=id, user=request.user)
+    azienda.delete()
+    return HttpResponseRedirect("/contatti/aziende")
+
 
 def richieste_contatti(request):
     # permette di visualizzare e ricevere i dati di una form di contatti dei potenziali clienti

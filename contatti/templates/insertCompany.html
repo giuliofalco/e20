@@ -4,22 +4,40 @@
 <style>
    
     #tabella {width:30%; margin:auto;}
-    #pulsanti {text-align:center;}
+    #pulsanti, button {text-align:center;}
     
 </style>
+<script>
+    function cancellaAzienda(id) {
+        url = "/delete/" + id;
+        alert(url);
+        risp = confirm("Sei sicuro di voler cancellare questa azienda? L'operazione è irreversibile.");
+        if (risp ) {
+            document.location = url;
+        }
+    }
+ </script>
+    
 {% endblock %}
 
 {% block content %}
 <div class="w3.container w3-pale-green" >
-    <h1 class="w3-text-black">Inserimento Azienda</h1>
-    <form id=myform method="POST" action="/contatti/insert">
+    <h1 class="w3-text-black">
+        {% if modifica %}Modifica Azienda{% else %}Inserimento Azienda{% endif %}
+    </h1>
+    <form id="myform" method="POST" action="{% if modifica %}/contatti/update/{{ azienda_id }}/{% else %}/contatti/insert{% endif %}">
         {% csrf_token %}
         <table id="tabella">
            {{form.as_table}}
         </table>
 
         <p id="pulsanti">
-         <input  type=submit value="Invia"> <input type=button value="Annulla">
+           <input type="submit" value="{% if modifica %}Modifica{% else %}Invia{% endif %}">
+           <input type=button value="Annulla"> <p>
+            <a href="{% url 'contatti:deleteCompany' azienda.id %}" onclick="return confirm('Vuoi davvero cancellare questa azienda?')">
+                🗑️ Cancella
+            </a>
+          
         </p>
         
     </form>  

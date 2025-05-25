@@ -142,8 +142,11 @@
     </div>
     
  <div class="w3-container">  
-    <a href="/admin/contatti/aziende/{{azienda.id}}">Admin</a> -
-    <a href="javascript:nuovo_contatto()">Nuovo Contatto</a>
+    <a href="javascript:nuovo_contatto()">Nuovo Contatto</a> - 
+    <a href="/admin/contatti/aziende/{{azienda.id}}">Admin</a> - 
+    <a href="{% url 'contatti:updateCompany' azienda.id %}">Modifica Azienda</a> 
+    
+  
     <h3>Contatti</h3>
     <hr>      
         {% for con in contatti %}
