@@ -151,13 +151,6 @@ def updateCompany(request, id):
     context = {'form': form, 'modifica': True, 'azienda_id': id }
     return render(request, template, context)
 
-@login_required
-def deleteCompany(request, id):
-    print(f"Sto per cancellare l'azienda con id={id}")  # <- DEBUG
-    azienda = get_object_or_404(Aziende, pk=id, user=request.user)
-    azienda.delete()
-    return HttpResponseRedirect("/contatti/aziende")
-
 
 def richieste_contatti(request):
     # permette di visualizzare e ricevere i dati di una form di contatti dei potenziali clienti

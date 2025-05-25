@@ -34,10 +34,6 @@
         <p id="pulsanti">
            <input type="submit" value="{% if modifica %}Modifica{% else %}Invia{% endif %}">
            <input type=button value="Annulla"> <p>
-            <a href="{% url 'contatti:deleteCompany' azienda.id %}" onclick="return confirm('Vuoi davvero cancellare questa azienda?')">
-                🗑️ Cancella
-            </a>
-          
         </p>
         
     </form>  
