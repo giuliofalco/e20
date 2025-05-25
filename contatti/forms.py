@@ -15,7 +15,7 @@ class ContactForm(forms.Form):
 class AziendeForm(ModelForm):
     class Meta:
          model = Aziende
-         fields = ['archivio','nome','indirizzo','citta','provincia','phone','mail']
+         fields = ['archivio','nome','indirizzo','citta','provincia','phone','mail','web']
 
 class ContattiForm(ModelForm):
     captcha = ReCaptchaField()
