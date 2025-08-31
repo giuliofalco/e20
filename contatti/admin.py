@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import  Aziende, Agenti, Contatti, RichiesteContatti
+from .models import  *
 
 class ContattiInline(admin.StackedInline):
     model = Contatti
-    fields = ['data','agente','note']
+    fields = ['data','agente','note','contratto']
     #inlines = [StudentiInline]
     extra = 0
 
@@ -20,6 +20,14 @@ class AgentiAdmin(admin.ModelAdmin):
 @admin.register(RichiesteContatti)
 class RichiesteContattiAdmin(admin.ModelAdmin):
      list_display = ['id','data','nome','cognome','email','telefono','interessi','note']
+
+@admin.register(Condizioni)
+class CondizioniAdmin(admin.ModelAdmin):
+     list_display = ['tipologia','descrizione','prezzo']
+     list_filter = ['tipologia']
+
+
+
        
 
 

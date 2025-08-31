@@ -66,6 +66,7 @@ def dettaglio_azienda(request,id):
     agente = request.GET.get('agente','')
     evidenziato = request.GET.get('evidenziato','')
     da_chiamare = request.GET.get('da_chiamare','')
+    contratto = request.GET.get('contratto','')
     if contatto:
         obj = Contatti.objects.get(id=contatto)
         obj.note = note
@@ -73,12 +74,15 @@ def dettaglio_azienda(request,id):
         obj.agente = nuovo_agente
         obj.evidenziato = evidenziato != ''
         obj.da_chiamare = da_chiamare != ''
+        obj.contratto = Condizioni.objects.get(id=contratto)
         obj.save()
 
     context = {'azienda':azienda, 'contatti': contatti, 'agenti':agenti,}
     #context['user'] = visualizza_utente(request)
     form = ContactForm(initial={'azienda':azienda.id,})
     context['form'] = form
+    condizioni = Condizioni.objects.filter(user=request.user)
+    context['condizioni'] = condizioni
     return render(request,"contatti/dettaglio_azienda.html",context) 
 
 @login_required
