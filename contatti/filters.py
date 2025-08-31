@@ -1,5 +1,5 @@
 import django_filters
-from django_filters import CharFilter, ChoiceFilter
+from django_filters import CharFilter, ChoiceFilter, ModelChoiceFilter
 from .models import *
 
 
@@ -21,16 +21,27 @@ class ContattiFilter(django_filters.FilterSet):
     note = CharFilter(field_name="note",lookup_expr="icontains")
     da_chiamare = ChoiceFilter(field_name="da_chiamare", choices=DA_CHIAMARE, method='filtro_attivo')
 
+     # filtro contratto senza queryset definita qui
+    contratto = ModelChoiceFilter(
+        field_name='contratto',
+        queryset=Condizioni.objects.none(),
+        empty_label='-- Tutti i contratti --'
+    )
+
     class Meta: 
         model=Contatti
         fields=['azienda','citta','note','da_chiamare']
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super(ContattiFilter, self).__init__(*args, **kwargs)
         self.filters['provincia'].field.widget.attrs.update({'class': 'custom-province-field'})
         self.filters['azienda'].field.widget.attrs.update({'class': 'custom-aziende-field'})
         self.filters['note'].field.widget.attrs.update({'class': 'custom-note-field'})
         self.filters['citta'].field.widget.attrs.update({'class': 'custom-citta-field'})
+       
+        if user:
+            self.filters['contratto'].queryset = Condizioni.objects.filter(user=user)
 
     def filtro_attivo(self, queryset, name, value):
         if value == '1':

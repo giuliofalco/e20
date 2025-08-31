@@ -89,8 +89,11 @@ def dettaglio_azienda(request,id):
 def contatti(request):
     # elenco dei contatti in ordine decrescente di data
     contatti = Contatti.objects.filter(user=request.user)
-    
-    myFilter = ContattiFilter(request.GET,queryset=contatti)
+    # passiamo l'utente al filtro per popolare correttamente la tendina dei contratti
+    myFilter = ContattiFilter(request.GET, queryset=contatti, user=request.user)
+    # myFilter = ContattiFilter(request.GET,queryset=contatti)
+     # passiamo l'utente al filtro in modo che il filtro contratto venga popolato correttamente
+  
     contatti = myFilter.qs
     context = {'contatti': contatti,'myFilter': myFilter}
     

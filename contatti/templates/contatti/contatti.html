@@ -29,7 +29,18 @@
     <h1 class="w3-text-black">Elenco Contatti</h1>
     <form method="get" id="myform">
     <div class="campi">
-        <div>  Azienda <br> {{myFilter.form.azienda}} </div>
+        <div> Azienda <br> {{myFilter.form.azienda}} </div>
+        <div> Contratto <br>
+        <select name="contratto">
+        <option value="">-- Tutti i contratti --</option>
+        {% for contratto in myFilter.form.contratto.field.queryset %}
+            <option value="{{ contratto.id }}"
+                {% if myFilter.form.contratto.value == contratto.id|stringformat:"s" %} selected {% endif %}>
+                {{ contratto.tipologia }} - €{{ contratto.prezzo }}
+            </option>
+        {% endfor %}
+        </select>
+        </div>
         <div>Città <br> {{myFilter.form.citta}} </div>
         <div>Note <br> {{myFilter.form.note}} </div> 
         <div>Da chiamare <br> {{myFilter.form.da_chiamare}}  </div>
