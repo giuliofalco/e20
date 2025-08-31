@@ -23,7 +23,7 @@ class RichiesteContattiAdmin(admin.ModelAdmin):
 
 @admin.register(Condizioni)
 class CondizioniAdmin(admin.ModelAdmin):
-     list_display = ['tipologia','descrizione','prezzo']
+     list_display = ['user','tipologia','descrizione','prezzo']
      list_filter = ['tipologia']
 
 
