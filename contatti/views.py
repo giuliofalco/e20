@@ -57,7 +57,7 @@ def dettaglio_azienda(request,id):
     # mostra i dati dell'aziende e dei contatti associati
     azienda = Aziende.objects.get(id=id)
     contatti = azienda.contatti_set.all()
-    agenti = Agenti.objects.all()
+    agenti = Agenti.objects.filter(user=request.user)
 
     # se la funzione è richiamata con i parametri significa che voglio salvare il nuovo contatto
     
