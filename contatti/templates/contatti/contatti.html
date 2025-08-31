@@ -54,7 +54,11 @@
             {%endif%}
                 <a href="{% url 'contatti:aziende'%}/{{con.azienda.id}}">{{con.azienda}}</a>
             </td>
-            <td class="contratto">{{con.contratto}}({{con.contratto.prezzo}}€)</td>
+            <td class="contratto">
+                {%if con.contratto %}
+                {{con.contratto}}({{con.contratto.prezzo}}€)
+                {%endif%}
+            </td>
             <td class="localita"> {{con.azienda.citta}}  </td>
             <td class="note"> {{con.note}}  </td>
         </tr>
