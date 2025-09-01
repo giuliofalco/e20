@@ -59,8 +59,6 @@ class Condizioni(models.Model):
     def __str__(self):
        return(self.tipologia)
     
-
-
 class Contatti(models.Model):
     user    = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     data = models.DateField(default=timezone.now)
@@ -69,7 +67,7 @@ class Contatti(models.Model):
     note = models.TextField(null=True,blank=True)
     evidenziato = models.BooleanField(default=False)
     da_chiamare = models.BooleanField(default=False)
-    contratto =models.ForeignKey(Condizioni,on_delete=models.DO_NOTHING,null=True)
+    proposta = models.ForeignKey(Condizioni,on_delete=models.DO_NOTHING,null=True)
 
 
     def __str__(self):

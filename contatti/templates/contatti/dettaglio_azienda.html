@@ -163,10 +163,10 @@
                     <input type="button" value="Cancella" onclick="cancella_contatto('{{con.id}}','{{azienda.id}}')">
                     <input type="button" value="Evento in Calendario" onclick="calendario()">
                     <label for="contratto_{{con.id}}">Contratto:</label>
-                    <select name="contratto" id="contratto_{{con.id}}">
+                    <select name="proposta" id="proposta_{{con.id}}">
                         <option value="">-- seleziona --</option>
                         {% for cond in condizioni %}
-                            <option value="{{cond.id}}" {% if con.contratto and con.contratto.id == cond.id %}selected{% endif %}>
+                            <option value="{{cond.id}}" {% if con.proposta and con.proposta.id == cond.id %}selected{% endif %}>
                         {{cond.tipologia}} ({{cond.prezzo}} €)
                         </option>
                         {% endfor %}

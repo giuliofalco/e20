@@ -18,6 +18,14 @@ from django.conf import settings
 # Definisci gli SCOPES necessari per interagire con Google Calendar
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
+# Condizioni
+
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from .forms import CondizioniForm
+
+
 @login_required
 def index(request):
     
@@ -57,7 +65,7 @@ def dettaglio_azienda(request,id):
     # mostra i dati dell'aziende e dei contatti associati
     azienda = Aziende.objects.get(id=id)
     contatti = azienda.contatti_set.all()
-    agenti = Agenti.objects.filter(user=request.user)
+    agenti = Agenti.objects.all()
 
     # se la funzione è richiamata con i parametri significa che voglio salvare il nuovo contatto
     
@@ -66,7 +74,9 @@ def dettaglio_azienda(request,id):
     agente = request.GET.get('agente','')
     evidenziato = request.GET.get('evidenziato','')
     da_chiamare = request.GET.get('da_chiamare','')
-    contratto = request.GET.get('contratto','')
+    proposta = request.GET.get('proposta','')
+   # if contratto == '':
+   #     return HttpResponse('Nessun contratto selezionato')
     if contatto:
         obj = Contatti.objects.get(id=contatto)
         obj.note = note
@@ -74,7 +84,8 @@ def dettaglio_azienda(request,id):
         obj.agente = nuovo_agente
         obj.evidenziato = evidenziato != ''
         obj.da_chiamare = da_chiamare != ''
-        obj.contratto = Condizioni.objects.get(id=contratto)
+        if proposta:
+           obj.proposta = Condizioni.objects.get(id=proposta)
         obj.save()
 
     context = {'azienda':azienda, 'contatti': contatti, 'agenti':agenti,}
@@ -249,3 +260,43 @@ def calendario(request,start,end,target,msg):
     # Inserisci l'evento nel calendario
     event = service.events().insert(calendarId='primary', body=event).execute()
     return HttpResponse(f'Evento registrato con successo');
+
+@method_decorator(login_required, name="dispatch")
+class CondizioniListView(ListView):
+    model = Condizioni
+    template_name = "contatti/condizioni_list.html"
+    context_object_name = "condizioni"
+
+    def get_queryset(self):
+        return Condizioni.objects.filter(user=self.request.user)
+
+@method_decorator(login_required, name="dispatch")
+class CondizioniCreateView(CreateView):
+    model = Condizioni
+    form_class = CondizioniForm
+    template_name = "contatti/condizioni_form.html"
+    success_url = reverse_lazy("condizioni_list")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+@method_decorator(login_required, name="dispatch")
+class CondizioniUpdateView(UpdateView):
+    model = Condizioni
+    form_class = CondizioniForm
+    template_name = "contatti/condizioni_form.html"
+    success_url = reverse_lazy("condizioni_list")
+
+    def get_queryset(self):
+        # limita l’update ai record dell’utente corrente
+        return Condizioni.objects.filter(user=self.request.user)
+
+@method_decorator(login_required, name="dispatch")
+class CondizioniDeleteView(DeleteView):
+    model = Condizioni
+    template_name = "contatti/condizioni_confirm_delete.html"
+    success_url = reverse_lazy("condizioni_list")
+
+    def get_queryset(self):
+        return Condizioni.objects.filter(user=self.request.user)

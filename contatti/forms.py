@@ -30,4 +30,15 @@ class ContattiForm(ModelForm):
             'interessi' : 'Interessi',
             'note' : 'Note',
         }
+# contatti/forms.py
+
+class CondizioniForm(forms.ModelForm):
+    class Meta:
+        model = Condizioni
+        fields = ["tipologia", "descrizione", "prezzo"]
+        widgets = {
+            "tipologia": forms.TextInput(attrs={"class": "form-control"}),
+            "descrizione": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+            "prezzo": forms.NumberInput(attrs={"class": "form-control"}),
+        }
 
