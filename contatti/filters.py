@@ -22,15 +22,15 @@ class ContattiFilter(django_filters.FilterSet):
     da_chiamare = ChoiceFilter(field_name="da_chiamare", choices=DA_CHIAMARE, method='filtro_attivo')
 
      # filtro contratto senza queryset definita qui
-    contratto = ModelChoiceFilter(
-        field_name='contratto',
+    proposta = ModelChoiceFilter(
+        field_name='proposta',
         queryset=Condizioni.objects.none(),
         empty_label='-- Tutti i contratti --'
     )
 
     class Meta: 
         model=Contatti
-        fields=['azienda','citta','note','da_chiamare']
+        fields=['azienda','citta','note','da_chiamare','proposta']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -41,7 +41,7 @@ class ContattiFilter(django_filters.FilterSet):
         self.filters['citta'].field.widget.attrs.update({'class': 'custom-citta-field'})
        
         if user:
-            self.filters['contratto'].queryset = Condizioni.objects.filter(user=user)
+            self.filters['proposta'].queryset = Condizioni.objects.filter(user=user)
 
     def filtro_attivo(self, queryset, name, value):
         if value == '1':
