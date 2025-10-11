@@ -48,6 +48,7 @@
         .underlined {
             text-decoration: underline; color: blue;
         }
+        #utente { margin-left: 30px;}
     </style>
 </head>
 <body>
@@ -61,10 +62,11 @@
         <img src = "{%static 'agenda/go-next.png' %}">
     </a>
     </h1>
-  software by: E20.website - user: {{user}} (<a href="{%url 'agenda:logout_view'%}" class="underlined">logout</a>)
-  
+  user: {{user}} (<a href="{%url 'agenda:logout_view'%}" class="underlined">logout</a>)
+  {%if utente != 'scuola'%}
   - <a href="{%url 'contatti:index'%}" class="underlined"> Contatti </a> -
     <a href="{%url 'diario:index'%}" class="underlined"> Diario dieta </a> -
+  {% endif %}
     <a href="{%url 'agenda:genera_password' %}" class="underlined" target="_blank">Genera Password</a>
   <p>
    

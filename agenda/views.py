@@ -92,6 +92,7 @@ def calendar_view(request):
         'last_weekday': last_weekday,    # Giorno della settimana dell'ultimo giorno
         'empty_start': empty_start,
         'empty_end': empty_end,
+        'utente' : str(request.user)
     }
     return render(request, 'agenda/calendar_view.html', context)
 
@@ -130,6 +131,7 @@ def day_editor(request, year, month, day):
                    'prev_month':prev_date.month, 'next_month':next_date.month,
                    'prev_year': prev_date.year,'next_year': next_date.year, 
                    'weekday' : weekday, 
+                   'utente' : str(request.user)
         }
         response = render(request, 'agenda/day_editor.html', context )
 
