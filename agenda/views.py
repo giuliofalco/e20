@@ -179,7 +179,6 @@ def monthly_report(request):
             'eventi': entry.eventi,
             'uscite': entry.uscite,
             'note': entry.note,
-            'utente': str(request.user)
         })
     
     parola = ''
@@ -195,7 +194,7 @@ def monthly_report(request):
     for month in data_by_month:
         data_by_month[month].sort(key=lambda x: x['date'],reverse=True)
     # Passa i dati al template
-    return render(request, 'agenda/monthly_report.html', {'data_by_month': data_by_month, 'parola':parola})
+    return render(request, 'agenda/monthly_report.html', {'data_by_month': data_by_month, 'parola':parola, 'utente': str(request.user)})
 
 def logout_view(request):
     logout(request)
@@ -230,7 +229,6 @@ def weekly_report(request):
             'eventi': entry.eventi,
             'uscite': entry.uscite,
             'note': entry.note,
-            'utente': str(request.user)
         })
     # alla fine avrò nel dizionario tante chiavi quante sono le settimane con la lista di tutti giorni apaprtenenti 
     # a quella settimana
@@ -269,7 +267,8 @@ def weekly_report(request):
         
     return render(request, 'agenda/weekly_report.html', {
         'data_by_week': data_by_week,
-        'parola': parola
+        'parola': parola,
+        'utente': str(request.user)
     })
 
 def redirect_to_day_editor(request, date_str):
