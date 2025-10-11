@@ -49,8 +49,13 @@
             <thead>
                 <tr>
                     <th>Data</th>
-                    <th>Appuntamenti</th>
-                    <th>Eventi</th>
+                     {%if utente != 'scuola' %}
+                       <th>Appuntamenti</th>
+                       <th>Eventi</th>
+                    {%else%}
+                       <th>Eventi</th>
+                       <th>Classi in uscita</th>
+                    {%%endif%}
                     <th>Note</th>
                 </tr>
             </thead>

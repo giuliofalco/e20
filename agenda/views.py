@@ -179,6 +179,7 @@ def monthly_report(request):
             'eventi': entry.eventi,
             'uscite': entry.uscite,
             'note': entry.note,
+            'utente': str(request.user)
         })
     
     parola = ''
@@ -229,6 +230,7 @@ def weekly_report(request):
             'eventi': entry.eventi,
             'uscite': entry.uscite,
             'note': entry.note,
+            'utente': str(request.user)
         })
     # alla fine avrò nel dizionario tante chiavi quante sono le settimane con la lista di tutti giorni apaprtenenti 
     # a quella settimana
