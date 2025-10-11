@@ -65,17 +65,14 @@
                     {% if utente != 'scuola' %}
                     <h3>APPUNTAMENTI</h3>  
                     {% else %}
-                    <h3>ASSENZE</h3
+                    <h3>EVENTI</h3
                     {%endif%}> 
                     {{ form.assenze }}
                 </div>
                
                 <div class="custom-row-column ">
-                    {% if utente != 'scuola' %}
-                    <h3>EVENTI</h3>  
-                    {%else%}
-                    <h3>CLASSI IN USCITA</h3> 
-                    {%endif%}
+                   
+                    <h3>CLASSI IN USCITA</h3>  
                     {{ form.eventi }}
                 </div>
 
