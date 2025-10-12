@@ -37,7 +37,7 @@
    
     <h1> Report Settimanale</h1>
     
-    <form METHOD = POST ACTION="{% url 'agenda:weekly_report' %}">
+    <form METHOD = POST >
         {% csrf_token %}
         <a href="{% url 'agenda:calendar_view' %}"><img src="/static/agenda/go-home.png"></a>
         <input type="text" name="q" value="{{ parola }}"> <input type="submit" value="filtra">

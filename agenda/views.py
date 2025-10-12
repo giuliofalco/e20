@@ -1,6 +1,6 @@
 import os
 import calendar
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from datetime import date, datetime, timedelta
 from .models import DayEntry
@@ -154,16 +154,23 @@ def serve_pdf(request, filename):
     return response
 
 
-def monthly_report(request):
+def monthly_report(request,utente):
     # view per il report di backup dei dati raggrupapti per mese
     # Ottieni tutti i record con almeno un campo non vuoto
+
+   # Determina l'utente di riferimento
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = get_object_or_404(User, username=utente)
+
 
     entries = DayEntry.objects.filter(
         Q(assenze__isnull=False, assenze__gt='') |
         Q(eventi__isnull=False, eventi__gt='') |
         Q(uscite__isnull=False, uscite__gt='') |
         Q(note__isnull=False, note__gt='')
-    ).filter(user=request.user)
+    ).filter(user=user)
   
     # Organizza i dati per mese
     data_by_month = {}
@@ -194,23 +201,30 @@ def monthly_report(request):
     for month in data_by_month:
         data_by_month[month].sort(key=lambda x: x['date'],reverse=True)
     # Passa i dati al template
-    return render(request, 'agenda/monthly_report.html', {'data_by_month': data_by_month, 'parola':parola, 'utente': str(request.user)})
+    return render(request, 'agenda/monthly_report.html', 
+                           {'data_by_month': data_by_month, 'parola':parola, 'utente': str(request.user)})
 
 def logout_view(request):
     logout(request)
     return redirect('agenda:calendar_view')
 
-def weekly_report(request):
+def weekly_report(request,utente):
     # organizza il report per settimana
     # Ottieni tutti i record con almeno un campo non vuoto
     # entries = DayEntry.objects.filter(user=request.user)
+
+    # Determina l'utente di riferimento
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = get_object_or_404(User, username=utente)
    
     entries = DayEntry.objects.filter(
         Q(assenze__isnull=False, assenze__gt='') |
         Q(eventi__isnull=False, eventi__gt='') |
         Q(uscite__isnull=False, uscite__gt='') |
         Q(note__isnull=False, note__gt='')
-    ).filter(user=request.user)
+    ).filter(user=user)
 
     # Organizza i dati per settimana
     data_by_week = defaultdict(list) # lista di dizionari

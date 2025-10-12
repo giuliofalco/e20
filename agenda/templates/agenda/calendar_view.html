@@ -104,8 +104,8 @@
             </tr>
         </table>
     <br>
-    <a href="{% url 'agenda:monthly_report'%}" class="w3-button w3-blue">Report mensile</a>
-    <a href="{% url 'agenda:weekly_report'%}" class="w3-button w3-blue">Report settimanale</a>
+    <a href="{% url 'agenda:monthly_report' utente=request.user.username %}" class="w3-button w3-blue">Report mensile</a>
+    <a href="{% url 'agenda:weekly_report' utente=request.user.username %}" class="w3-button w3-blue">Report settimanale</a>
 
    
     </div>

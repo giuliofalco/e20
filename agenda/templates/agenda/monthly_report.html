@@ -38,13 +38,13 @@
    
     <h1> Report Mensile</h1>
     
-    <form METHOD = POST ACTION="{%url 'agenda:monthly_report'%}">
+    <form METHOD = POST >
         {% csrf_token %}
         <a href="{%url 'agenda:calendar_view' %}"><img src="/static/agenda/go-home.png"></a>
         <input type="text" name="q" value="{{parola}}"> <input type="submit" value="filtra">
         
     </form>
-   
+    utente: {{utente}}
     {% for month, days in data_by_month.items %}
         <h2>{{ month }}</h2>
         <table>
@@ -54,10 +54,10 @@
                     {%if utente != 'scuola' %}
                        <th>Appuntamenti</th>
                        <th>Eventi</th>
-                    {%else%}
+                    {% else %}
                        <th>Eventi</th>
                        <th>Classi in uscita</th>
-                    {%endif%}
+                    {% endif %}
                     <th>Note</th>
                 </tr>
             </thead>
