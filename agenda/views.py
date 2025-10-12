@@ -202,7 +202,7 @@ def monthly_report(request,utente):
         data_by_month[month].sort(key=lambda x: x['date'],reverse=True)
     # Passa i dati al template
     return render(request, 'agenda/monthly_report.html', 
-                           {'data_by_month': data_by_month, 'parola':parola, 'utente': str(request.user)})
+                           {'data_by_month': data_by_month, 'parola':parola, 'utente': str(user)})
 
 def logout_view(request):
     logout(request)
@@ -282,7 +282,7 @@ def weekly_report(request,utente):
     return render(request, 'agenda/weekly_report.html', {
         'data_by_week': data_by_week,
         'parola': parola,
-        'utente': str(request.user)
+        'utente': str(user)
     })
 
 def redirect_to_day_editor(request, date_str):

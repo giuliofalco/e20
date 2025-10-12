@@ -32,6 +32,24 @@
         h2 {color: blue;}
         form {width: 350px; margin:auto}
         img {margin-right:30px; margin-bottom:-5px;}
+        .report-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff; /* blu */
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .report-btn:hover {
+            background-color: #0056b3; /* blu scuro al passaggio del mouse */
+        }
+
+        .report-btn:active {
+            background-color: #003f7f;
+        }
     </style>
 </head>
 <body>
@@ -44,21 +62,27 @@
         <input type="text" name="q" value="{{parola}}"> <input type="submit" value="filtra">
         
     </form>
-    utente: {{utente}}
+   
+    <a class="report-btn" href="{% url 'agenda:weekly_report' utente=utente %}">
+         Vai al report settimanale
+    </a>
+
     {% for month, days in data_by_month.items %}
         <h2>{{ month }}</h2>
         <table>
             <thead>
                 <tr>
                     <th>Data</th>
-                    {%if utente != 'scuola' %}
-                       <th>Appuntamenti</th>
-                       <th>Eventi</th>
-                    {% else %}
+                    {%if utente == 'scuola' %}
                        <th>Eventi</th>
                        <th>Classi in uscita</th>
+                    {% else %}
+                       utente: {{utente}}
+                       <th>Appuntamenti</th>
+                       <th>Eventi</th>
                     {% endif %}
                     <th>Note</th>
+                    
                 </tr>
             </thead>
             <tbody>

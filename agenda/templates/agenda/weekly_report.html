@@ -31,6 +31,26 @@
         h2 {color: blue;}
         form {width: 350px; margin:auto}
         img {margin-right:30px; margin-bottom:-5px;}
+        /* Pulsanti report */
+
+        .report-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff; /* blu */
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .report-btn:hover {
+            background-color: #0056b3; /* blu scuro al passaggio del mouse */
+        }
+
+        .report-btn:active {
+            background-color: #003f7f;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +63,10 @@
         <input type="text" name="q" value="{{ parola }}"> <input type="submit" value="filtra">
     </form>
    
+    <a class="report-btn" href="{% url 'agenda:monthly_report' utente=utente %}">
+        Vai al report mensile
+    </a>
+
     {% for week_range, days in data_by_week.items %}
         <h2>Settimana dal {{ week_range.0|date:"d/m/Y" }} al {{ week_range.1|date:"d/m/Y" }}</h2>
         <table>
