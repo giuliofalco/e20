@@ -1,5 +1,8 @@
-import os
+import os, io
 import calendar
+import locale
+import qrcode
+import base64
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from datetime import date, datetime, timedelta
@@ -20,7 +23,8 @@ from datetime import datetime, timedelta
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
-import locale
+from django.shortcuts import render
+
 
 locale.setlocale(locale.LC_TIME, 'it_IT.UTF-8')
 
@@ -303,4 +307,34 @@ def genera_password(request):
     return render(request, 'agenda/genera_password.html')
 
 
+def bcard(request):
+    # genera un qrcode per un biglietto da visita digitale da impoertare nella rubrica del telefono
+    qr_data = None
 
+    if request.method == "POST":
+        nome = request.POST.get("nome", "").strip()
+        email = request.POST.get("email", "").strip()
+        indirizzo = request.POST.get("indirizzo", "").strip()
+        telefono = request.POST.get("telefono", "").strip()
+
+        if nome and email:
+            # Crea il testo MECARD
+            mecard = f"MECARD:N:{nome};EMAIL:{email};"
+            if telefono:
+                mecard += f"TEL:{telefono};"
+            if indirizzo:
+                mecard += f"ADR:{indirizzo};"
+            mecard += ";"
+
+            # Genera il QR Code come immagine in memoria
+            img = qrcode.make(mecard)
+            buffer = io.BytesIO()
+            img.save(buffer, format="PNG")
+            img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+            qr_data = f"data:image/png;base64,{img_str}"
+
+        else:
+            qr_data = "error"
+
+    return render(request, "agenda/bcard.html", {"qr_data": qr_data})

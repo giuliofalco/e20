@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Biglietto da visita QR Code</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f4f8; text-align: center; }
+        form { display: inline-block; background: #e0ecf8; padding: 20px; border-radius: 10px; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; color: #003366; }
+        input { padding: 5px; width: 250px; }
+        button { background: #336699; color: white; padding: 10px 20px; border: none; border-radius: 8px; margin-top: 15px; cursor: pointer; }
+        button:hover { background: #285580; }
+        img { margin-top: 20px; border: 2px solid #336699; border-radius: 10px; }
+        .error { color: red; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Biglietto da visita QR Code</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="nome">Nome *</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="indirizzo">Indirizzo</label>
+        <input type="text" id="indirizzo" name="indirizzo">
+
+        <label for="telefono">Telefono</label>
+        <input type="text" id="telefono" name="telefono">
+        <br>
+        <button type="submit">🎯 Genera QR Code</button>
+    </form>
+
+    {% if qr_data %}
+        {% if qr_data == "error" %}
+            <p class="error">Nome ed Email sono obbligatori!</p>
+        {% else %}
+            <h3>QR Code generato:</h3>
+            <img src="{{ qr_data }}" alt="QR Code">
+        {% endif %}
+    {% endif %}
+</body>
+</html>
