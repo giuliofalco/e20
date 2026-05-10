@@ -18,8 +18,8 @@ from datetime import date
 
 @login_required
 def index(request):
-    anno_corrente = date.today().year
-    lista = Diario.objects.filter(user=request.user,data__year=anno_corrente)
+   anno_corrente = date.today().year
+   lista = Diario.objects.filter(user=request.user,data__year=anno_corrente)
    # costruisco la lista con i numeri delle settimane
 
    weeks = [giorno.week() for giorno in lista]    # lista con i dati compresi i duplicati
