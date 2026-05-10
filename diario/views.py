@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.utils.http import urlencode
 from .forms import ProfiloUtenteForm
+from datetime import date
 
 @login_required
 def index(request):
@@ -43,6 +44,8 @@ def index(request):
 def settimana(request,w):
       # mostra la tabella della settimana specificata
       from . import config
+      anno_corrente = date.today().year
+      data__year=anno_corrente
       
       lista = Diario.objects.filter(user=request.user)    # tutte le registrazioni
       weekly = [obj for obj in lista if obj.week() == w]  # solo quelle della settimana w  
