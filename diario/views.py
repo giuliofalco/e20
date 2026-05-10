@@ -45,9 +45,12 @@ def settimana(request,w):
       # mostra la tabella della settimana specificata
       from . import config
       anno_corrente = date.today().year
-      data__year=anno_corrente
       
-      lista = Diario.objects.filter(user=request.user)    # tutte le registrazioni
+      lista = Diario.objects.filter(
+          user=request.user,
+          data__year=anno_corrente
+      )    # tutte le registrazioni dell'anno corrente
+
       weekly = [obj for obj in lista if obj.week() == w]  # solo quelle della settimana w  
    
       cons = [[w.week_day,list(w.consumazione_set.all())] for w in weekly]
